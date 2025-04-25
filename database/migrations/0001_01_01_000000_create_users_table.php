@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre'); // en vez de 'name', lo renombramos para usar español
+            $table->string('nombre'); 
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('foto_url')->nullable(); // para que el usuario pueda subir su avatar
+            $table->string('foto_url')->nullable(); 
             $table->rememberToken();
             $table->timestamps();
         });
