@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Storage;
+use Cloudinary\Cloudinary;
+use Cloudinary\Configuration\Configuration;
+
 
 
 class RegisteredUserController extends Controller
@@ -28,32 +31,41 @@ class RegisteredUserController extends Controller
     {
         // Validación de los campos
         $validated = $request->validate([
-            'nombre' => ['required', 'string', 'max:255', 'unique:users'],  // Validación para asegurar que el nombre sea único
+            'nombre' => ['required', 'string', 'max:255', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', 'min:8'],
             'foto' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ]);
 
+        
+        
         // Manejo de la foto
         $foto_url = null;
         if ($request->hasFile('foto')) {
-            // Obtener la extensión del archivo
-            $extension = $request->file('foto')->getClientOriginalExtension();
+            // Obtener el archivo de la foto
+            $foto = $request->file('foto');
             
-            // Generar el nombre de la foto como el nombre del usuario
-            $nombre_imagen = strtolower(str_replace(' ', '_', $request->nombre)) . '.' . $extension;
+            //Hace referencia a config/services.php 
+            $cloudinary = new Cloudinary([
+                'cloud' => [
+                    'cloud_name' => config('services.cloudinary.cloud_name'),
+                    'api_key'    => config('services.cloudinary.api_key'),
+                    'api_secret' => config('services.cloudinary.api_secret'),
+                ]
+            ]);
+            
+            // Subir la foto a Cloudinary usando el método correcto
+            $uploadResult = $cloudinary->uploadApi()->upload($foto->getRealPath(), [
+                'folder' => 'Foto_Perfil',
+                'public_id' => strtolower(str_replace(' ', '_', preg_replace('/[^a-zA-Z0-9_]/', '', $request->nombre))),
+                'overwrite' => true,
+            ]);
 
-            // Definir la ruta donde se guardará la foto (directamente en public/Foto_Perfil)
-            $path = public_path('Foto_Perfil/' . $nombre_imagen);
-            
-            // Mover el archivo a la carpeta public/Foto_Perfil
-            $request->file('foto')->move(public_path('Foto_Perfil'), $nombre_imagen);
-            
-            // Guardar la URL de la foto (relativa a la carpeta public)
-            $foto_url = 'Foto_Perfil/' . $nombre_imagen;
+            // Obtener la URL de la imagen subida
+            $foto_url = $uploadResult['secure_url'];
         } else {
-            // Si no se sube foto, usar la foto predeterminada
-            $foto_url = 'Foto_Perfil/fotoperfil_predeterminada.png';
+            // Foto predeterminada en Cloudinary
+            $foto_url ="https://res.cloudinary.com/dpsvxf3qg/image/upload/v1745910938/fotoperfil_predeterminada.png";
         }
 
         // Crear el usuario
@@ -68,7 +80,7 @@ class RegisteredUserController extends Controller
         auth()->login($user);
 
         // Redirigir a la ruta deseada (por ejemplo, el dashboard)
-        return redirect('/dashboard'); // Asegúrate de que la ruta "/dashboard" exista en tus rutas
+        return redirect('/dashboard');
     }
-
+    
 }
