@@ -35,9 +35,7 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', 'min:8'],
             'foto' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
-        ]);
-
-        
+        ]);       
         
         // Manejo de la foto
         $foto_url = null;
@@ -54,7 +52,7 @@ class RegisteredUserController extends Controller
                 ]
             ]);
             
-            // Subir la foto a Cloudinary usando el método correcto
+            // Subir la foto a Cloudinary 
             $uploadResult = $cloudinary->uploadApi()->upload($foto->getRealPath(), [
                 'folder' => 'Foto_Perfil',
                 'public_id' => strtolower(str_replace(' ', '_', preg_replace('/[^a-zA-Z0-9_]/', '', $request->nombre))),
@@ -70,10 +68,10 @@ class RegisteredUserController extends Controller
 
         // Crear el usuario
         $user = User::create([
-            'nombre' => $request->nombre,  // Guardar el nombre
+            'nombre' => $request->nombre,  
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'foto_url' => $foto_url,  // Guardar la URL de la foto
+            'foto_url' => $foto_url,  
         ]);
 
         // Iniciar sesión automáticamente
@@ -82,5 +80,5 @@ class RegisteredUserController extends Controller
         // Redirigir a la ruta deseada (por ejemplo, el dashboard)
         return redirect('/dashboard');
     }
-    
+
 }
