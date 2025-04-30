@@ -27,27 +27,28 @@ class AuthenticatedSessionController extends Controller
     {
         // Obtener el campo 'login' (puede ser nombre o email)
         $login = $request->input('login');
-
+    
         // Verificamos si el 'login' es un email o un nombre
         $user = filter_var($login, FILTER_VALIDATE_EMAIL)
             ? \App\Models\User::where('email', $login)->first()
             : \App\Models\User::where('nombre', $login)->first();
-
+    
         // Verificamos si el usuario existe y si la contraseña es correcta
         if ($user && \Hash::check($request->password, $user->password)) {
             // Iniciar sesión
             Auth::login($user);
             $request->session()->regenerate();
-
-            // Redirigir al dashboard o la página prevista
-            return redirect()->intended(route('dashboard'));
+    
+            // Redirigir siempre a la página de inicio
+            return redirect()->route('inicio'); 
         }
-
+    
         // Si no se encuentra el usuario o la contraseña es incorrecta
         throw ValidationException::withMessages([
             'login' => trans('auth.failed'),
         ]);
     }
+    
 
     /**
      * Destroy an authenticated session.

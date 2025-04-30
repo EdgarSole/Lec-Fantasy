@@ -11,18 +11,21 @@ use Illuminate\Validation\Rules\Password;
 class PasswordController extends Controller
 {
     /**
-     * Update the user's password.
+     * Update the user's password without requiring the current one.
      */
     public function update(Request $request): RedirectResponse
     {
-        $validated = $request->validateWithBag('updatePassword', [
-            'current_password' => ['required', 'current_password'],
-            'password' => ['required', Password::defaults(), 'confirmed'],
-        ]);
+        // Validar si se ha enviado una nueva contraseña
+        if ($request->filled('password')) {
+            $validated = $request->validate([
+                'password' => ['required', 'confirmed', Password::defaults()],
+            ]);
 
-        $request->user()->update([
-            'password' => Hash::make($validated['password']),
-        ]);
+            // Actualizar la contraseña del usuario autenticado
+            $request->user()->update([
+                'password' => Hash::make($validated['password']),
+            ]);
+        }
 
         return back()->with('status', 'password-updated');
     }

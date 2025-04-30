@@ -78,7 +78,7 @@ class RegisteredUserController extends Controller
         auth()->login($user);
 
         // Redirigir a la ruta deseada (por ejemplo, el dashboard)
-        return redirect('/dashboard');
+        return redirect('/inicio');
     }
 
 }

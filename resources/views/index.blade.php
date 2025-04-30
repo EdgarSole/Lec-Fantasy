@@ -1,67 +1,76 @@
 <x-app-layout>
-    <!-- Hero Section con Carrusel -->
-    <div class="relative overflow-hidden">
+    
+<div class="relative overflow-hidden">
     <div x-data="{
             currentSlide: 0,
             slides: [
-                '{{ asset('imagenes/estadio1.jpg') }}',
-                '{{ asset('imagenes/estadio2.jpg') }}',
-                '{{ asset('imagenes/estadio3.jpg') }}',
-                '{{ asset('imagenes/estadio4.jpg') }}',
-                '{{ asset('imagenes/estadio5.jpg') }}'
+                '{{ asset('imagenes/fondo.jpg') }}',
+                '{{ asset('imagenes/fondo2-estadio.jpg') }}',
+                '{{ asset('imagenes/fondo3-estadio.jpg') }}',
+                '{{ asset('imagenes/fondo2-arena.jpg') }}',
+                '{{ asset('imagenes/fondo5-estadio.jpg') }}'
             ],
             interval: null,
             init() {
                 this.startAutoPlay();
             },
             startAutoPlay() {
+                this.stopAutoPlay(); // Limpia el intervalo anterior
                 this.interval = setInterval(() => {
-                    this.next();
+                    this.next(false); // Automático, no reinicia
                 }, 5000);
             },
             stopAutoPlay() {
-                clearInterval(this.interval);
+                if (this.interval) {
+                    clearInterval(this.interval);
+                    this.interval = null;
+                }
             },
-            next() {
+            next(manual = true) {
                 this.currentSlide = (this.currentSlide + 1) % this.slides.length;
+                if (manual) this.startAutoPlay(); // Solo reinicia si fue clic manual
             },
             prev() {
                 this.currentSlide = (this.currentSlide - 1 + this.slides.length) % this.slides.length;
+                this.startAutoPlay(); // Reinicia al hacer clic
             },
             goTo(index) {
                 this.currentSlide = index;
+                this.startAutoPlay(); // Reinicia al seleccionar índice
             }
-        }" 
+        }"
         x-init="init()"
         @mouseenter="stopAutoPlay()"
         @mouseleave="startAutoPlay()"
         class="relative h-screen max-h-[800px]">
-            <!-- Imágenes del carrusel -->
-            <template x-for="(slide, index) in slides" :key="index">
-                <div 
-                    x-show="currentSlide === index"
-                    x-transition:enter="transition ease-out duration-1000"
-                    x-transition:enter-start="opacity-0"
-                    x-transition:enter-end="opacity-100"
-                    x-transition:leave="transition ease-in duration-1000"
-                    x-transition:leave-start="opacity-100"
-                    x-transition:leave-end="opacity-0"
-                    class="absolute inset-0">
-                    <img 
-                        :src="slide" 
-                        :alt="'LEC Image ' + (index + 1)" 
-                        class="w-full h-full object-cover object-center">
-                    <div class="absolute inset-0 bg-black bg-opacity-30"></div>
-                </div>
-            </template>
+
+        <!-- Imágenes del carrusel -->
+        <template x-for="(slide, index) in slides" :key="index">
+            <div 
+                x-show="currentSlide === index"
+                x-transition:enter="transition ease-out duration-1000"
+                x-transition:enter-start="opacity-0"
+                x-transition:enter-end="opacity-100"
+                x-transition:leave="transition ease-in duration-1000"
+                x-transition:leave-start="opacity-100"
+                x-transition:leave-end="opacity-0"
+                class="absolute inset-0">
+                <img 
+                    :src="slide" 
+                    :alt="'LEC Image ' + (index + 1)" 
+                    class="w-full h-full object-cover object-center">
+                <div class="absolute inset-0 bg-black bg-opacity-30"></div>
+            </div>
+        </template>
+
 
             <!-- Contenido sobre las imágenes -->
             <div class="relative z-10 h-full flex items-center">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
                     <div class="lg:w-1/2">
                         <h1 class="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl">
-                            <span class="block">Crea tu equipo</span>
-                            <span class="block text-blue-300">LEC Fantasy</span>
+                            <b><span class="block">Crea tu equipo</span>
+                            <span class="block text-blue-300">LEC Fantasy</span></b>
                         </h1>
                         <p class="mt-3 text-base text-gray-200 sm:mt-5 sm:text-lg sm:max-w-xl md:mt-5 md:text-xl">
                             Construye tu dream team con los mejores jugadores de la LEC y compite por los primeros puestos.
@@ -363,3 +372,51 @@
         </div>
     </div>
 </x-app-layout>
+<script>
+function carousel() {
+    return {
+        currentSlide: 0,
+        slides: [
+            '{{ asset('imagenes/fondo.jpg') }}',
+            '{{ asset('imagenes/fondo2-estadio.jpg') }}',
+            '{{ asset('imagenes/fondo3-estadio.jpg') }}',
+            '{{ asset('imagenes/fondo2-arena.jpg') }}',
+            '{{ asset('imagenes/fondo5-estadio.jpg') }}'
+        ],
+        interval: null,
+
+        init() {
+            this.startAutoPlay();
+        },
+
+        startAutoPlay() {
+            this.stopAutoPlay(); // Asegura que no haya múltiples intervalos activos
+            this.interval = setInterval(() => {
+                this.next(false);
+            }, 5000);
+        },
+
+        stopAutoPlay() {
+            if (this.interval) {
+                clearInterval(this.interval);
+                this.interval = null;
+            }
+        },
+
+        next(manual = true) {
+            this.currentSlide = (this.currentSlide + 1) % this.slides.length;
+            if (manual) this.startAutoPlay(); // Reinicia el intervalo si fue una acción manual
+        },
+
+        prev() {
+            this.currentSlide = (this.currentSlide - 1 + this.slides.length) % this.slides.length;
+            this.startAutoPlay(); // También reinicia el temporizador
+        },
+
+        goTo(index) {
+            this.currentSlide = index;
+            this.startAutoPlay(); // Reinicia al seleccionar manualmente
+        }
+    }
+}
+</script>
