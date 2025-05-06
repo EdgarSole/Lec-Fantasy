@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('ligas', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
+            $table->string('nombre')->unique();;
             $table->text('descripcion')->nullable();
             $table->string('logo_url')->nullable();
-            $table->string('codigo_unico')->unique();
+            $table->string('codigo_unico')->nullable();
             $table->enum('tipo', ['publica', 'privada']);
             $table->foreignId('usuario_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();

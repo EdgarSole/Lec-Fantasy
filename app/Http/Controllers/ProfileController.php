@@ -26,69 +26,71 @@ class ProfileController extends Controller
      * Update the user's profile information.
      */
     public function update(Request $request): RedirectResponse
-{
-    $user = $request->user();
+    {
+        $user = $request->user();
 
-    // Validación personalizada
-    $validator = Validator::make($request->all(), [
-        'nombre' => ['required', 'string', 'max:255', 
-            
-            'unique:users,nombre,' . $user->id
-        ],
-        'email' => ['required', 'string', 'email', 'max:255', 
-            
-            'unique:users,email,' . $user->id
-        ],
-        'descripcion' => ['nullable', 'string', 'max:500'],
-        'password' => ['nullable', 'string', 'min:8', 'confirmed'],
-        'foto_url' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
-    ]);
-
-    if ($validator->fails()) {
-        return Redirect::back()->withErrors($validator)->withInput();
-    }
-
-    // Actualizar datos básicos
-    $user->nombre = $request->nombre;
-    $user->email = $request->email;
-    $user->descripcion = $request->descripcion;
-
-    // Resetear verificación si se cambia el correo
-    if ($user->isDirty('email')) {
-        $user->email_verified_at = null;
-    }
-
-    // Actualizar contraseña si se proporciona
-    if ($request->filled('password')) {
-        $user->password = bcrypt($request->password);
-    }
-
-    // Subir nueva foto de perfil
-    if ($request->hasFile('foto_url')) {
-        $cloudinary = new Cloudinary([
-            'cloud' => [
-                'cloud_name' => config('services.cloudinary.cloud_name'),
-                'api_key' => config('services.cloudinary.api_key'),
-                'api_secret' => config('services.cloudinary.api_secret'),
-            ]
+        // Validación personalizada
+        $validator = Validator::make($request->all(), [
+            'nombre' => ['required', 'string', 'max:255', 'unique:users,nombre,' . $user->id],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
+            'descripcion' => ['nullable', 'string', 'max:500'],
+            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
+            'foto_url' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
         ]);
 
-        $uploadResult = $cloudinary->uploadApi()->upload(
-            $request->file('foto_url')->getRealPath(), [
-                'folder' => 'Foto_Perfil',
-                'public_id' => strtolower(str_replace(' ', '_', preg_replace('/[^a-zA-ZñÑáéíóúÁÉÍÓÚ_]/u', '', $request->nombre))),
-                'overwrite' => true,
-                'resource_type' => 'image'
-            ]
-        );
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }
 
-        $user->foto_url = $uploadResult['secure_url'];
+        // Verificar si el email fue cambiado
+        $emailCambiado = $request->email !== $user->email;
+
+        // Actualizar datos
+        $user->nombre = $request->nombre;
+        $user->email = $request->email;
+        $user->descripcion = $request->descripcion;
+
+        if ($emailCambiado) {
+            $user->email_verified_at = null;
+        }
+
+        // Actualizar contraseña si se proporcionó
+        if ($request->filled('password')) {
+            $user->password = bcrypt($request->password);
+        }
+
+        // Subir nueva foto de perfil
+        if ($request->hasFile('foto_url')) {
+            $cloudinary = new Cloudinary([
+                'cloud' => [
+                    'cloud_name' => config('services.cloudinary.cloud_name'),
+                    'api_key' => config('services.cloudinary.api_key'),
+                    'api_secret' => config('services.cloudinary.api_secret'),
+                ]
+            ]);
+
+            $uploadResult = $cloudinary->uploadApi()->upload(
+                $request->file('foto_url')->getRealPath(), [
+                    'folder' => 'Foto_Perfil',
+                    'public_id' => strtolower(str_replace(' ', '_', preg_replace('/[^a-zA-ZñÑáéíóúÁÉÍÓÚ_]/u', '', $request->nombre))),
+                    'overwrite' => true,
+                    'resource_type' => 'image'
+                ]
+            );
+
+            $user->foto_url = $uploadResult['secure_url'];
+        }
+
+        $user->save();
+
+        // Reautenticar al usuario si el email fue cambiado (opcional pero recomendable)
+        if ($emailCambiado) {
+            Auth::login($user);
+        }
+
+        return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
 
-    $user->save();
-
-    return Redirect::route('profile.edit')->with('status', 'profile-updated');
-}
 
 
     /**

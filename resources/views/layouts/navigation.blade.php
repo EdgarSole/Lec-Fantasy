@@ -10,29 +10,30 @@
                 </a>
             </div>
             
-            <!-- Menú central - Desktop -->
-            <div class="hidden sm:flex sm:items-center sm:space-x-3 mx-4">
-                <x-nav-link :href="route('inicio')" :active="request()->routeIs('inicio')" 
-                    class="px-5 py-2 font-medium text-sm transition-all duration-300 
-                    {{ request()->routeIs('inicio') ? 'bg-blue-500 text-white border-blue-600' : 'bg-white text-gray-800 hover:bg-blue-50' }}
-                    border border-gray-300 rounded-lg shadow-sm hover:shadow-md hover:-translate-y-0.5 transform hover:border-blue-300">
-                    {{ __('Inicio') }}
-                </x-nav-link>
+           <!-- Menú central - Desktop -->
+<div class="hidden sm:flex sm:items-center sm:space-x-3 mx-4">
+    <x-nav-link :href="route('inicio')" :active="request()->routeIs('inicio')" 
+        class="px-5 py-2 font-medium text-sm transition-all duration-300 
+        bg-white text-gray-800 hover:bg-blue-50 
+        border border-gray-300 rounded-lg shadow-sm hover:shadow-md hover:-translate-y-0.5 transform hover:border-blue-300">
+        {{ __('Inicio') }}
+    </x-nav-link>
 
-                <x-nav-link :href="route('inicio')" :active="request()->routeIs('inicio')" 
-                    class="px-5 py-2 font-medium text-sm transition-all duration-300 
-                    {{ request()->routeIs('inicio') ? 'bg-blue-500 text-white border-blue-600' : 'bg-white text-gray-800 hover:bg-blue-50' }}
-                    border border-gray-300 rounded-lg shadow-sm hover:shadow-md hover:-translate-y-0.5 transform hover:border-blue-300">
-                    {{ __('Jugadores') }}
-                </x-nav-link>
+    <x-nav-link :href="route('inicio')" :active="request()->routeIs('inicio')" 
+        class="px-5 py-2 font-medium text-sm transition-all duration-300 
+        bg-white text-gray-800 hover:bg-blue-50 
+        border border-gray-300 rounded-lg shadow-sm hover:shadow-md hover:-translate-y-0.5 transform hover:border-blue-300">
+        {{ __('Jugadores') }}
+    </x-nav-link>
 
-                <x-nav-link :href="route('inicio')" :active="request()->routeIs('inicio')" 
-                    class="px-5 py-2 font-medium text-sm transition-all duration-300 
-                    {{ request()->routeIs('inicio') ? 'bg-blue-500 text-white border-blue-600' : 'bg-white text-gray-800 hover:bg-blue-50' }}
-                    border border-gray-300 rounded-lg shadow-sm hover:shadow-md hover:-translate-y-0.5 transform hover:border-blue-300">
-                    {{ __('Reglas') }}
-                </x-nav-link>
-            </div>
+    <x-nav-link :href="route('inicio')" :active="request()->routeIs('inicio')" 
+        class="px-5 py-2 font-medium text-sm transition-all duration-300 
+        bg-white text-gray-800 hover:bg-blue-50 
+        border border-gray-300 rounded-lg shadow-sm hover:shadow-md hover:-translate-y-0.5 transform hover:border-blue-300">
+        {{ __('Reglas') }}
+    </x-nav-link>
+</div>
+
 
             <!-- Lado derecho - Desktop -->
             <div class="hidden sm:flex sm:items-center space-x-3">

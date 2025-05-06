@@ -208,19 +208,19 @@
                         <ul class="mt-4 space-y-2 text-gray-600">
                             <li class="flex items-start">
                                 <span class="mr-2 text-green-500">+2</span>
-                                <span>Por cada kill</span>
+                                <span>Por cada kill <i class="fa-solid fa-skull"></i></span>
                             </li>
                             <li class="flex items-start">
                                 <span class="mr-2 text-green-500">+1</span>
-                                <span>Por cada asistencia</span>
+                                <span>Por cada asistencia <i class="fa-solid fa-handshake-angle"></i></span>
                             </li>
                             <li class="flex items-start">
                                 <span class="mr-2 text-green-500">+1</span>
-                                <span>Por cada torre destruida</span>
+                                <span>Por cada torre destruida <i class="fa-solid fa-gopuram"></i></span>
                             </li>
                             <li class="flex items-start">
                                 <span class="mr-2 text-green-500">+4</span>
-                                <span>Por cada objetivo robado</span>
+                                <span>Por cada objetivo <i class="fa-solid fa-spaghetti-monster-flying"></i></span>
                             </li>
                         </ul>
                     </div>

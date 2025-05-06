@@ -32,4 +32,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function ligas()
+    {
+        return $this->belongsToMany(Liga::class, 'usuarios_ligas', 'usuario_id', 'liga_id')
+                    ->withTimestamps();
+    }
 }

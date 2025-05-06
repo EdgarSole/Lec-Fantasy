@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\LigaController;
 
 
 
@@ -24,8 +25,14 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/inicio', function () {
-        return view('inicio');
-        })->name('inicio');
+    // Ruta de inicio, que muestra las ligas
+    Route::get('/inicio', [LigaController::class, 'index'])->name('inicio');
+    
+    // Ruta para almacenar una liga (la que maneja el formulario POST)
+    Route::post('/ligas', [LigaController::class, 'store'])->name('ligas.store');
 });
+
+
+
+
 require __DIR__.'/auth.php';
