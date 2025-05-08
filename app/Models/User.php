@@ -33,9 +33,16 @@ class User extends Authenticatable
         ];
     }
 
+    public function equipos()
+    {
+        return $this->hasMany(Equipo::class, 'usuario_id');
+    }
+
     public function ligas()
     {
-        return $this->belongsToMany(Liga::class, 'usuarios_ligas', 'usuario_id', 'liga_id')
-                    ->withTimestamps();
+        return $this->belongsToMany(Liga::class, 'equipos', 'usuario_id', 'liga_id');
     }
+
+    
+
 }

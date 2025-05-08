@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Liga;
-use App\Models\UsuarioLiga;
+use App\Models\Equipo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Cloudinary\Cloudinary;
@@ -12,22 +12,26 @@ class LigaController extends Controller
 {
     public function index()
     {
-        // Obtener el usuario autenticado
         $user = auth()->user();
-        
+
         if (!$user) {
-            return redirect()->route('login'); // Asegúrate que el usuario está autenticado
+            return redirect()->route('login');
         }
 
-        // Obtener las ligas del usuario con conteo de miembros
+        // Obtener ligas del usuario con conteo de equipos
         $ligas = $user->ligas()
-                    ->withCount('usuarios')
-                    ->latest()
-                    ->get();
+            ->withCount(['equipos as miembros_count'])
+            ->latest()
+            ->get();
 
-        // Pasar las ligas a la vista
+        // Obtener todas las ligas con conteo de miembros
+        $todasLasLigas = Liga::withCount('equipos')
+            ->select('id', 'nombre', 'tipo', 'logo_url')
+            ->get();
+
         return view('inicio', [
-            'ligas' => \App\Models\Liga::limit(3)->get()
+            'ligas' => $ligas,
+            'todasLasLigas' => $todasLasLigas,
         ]);
     }
     
@@ -40,7 +44,7 @@ class LigaController extends Controller
                     'string',
                     'max:255',
                     function ($attribute, $value, $fail) {
-                        if (\App\Models\Liga::whereRaw('LOWER(nombre) = ?', [strtolower($value)])->exists()) {
+                        if (Liga::whereRaw('LOWER(nombre) = ?', [strtolower($value)])->exists()) {
                             $fail('Ya existe una liga con ese nombre.');
                         }
                     },
@@ -51,7 +55,7 @@ class LigaController extends Controller
                 'logo_url' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
 
-            $logo_url = 'https://res.cloudinary.com/dpsvxf3qg/image/upload/v1745910938/fotoperfil_predeterminada.png';
+            $logo_url = 'https://res.cloudinary.com/dpsvxf3qg/image/upload/v1746528986/fotoliga_predeterminada.webp';
 
             if ($request->hasFile('logo_url')) {
                 $logo = $request->file('logo_url');
@@ -73,6 +77,7 @@ class LigaController extends Controller
                 $logo_url = $uploadResult['secure_url'];
             }
 
+            // Crear la liga
             $liga = Liga::create([
                 'nombre' => $request->nombre,
                 'descripcion' => $request->descripcion,
@@ -82,9 +87,11 @@ class LigaController extends Controller
                 'usuario_id' => auth()->id(),
             ]);
 
-            UsuarioLiga::create([
+            // Crear el equipo del usuario en la liga (posición 1)
+            Equipo::create([
+                'usuario_id' => Auth::id(), 
                 'liga_id' => $liga->id,
-           'usuario_id' => auth()->id(),           
+                'posicion' => 1 // Primer miembro
             ]);
 
             return redirect()->back()->with('success', 'Liga creada exitosamente.');
@@ -93,4 +100,99 @@ class LigaController extends Controller
         }
     }
 
+    public function salir($ligaId)
+    {
+        
+        $user = Auth::user();
+        $liga = Liga::findOrFail($ligaId);
+    
+        // Verifica si el usuario es el líder
+       
+    
+        // Eliminar el equipo del usuario
+        $deleted = Equipo::where('usuario_id', $user->id)
+              ->where('liga_id', $ligaId)
+              ->delete();
+    
+        if (!$deleted) {
+            return redirect()->back()->with('error', 'No se encontró tu equipo en esta liga');
+        }
+    
+        // Verificar si quedan miembros
+        $miembrosRestantes = Equipo::where('liga_id', $ligaId)->count();
+    
+        if ($miembrosRestantes === 0) {
+            $liga->delete();
+            return redirect()->route('inicio')->with('success', 'La liga se ha eliminado al quedarse sin miembros.');
+        }
+    
+        // Reordenar posiciones
+        $equipos = Equipo::where('liga_id', $ligaId)
+                         ->orderBy('posicion')
+                         ->get();
+    
+        foreach ($equipos as $index => $equipo) {
+            $equipo->update(['posicion' => $index + 1]);
+        }
+    
+        return redirect()->route('inicio')->with('success', 'Has salido de la liga correctamente.');
+    }
+    
+
+    public function buscarLigas(Request $request)
+    {
+        $searchTerm = $request->input('search');
+        
+        $ligas = Liga::withCount('equipos as usuarios_count')
+            ->when($searchTerm, function ($query) use ($searchTerm) {
+                return $query->where('nombre', 'like', '%'.$searchTerm.'%');
+            })
+            ->orderBy('nombre')
+            ->get(['id', 'nombre', 'logo_url', 'tipo']);
+
+        return response()->json($ligas);
+    }
+
+    public function unirse(Request $request)
+    {
+        $request->validate([
+            'liga_id' => 'required|exists:ligas,id',
+            'password' => 'nullable|string'
+        ]);
+
+        $user = Auth::user();
+        $liga = Liga::findOrFail($request->liga_id);
+
+        // Verificar si ya tiene un equipo en esta liga
+        if (Equipo::where('usuario_id', $user->id)
+                 ->where('liga_id', $liga->id)
+                 ->exists()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Ya tienes un equipo en esta liga.'
+            ], 422);
+        }
+
+        // Verificar contraseña si es privada
+        if ($liga->tipo === 'privada' && $liga->codigo_unico !== $request->password) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Contraseña incorrecta.'
+            ], 422);
+        }
+
+        // Crear el equipo del usuario en la liga
+        $posicion = Equipo::where('liga_id', $liga->id)->count() + 1;
+        
+        Equipo::create([
+            'usuario_id' => $user->id,
+            'liga_id' => $liga->id,
+            'posicion' => $posicion
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Te has unido a la liga correctamente.'
+        ]);
+    }
 }

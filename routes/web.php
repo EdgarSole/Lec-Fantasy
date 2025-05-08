@@ -30,6 +30,13 @@ Route::middleware('auth')->group(function () {
     
     // Ruta para almacenar una liga (la que maneja el formulario POST)
     Route::post('/ligas', [LigaController::class, 'store'])->name('ligas.store');
+
+    Route::delete('/ligas/{liga}/salir', [LigaController::class, 'salir'])
+        ->name('ligas.salir');
+
+    Route::post('/ligas/unirse', [LigaController::class, 'unirse']);
+    Route::get('/ligas/buscar', [LigaController::class, 'buscarLigas'])->name('ligas.buscar');
+
 });
 
 
