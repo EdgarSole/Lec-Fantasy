@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\LigaController;
-
+use App\Http\Controllers\MiLigaController;
 
 
 Route::get('/', function () {
@@ -38,6 +38,21 @@ Route::middleware('auth')->group(function () {
     Route::get('/ligas/buscar', [LigaController::class, 'buscarLigas'])->name('ligas.buscar');
 
 });
+
+Route::prefix('liga/{liga}')->group(function() {
+    Route::get('mi-liga', [MiLigaController::class, 'index'])->name('mi-liga');
+    Route::get('actividad', [MiLigaController::class, 'actividad'])->name('actividad');
+    Route::get('mi-equipo', [MiLigaController::class, 'miEquipo'])->name('mi-equipo');
+    Route::get('mercado', [MiLigaController::class, 'mercado'])->name('mercado');
+    Route::get('clasificacion', [MiLigaController::class, 'clasificacion'])->name('clasificacion');
+    Route::get('/editar', [MiLigaController::class, 'editar'])->name('editar-liga');
+    Route::put('', [MiLigaController::class, 'actualizarLiga'])->name('actualizar-liga');
+
+    
+    Route::delete('', [MiLigaController::class, 'destroy'])->name('eliminar-liga');
+   });
+
+
 
 
 

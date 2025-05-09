@@ -109,8 +109,8 @@
                         
                         <!-- Contraseña (solo para privada) - inicialmente oculto -->
                         <div id="password-field" class="mb-4 hidden">
-                            <label for="codigo_unico" class="block text-gray-700 font-medium mb-2">Contraseña</label>
-                            <input type="password" id="codigo_unico" name="codigo_unico" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+                            <label for="contrasena" class="block text-gray-700 font-medium mb-2">Contraseña</label>
+                            <input type="password" id="contrasena" name="contrasena" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
                             <p class="text-sm text-gray-500 mt-1">Solo los jugadores con esta contraseña podrán unirse</p>
                         </div>
                         
@@ -422,14 +422,15 @@
                             
                             <!-- Botones de Acción -->
                             <div class="flex space-x-3">
-                                <a  class="flex-1 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white py-3 px-4 rounded-lg text-center font-medium transition-all duration-200 hover:scale-[1.02] active:scale-95 shadow-md shadow-cyan-400/30 border-b border-cyan-500/50 text-sm flex items-center justify-center">
+                                <a href="{{ route('mi-liga', $liga->id) }}" class="flex-[65] bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white py-3 px-4 rounded-lg text-center font-medium transition-all duration-200 hover:scale-[1.02] active:scale-95 shadow-md shadow-cyan-400/30 border-b border-cyan-500/50 text-sm flex items-center justify-center">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                                     </svg>
                                     VER LIGA
                                 </a>
-                                <form method="POST" action="{{ route('ligas.salir', $liga->id) }}" class="flex-1" id="abandonarLigaForm-{{ $liga->id }}">
+
+                                <form method="POST" action="{{ route('ligas.salir', $liga->id) }}" class="flex-[35]" id="abandonarLigaForm-{{ $liga->id }}">
                                     @csrf
                                     @method('DELETE')
                                     <button 
@@ -443,7 +444,6 @@
                                         ABANDONAR
                                     </button>
                                 </form>
-
                             </div>
                         </div>
                     </div>
@@ -608,14 +608,18 @@
 }
 function confirmarSalida(ligaId, miembrosCount) {
     console.log('Intentando abandonar liga:', ligaId);
-    
+
     Swal.fire({
         title: '¿Abandonar liga?',
-        html: `<div style="text-align:center;">
-                 <p style="color:#f3f4f6; font-family:'Press Start 2P', monospace; font-size:12px;">
-                   ¿Estás seguro de que quieres abandonar esta liga?
-                 </p>
-               </div>`,
+        html: `
+            <div style="text-align:center;">
+                <div style="width:100%;height:0;padding-bottom:100%;position:relative;margin-bottom:10px;">
+                   <img src="{{ asset('imagenes/abejaGift.gif') }}" alt="Abeja GIF" width="100%" height="100%" style="position:absolute;">
+                </div>
+                <p style="color:#f3f4f6; font-family:'Press Start 2P', monospace; font-size:12px;">
+                    ¿Estás seguro de que quieres abandonar esta liga?
+                </p>
+            </div>`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Abandonar',
@@ -642,6 +646,7 @@ function confirmarSalida(ligaId, miembrosCount) {
         }
     });
 }
+
     </script>
     <style>
         .custom-scrollbar-light::-webkit-scrollbar {

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nombre')->unique();;
             $table->text('descripcion')->nullable();
             $table->string('logo_url')->nullable();
-            $table->string('codigo_unico')->nullable();
+            $table->string('contrasena')->nullable();
             $table->enum('tipo', ['publica', 'privada']);
             $table->foreignId('usuario_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();

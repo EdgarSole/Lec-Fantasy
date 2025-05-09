@@ -11,14 +11,14 @@ class Liga extends Model
         'descripcion', 
         'logo_url', 
         'tipo', 
-        'codigo_unico', 
+        'contrasena', 
         'usuario_id'
     ];
     
 
     public function usuarios()
     {
-        return $this->belongsToMany(User::class, 'usuarios_ligas', 'liga_id', 'usuario_id')
+        return $this->belongsToMany(User::class, 'equipos', 'liga_id', 'usuario_id')
                     ->withTimestamps();
     }
     

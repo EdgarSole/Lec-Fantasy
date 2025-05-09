@@ -51,7 +51,7 @@ class LigaController extends Controller
                 ],
                 'descripcion' => 'nullable|string',
                 'tipo' => 'required|in:publica,privada',
-                'codigo_unico' => 'nullable|required_if:tipo,privada|string',
+                'contrasena' => 'nullable|required_if:tipo,privada|string',
                 'logo_url' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
 
@@ -82,7 +82,7 @@ class LigaController extends Controller
                 'nombre' => $request->nombre,
                 'descripcion' => $request->descripcion,
                 'logo_url' => $logo_url,
-                'codigo_unico' => $request->tipo === 'privada' ? $request->codigo_unico : null,
+                'contrasena' => $request->tipo === 'privada' ? $request->contrasena : null,
                 'tipo' => $request->tipo,               
                 'usuario_id' => auth()->id(),
             ]);
@@ -174,7 +174,7 @@ class LigaController extends Controller
         }
 
         // Verificar contraseña si es privada
-        if ($liga->tipo === 'privada' && $liga->codigo_unico !== $request->password) {
+        if ($liga->tipo === 'privada' && $liga->contrasena !== $request->password) {
             return response()->json([
                 'success' => false,
                 'message' => 'Contraseña incorrecta.'
