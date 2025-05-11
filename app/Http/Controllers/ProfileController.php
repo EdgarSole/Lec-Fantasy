@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use App\Models\Equipo;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
@@ -15,12 +16,31 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
+
     public function edit(Request $request): View
     {
+        $user = $request->user();
+
+        // Cantidad de ligas en las que está el usuario
+        $ligasActivas = Equipo::where('usuario_id', $user->id)->count();
+
+        // Obtener todos los usuarios con su suma de puntos
+        $ranking = Equipo::selectRaw('usuario_id, SUM(puntos) as total_puntos')
+            ->groupBy('usuario_id')
+            ->orderByDesc('total_puntos')
+            ->orderBy('usuario_id') // desempate por ID menor
+            ->get();
+
+        // Obtener posición global del usuario
+        $posicionGlobal = $ranking->search(fn($item) => $item->usuario_id == $user->id) + 1;
+
         return view('profile.edit', [
-            'user' => $request->user(),
+            'user' => $user,
+            'ligasActivas' => $ligasActivas,
+            'posicionGlobal' => $posicionGlobal,
         ]);
     }
+
 
     /**
      * Update the user's profile information.
@@ -42,9 +62,12 @@ class ProfileController extends Controller
             return Redirect::back()->withErrors($validator)->withInput();
         }
 
+       
+
         // Verificar si el email fue cambiado
         $emailCambiado = $request->email !== $user->email;
 
+         
         // Actualizar datos
         $user->nombre = $request->nombre;
         $user->email = $request->email;

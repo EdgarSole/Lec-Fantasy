@@ -54,13 +54,13 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div class="bg-white p-5 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
                         <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">Ligas Activas</h3>
-                        <p class="text-2xl font-bold text-gray-800 mt-2">3</p>
+                        <p class="text-2xl font-bold text-gray-800 mt-2">{{ $ligasActivas }}</p>
                         <p class="text-xs text-gray-500 mt-1">Participando actualmente</p>
                     </div>
                     <div class="bg-white p-5 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
                         <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">Posición Global</h3>
-                        <p class="text-2xl font-bold text-gray-800 mt-2">#245</p>
-                        <p class="text-xs text-gray-500 mt-1">Top 15% de jugadores</p>
+                        <p class="text-2xl font-bold text-gray-800 mt-2">#{{ $posicionGlobal }}</p>
+                        <p class="text-xs text-gray-500 mt-1">Top de jugadores</p>
                     </div>
                 </div>
 

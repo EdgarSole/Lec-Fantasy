@@ -5,14 +5,20 @@
             
             <!-- Logo con efecto gaming -->
             <div class="flex-shrink-0">
-                <a href="{{ route('index') }}" class="group block transition-all duration-300 hover:scale-[1.03]">
+                @auth
+                    <a href="{{ route('inicio') }}" class="group block transition-all duration-300 hover:scale-[1.03]">
+                @else
+                    <a href="{{ route('index') }}" class="group block transition-all duration-300 hover:scale-[1.03]">
+                @endauth
                     <img src="{{ asset('Imagenes/LecFantasyLogoV2.jpg') }}" alt="Logo" class="h-14 w-auto transform group-hover:rotate-1 transition-transform duration-300">
                 </a>
             </div>
             
             <!-- Menú central - Desktop -->
             <div class="hidden sm:flex sm:items-center sm:space-x-3 mx-4">
-                <x-nav-link :href="route('inicio')" :active="request()->routeIs('inicio')" 
+                <x-nav-link 
+                    :href="auth()->check() ? route('inicio') : route('index')" 
+                    :active="request()->routeIs('inicio') || request()->routeIs('index')" 
                     class="px-5 py-2 font-medium text-sm transition-all duration-300 
                     bg-white text-gray-800 hover:text-blue-600 
                     border border-gray-300 rounded-xl shadow-sm hover:shadow-lg hover:-translate-y-0.5 transform 
