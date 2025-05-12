@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('imagen_url');
             $table->string('posicion');
             $table->string('equipo_real');
-            $table->decimal('valor', 10, 2);
+            $table->decimal('valor', 12);
             $table->timestamps();
         });
         

@@ -31,7 +31,7 @@
                     <span class="absolute bottom-0 left-0 h-0.5 bg-blue-500 w-0 group-hover:w-full transition-all duration-500"></span>
                 </x-nav-link>
 
-                <x-nav-link :href="route('inicio')" :active="request()->routeIs('inicio')" 
+                <x-nav-link :href="route('jugadores')" :active="request()->routeIs('jugadores')" 
                     class="px-5 py-2 font-medium text-sm transition-all duration-300 
                     bg-white text-gray-800 hover:text-blue-600 
                     border border-gray-300 rounded-xl shadow-sm hover:shadow-lg hover:-translate-y-0.5 transform 

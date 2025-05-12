@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\LigaController;
 use App\Http\Controllers\MiLigaController;
-
+use App\Http\Controllers\JugadorController;
 
 Route::get('/', function () {
     return view('index');
@@ -50,9 +50,11 @@ Route::prefix('liga/{liga}')->group(function() {
 
     
     Route::delete('', [MiLigaController::class, 'destroy'])->name('eliminar-liga');
-   });
+});
 
-
+Route::middleware('auth')->group(function () {
+    Route::get('/jugadores', [JugadorController::class, 'index'])->name('jugadores');
+});
 
 
 
