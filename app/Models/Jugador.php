@@ -50,4 +50,9 @@ class Jugador extends Model
     {
         return $value ?? 'https://via.placeholder.com/150'; // Imagen por defecto
     }
+
+    public function estadisticas()
+    {
+        return $this->hasMany(EstadisticaJugador::class);
+    }
 }

@@ -43,6 +43,8 @@ Route::prefix('liga/{liga}')->group(function() {
     Route::get('mi-liga', [MiLigaController::class, 'index'])->name('mi-liga');
     Route::get('actividad', [MiLigaController::class, 'actividad'])->name('actividad');
     Route::get('mi-equipo', [MiLigaController::class, 'miEquipo'])->name('mi-equipo');
+    Route::post('/equipo/{equipo}/jugador/{jugador}/asignar', [MiLigaController::class, 'asignarJugador'])
+    ->name('equipo.asignar-jugador');
     Route::get('mercado', [MiLigaController::class, 'mercado'])->name('mercado');
     Route::get('clasificacion', [MiLigaController::class, 'clasificacion'])->name('clasificacion');
     Route::get('/editar', [MiLigaController::class, 'editar'])->name('editar-liga');
@@ -52,9 +54,9 @@ Route::prefix('liga/{liga}')->group(function() {
     Route::delete('', [MiLigaController::class, 'destroy'])->name('eliminar-liga');
 });
 
-Route::middleware('auth')->group(function () {
-    Route::get('/jugadores', [JugadorController::class, 'index'])->name('jugadores');
-});
+
+Route::get('/jugadores', [JugadorController::class, 'index'])->name('jugadores');
+
 
 
 

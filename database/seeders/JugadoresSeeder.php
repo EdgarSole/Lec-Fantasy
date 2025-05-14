@@ -165,7 +165,7 @@ class JugadoresSeeder extends Seeder
                 'valor' => 70000000,
             ],
             [
-                'nombre' => 'Jojopyum',
+                'nombre' => 'Jojopyun',
                 'imagen_url' => 'https://res.cloudinary.com/dpsvxf3qg/image/upload/v1747039953/Jojopyun_r7wb7o.webp',
                 'posicion' => 'Mid',
                 'equipo_real' => 'Movistar KOI',

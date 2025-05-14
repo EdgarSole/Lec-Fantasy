@@ -106,12 +106,25 @@
                                 {{ $jugador->equipo_real }}
                             </span>
 
-                            <span class="px-4 py-1 text-xs font-bold rounded-full shadow 
+                            <span class="inline-flex items-center px-4 py-1 text-xs font-bold rounded-full shadow
                                 @if($jugador->posicion == 'Top') bg-red-100 text-red-800 border border-red-300
                                 @elseif($jugador->posicion == 'Jungla') bg-green-100 text-green-800 border border-green-300
                                 @elseif($jugador->posicion == 'Mid') bg-yellow-100 text-yellow-800 border border-yellow-300
                                 @elseif($jugador->posicion == 'ADC') bg-blue-100 text-blue-800 border border-blue-300
-                                @else bg-purple-100 text-purple-800 border border-purple-300 @endif">
+                                @else bg-purple-100 text-purple-800 border border-purple-300
+                                @endif">
+                                
+                                {{-- Imagen según posición --}}
+                                <img src="@switch($jugador->posicion)
+                                    @case('Top') https://res.cloudinary.com/dpsvxf3qg/image/upload/v1747117549/topLogo_rsvrc0.png @break
+                                    @case('Jungla') https://res.cloudinary.com/dpsvxf3qg/image/upload/v1747117550/jngLogo_azrjmn.webp @break
+                                    @case('Mid') https://res.cloudinary.com/dpsvxf3qg/image/upload/v1747117431/midLogo_kn7okb.png @break
+                                    @case('Adc') https://res.cloudinary.com/dpsvxf3qg/image/upload/v1747117431/adcLogo_idgdnc.png @break
+                                    @default https://res.cloudinary.com/dpsvxf3qg/image/upload/v1747117431/supportLogo_gcrpbi.png
+                                @endswitch"
+                                alt="{{ $jugador->posicion }} icon"
+                                class="w-4 h-4 mr-2">
+
                                 {{ $jugador->posicion }}
                             </span>
                         </div>

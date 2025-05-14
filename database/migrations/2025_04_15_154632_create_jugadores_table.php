@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('posicion');
             $table->string('equipo_real');
             $table->decimal('valor', 12);
+            $table->integer('puntos')->default(0); // Puedes mantener el campo 'puntos' si prefieres
             $table->timestamps();
         });
         

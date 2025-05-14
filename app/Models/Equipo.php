@@ -26,4 +26,12 @@ class Equipo extends Model
     {
         return $this->hasMany(Equipo::class, 'liga_id');
     }
+
+    
+    public function jugadores()
+    {
+        return $this->belongsToMany(Jugador::class, 'jugadores_equipos');
+    }
+
+
 }

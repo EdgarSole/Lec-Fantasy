@@ -22,7 +22,23 @@ class LigaController extends Controller
         $ligas = $user->ligas()
             ->withCount(['equipos as miembros_count'])
             ->latest()
-            ->get();
+            ->get()
+            ->map(function ($liga) use ($user) {
+                // Obtener el equipo del usuario en esta liga
+                $equipo = $liga->equipos()
+                    ->where('usuario_id', $user->id)
+                    ->first();
+
+                // Calcular valor del equipo si existe
+                if ($equipo) {
+                    $valorTotal = $equipo->jugadores()->sum('valor');
+                    $liga->valor_equipo = $valorTotal;
+                } else {
+                    $liga->valor_equipo = 0;
+                }
+
+                return $liga;
+            });
 
         // Obtener todas las ligas con conteo de miembros
         $todasLasLigas = Liga::withCount('equipos')
@@ -34,6 +50,7 @@ class LigaController extends Controller
             'todasLasLigas' => $todasLasLigas,
         ]);
     }
+
     
     public function store(Request $request)
     {
@@ -87,56 +104,98 @@ class LigaController extends Controller
                 'usuario_id' => auth()->id(),
             ]);
 
-            // Crear el equipo del usuario en la liga (posición 1)
-            Equipo::create([
+            // Crear el equipo del usuario (líder) en la liga (posición 1)
+            $equipo = Equipo::create([
                 'usuario_id' => Auth::id(), 
                 'liga_id' => $liga->id,
-                'posicion' => 1 // Primer miembro
+                'posicion' => 1 // Primer miembro (líder)
             ]);
 
-            return redirect()->back()->with('success', 'Liga creada exitosamente.');
+            // Asignar 5 jugadores aleatorios al equipo
+            $jugadoresAsignados = [];
+            $posiciones = ['Top', 'Jungla', 'Mid', 'Adc', 'Support'];
+            $jugadoresAsignados = [];
+
+            foreach ($posiciones as $posicion) {
+                // Seleccionar un jugador aleatorio de esa posición que no esté en un equipo de esta liga
+                $jugador = \App\Models\Jugador::where('posicion', $posicion)
+                    ->whereNotIn('id', function ($query) use ($liga) {
+                        $query->select('jugador_id')
+                            ->from('jugadores_equipos')
+                            ->join('equipos', 'equipos.id', '=', 'jugadores_equipos.equipo_id')
+                            ->where('equipos.liga_id', $liga->id);
+                    })
+                    ->inRandomOrder()
+                    ->first();
+
+                if ($jugador) {
+                    \App\Models\JugadoresEquipo::create([
+                        'jugador_id' => $jugador->id,
+                        'equipo_id' => $equipo->id,
+                        'es_titular' => false,
+                    ]);
+
+                    $jugadoresAsignados[$posicion] = $jugador;
+                }
+            }
+
+
+            return redirect()->back()->with('success', 'Liga creada exitosamente y jugadores asignados.');
         } catch (\Exception $e) {
             return back()->withErrors(['error' => 'Error al crear la liga: ' . $e->getMessage()]);
         }
     }
 
+
     public function salir($ligaId)
     {
-        
         $user = Auth::user();
         $liga = Liga::findOrFail($ligaId);
-    
-        // Verifica si el usuario es el líder
-       
-    
+
+        // Verifica si el usuario es el líder (opcional, si necesitas lógica específica)
+        // if (auth()->id() !== $liga->usuario_id) {
+        //     abort(403);
+        // }
+
+        // Eliminar las relaciones entre jugadores y equipos en la tabla jugadores_equipos del equipo del usuario
+        $equipo = Equipo::where('usuario_id', $user->id)
+                        ->where('liga_id', $ligaId)
+                        ->first();
+
+        if ($equipo) {
+            // Eliminar jugadores asignados a este equipo en la liga
+            \App\Models\JugadoresEquipo::where('equipo_id', $equipo->id)->delete();
+        }
+
         // Eliminar el equipo del usuario
         $deleted = Equipo::where('usuario_id', $user->id)
-              ->where('liga_id', $ligaId)
-              ->delete();
-    
+                        ->where('liga_id', $ligaId)
+                        ->delete();
+
         if (!$deleted) {
             return redirect()->back()->with('error', 'No se encontró tu equipo en esta liga');
         }
-    
+
         // Verificar si quedan miembros
         $miembrosRestantes = Equipo::where('liga_id', $ligaId)->count();
-    
+
         if ($miembrosRestantes === 0) {
             $liga->delete();
             return redirect()->route('inicio')->with('success', 'La liga se ha eliminado al quedarse sin miembros.');
         }
-    
-        // Reordenar posiciones
+
+        // Reordenar posiciones de los equipos restantes
         $equipos = Equipo::where('liga_id', $ligaId)
-                         ->orderBy('posicion')
-                         ->get();
-    
+                        ->orderBy('posicion')
+                        ->get();
+
         foreach ($equipos as $index => $equipo) {
             $equipo->update(['posicion' => $index + 1]);
         }
-    
+
         return redirect()->route('inicio')->with('success', 'Has salido de la liga correctamente.');
     }
+
     
 
     public function buscarLigas(Request $request)
@@ -165,8 +224,8 @@ class LigaController extends Controller
 
         // Verificar si ya tiene un equipo en esta liga
         if (Equipo::where('usuario_id', $user->id)
-                 ->where('liga_id', $liga->id)
-                 ->exists()) {
+                ->where('liga_id', $liga->id)
+                ->exists()) {
             return response()->json([
                 'success' => false,
                 'message' => 'Ya tienes un equipo en esta liga.'
@@ -183,16 +242,51 @@ class LigaController extends Controller
 
         // Crear el equipo del usuario en la liga
         $posicion = Equipo::where('liga_id', $liga->id)->count() + 1;
-        
-        Equipo::create([
+
+        $equipo = Equipo::create([
             'usuario_id' => $user->id,
             'liga_id' => $liga->id,
             'posicion' => $posicion
         ]);
 
+       // Asignar 5 jugadores aleatorios al equipo
+            $jugadoresAsignados = [];
+            $posiciones = ['Top', 'Jungla', 'Mid', 'Adc', 'Support'];
+            $jugadoresAsignados = [];
+
+            foreach ($posiciones as $posicion) {
+                // Seleccionar un jugador aleatorio de esa posición que no esté en un equipo de esta liga
+                $jugador = \App\Models\Jugador::where('posicion', $posicion)
+                    ->whereNotIn('id', function ($query) use ($liga) {
+                        $query->select('jugador_id')
+                            ->from('jugadores_equipos')
+                            ->join('equipos', 'equipos.id', '=', 'jugadores_equipos.equipo_id')
+                            ->where('equipos.liga_id', $liga->id);
+                    })
+                    ->inRandomOrder()
+                    ->first();
+
+                if ($jugador) {
+                    \App\Models\JugadoresEquipo::create([
+                        'jugador_id' => $jugador->id,
+                        'equipo_id' => $equipo->id,
+                        'es_titular' => false,
+                    ]);
+
+                    $jugadoresAsignados[$posicion] = $jugador;
+                }
+            }
+
+
         return response()->json([
             'success' => true,
-            'message' => 'Te has unido a la liga correctamente.'
+            'message' => 'Te has unido a la liga correctamente y se te han asignado jugadores.',
+            'jugadores' => $jugadoresAsignados
         ]);
     }
+
+
+    
+
+
 }
