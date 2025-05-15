@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('imagen_url');
             $table->string('posicion');
             $table->string('equipo_real');
-            $table->decimal('valor', 12);
+            $table->bigInteger('valor');
             $table->integer('puntos')->default(0); // Puedes mantener el campo 'puntos' si prefieres
             $table->timestamps();
         });

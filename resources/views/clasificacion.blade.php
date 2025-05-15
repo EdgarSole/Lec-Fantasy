@@ -21,7 +21,9 @@
             <div class="bg-gradient-to-r from-indigo-500 to-purple-600 px-6 py-4">
                 <div class="flex items-center justify-between">
                     <h3 class="text-xl font-bold text-white">General</h3>
-                    <span class="text-white/90 text-sm">Actualizado: {{ now()->format('d/m/Y H:i') }}</span>
+                    <span class="text-white/90 text-sm">
+                        Actualizado: {{ now()->addHours(2)->format('d/m/Y H:i') }}
+                    </span>
                 </div>
             </div>
             

@@ -8,7 +8,8 @@ class JugadoresEquipo extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['jugador_id', 'equipo_id'];
+    protected $fillable = ['equipo_id', 'jugador_id', 'es_titular'];
+
 
     public function jugador()
     {

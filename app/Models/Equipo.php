@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+
 class Equipo extends Model
 {
     protected $fillable = [
@@ -11,6 +12,7 @@ class Equipo extends Model
         'liga_id',
         'presupuesto',
         'posicion',
+        'puntos',
     ];
 
     public function usuario()
@@ -30,8 +32,13 @@ class Equipo extends Model
     
     public function jugadores()
     {
-        return $this->belongsToMany(Jugador::class, 'jugadores_equipos');
+        return $this->belongsToMany(Jugador::class, 'jugadores_equipos')
+                    ->withPivot('es_titular'); 
     }
+
+
+
+    
 
 
 }

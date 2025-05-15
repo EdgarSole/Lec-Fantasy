@@ -48,9 +48,7 @@ Route::prefix('liga/{liga}')->group(function() {
     Route::get('mercado', [MiLigaController::class, 'mercado'])->name('mercado');
     Route::get('clasificacion', [MiLigaController::class, 'clasificacion'])->name('clasificacion');
     Route::get('/editar', [MiLigaController::class, 'editar'])->name('editar-liga');
-    Route::put('', [MiLigaController::class, 'actualizarLiga'])->name('actualizar-liga');
-
-    
+    Route::put('', [MiLigaController::class, 'actualizarLiga'])->name('actualizar-liga');    
     Route::delete('', [MiLigaController::class, 'destroy'])->name('eliminar-liga');
 });
 

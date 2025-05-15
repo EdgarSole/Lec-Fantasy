@@ -95,7 +95,7 @@
                         data-nombre="{{ strtolower($jugador->nombre) }}"
                         data-posicion="{{ $jugador->posicion }}"
                         data-equipo="{{ $jugador->equipo_real }}"
-                        data-puntos="{{ $jugador->valor }}">
+                        data-puntos="{{ $jugador->puntos }}">
                         
                         <!-- Encabezado con equipo y posición -->
                         <div class="flex justify-between items-center p-4 bg-gradient-to-r from-blue-50 to-blue-100 border-b-2 border-blue-200">
@@ -155,7 +155,7 @@
                             <!-- Puntos -->
                             <div class="bg-yellow-50 rounded-xl p-3 text-center border-2 border-yellow-100 shadow-inner">
                                 <p class="text-xs font-semibold text-yellow-600 uppercase">PUNTOS</p>
-                                <p class="text-lg font-bold text-yellow-700 mt-1">{{ $jugador->valor }}</p>
+                                <p class="text-lg font-bold text-yellow-700 mt-1">{{ $jugador->puntos }}</p>
                             </div>
                         </div>
                         

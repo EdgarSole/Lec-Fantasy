@@ -415,7 +415,9 @@
                                     </div>
                                     <div class="bg-[#fffaf5] p-2 rounded border border-gray-100 shadow-sm">
                                         <p class="text-cyan-600 text-xs">VALOR EQUIPO</p>
-                                        <p class="text-gray-800 font-bold">100€</p>
+                                        <p class="text-gray-800 font-bold">
+                                            {{ number_format($liga->valor_equipo, 0, ',', '.') }} €
+                                        </p>
                                     </div>
                                 </div>
                             </div>

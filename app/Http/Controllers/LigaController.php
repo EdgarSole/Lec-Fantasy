@@ -138,6 +138,11 @@ class LigaController extends Controller
                     $jugadoresAsignados[$posicion] = $jugador;
                 }
             }
+            //Añadir los puntos a mi equipo
+            $puntosTotales = $equipo->jugadores()->sum('puntos');
+            $equipo->update([
+                'puntos' => $puntosTotales
+            ]);
 
 
             return redirect()->back()->with('success', 'Liga creada exitosamente y jugadores asignados.');
@@ -277,6 +282,10 @@ class LigaController extends Controller
                 }
             }
 
+        $puntosTotales = $equipo->jugadores()->sum('puntos');
+        $equipo->update([
+            'puntos' => $puntosTotales
+        ]);
 
         return response()->json([
             'success' => true,

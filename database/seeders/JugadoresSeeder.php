@@ -16,6 +16,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Top',
                 'equipo_real' => 'Team Heretics',
                 'valor' => 120000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Sheo',
@@ -23,6 +24,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Jungla',
                 'equipo_real' => 'Team Heretics',
                 'valor' => 100000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Kamiloo',
@@ -30,6 +32,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Mid',
                 'equipo_real' => 'Team Heretics',
                 'valor' => 80000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Flakked',
@@ -37,6 +40,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Adc',
                 'equipo_real' => 'Team Heretics',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Stend',
@@ -44,6 +48,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Support',
                 'equipo_real' => 'Team Heretics',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'BrokenBlade',
@@ -51,6 +56,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Top',
                 'equipo_real' => 'G2',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'SkewMond',
@@ -58,6 +64,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Jungla',
                 'equipo_real' => 'G2',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Caps',
@@ -65,6 +72,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Mid',
                 'equipo_real' => 'G2',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Hans Sama',
@@ -72,6 +80,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Adc',
                 'equipo_real' => 'G2',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Labrov',
@@ -79,6 +88,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Support',
                 'equipo_real' => 'G2',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Oscarinin',
@@ -86,6 +96,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Top',
                 'equipo_real' => 'Fnatic',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Razork',
@@ -93,6 +104,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Jungla',
                 'equipo_real' => 'Fnatic',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Humanoid',
@@ -100,6 +112,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Mid',
                 'equipo_real' => 'Fnatic',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Upset',
@@ -107,6 +120,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Adc',
                 'equipo_real' => 'Fnatic',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Mikyx',
@@ -114,6 +128,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Support',
                 'equipo_real' => 'Fnatic',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Canna',
@@ -121,6 +136,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Top',
                 'equipo_real' => 'Karmine Corp',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Yike',
@@ -128,6 +144,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Jungla',
                 'equipo_real' => 'Karmine Corp',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Vladi',
@@ -135,6 +152,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Mid',
                 'equipo_real' => 'Karmine Corp',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Caliste',
@@ -142,6 +160,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Adc',
                 'equipo_real' => 'Karmine Corp',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Targamas',
@@ -149,6 +168,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Support',
                 'equipo_real' => 'Karmine Corp',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Myrwn',
@@ -156,6 +176,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Top',
                 'equipo_real' => 'Movistar KOI',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Elyoya',
@@ -163,6 +184,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Jungla',
                 'equipo_real' => 'Movistar KOI',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Jojopyun',
@@ -170,6 +192,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Mid',
                 'equipo_real' => 'Movistar KOI',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Supa',
@@ -177,6 +200,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Adc',
                 'equipo_real' => 'Movistar KOI',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Alvaro',
@@ -184,6 +208,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Support',
                 'equipo_real' => 'Movistar KOI',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Naak Nako',
@@ -191,6 +216,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Top',
                 'equipo_real' => 'Team Vitality',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Lyncas',
@@ -198,6 +224,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Jungla',
                 'equipo_real' => 'Team Vitality',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Czajek',
@@ -205,6 +232,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Mid',
                 'equipo_real' => 'Team Vitality',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Carzzy',
@@ -212,6 +240,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Adc',
                 'equipo_real' => 'Team Vitality',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Nisqy',
@@ -219,6 +248,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Support',
                 'equipo_real' => 'Team Vitality',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Irrelevant',
@@ -226,6 +256,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Top',
                 'equipo_real' => 'BDS',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => '113',
@@ -233,6 +264,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Jungla',
                 'equipo_real' => 'BDS',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Nuc',
@@ -240,6 +272,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Top',
                 'equipo_real' => 'BDS',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Ice',
@@ -247,6 +280,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Adc',
                 'equipo_real' => 'BDS',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Parus',
@@ -254,6 +288,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Support',
                 'equipo_real' => 'BDS',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'JNX',
@@ -261,6 +296,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Top',
                 'equipo_real' => 'SK',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Boukada',
@@ -268,6 +304,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Jungla',
                 'equipo_real' => 'SK',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Reeker',
@@ -275,6 +312,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Mid',
                 'equipo_real' => 'SK',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Keduii',
@@ -282,6 +320,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Adc',
                 'equipo_real' => 'SK',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Loopy',
@@ -289,6 +328,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Support',
                 'equipo_real' => 'SK',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Lot',
@@ -296,6 +336,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Top',
                 'equipo_real' => 'GiantX',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Isma',
@@ -303,6 +344,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Jungla',
                 'equipo_real' => 'GiantX',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Jakies',
@@ -310,6 +352,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Mid',
                 'equipo_real' => 'GiantX',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Noah',
@@ -317,6 +360,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Adc',
                 'equipo_real' => 'GiantX',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Jun',
@@ -324,6 +368,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Support',
                 'equipo_real' => 'GiantX',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Adam',
@@ -331,6 +376,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Top',
                 'equipo_real' => 'Rogue',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Malrang',
@@ -338,6 +384,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Jungla',
                 'equipo_real' => 'Rogue',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Larssen',
@@ -345,6 +392,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Mid',
                 'equipo_real' => 'Rogue',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Patrik',
@@ -352,6 +400,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Adc',
                 'equipo_real' => 'Rogue',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
             [
                 'nombre' => 'Execute',
@@ -359,6 +408,7 @@ class JugadoresSeeder extends Seeder
                 'posicion' => 'Support',
                 'equipo_real' => 'Rogue',
                 'valor' => 70000000,
+                'puntos' => rand(0, 100),
             ],
         ]);
     }

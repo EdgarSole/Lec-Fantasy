@@ -1,7 +1,7 @@
 <div class="text-center">
     <div class="relative">
         @if($jugadorActual)
-            <!-- Jugador asignado -->
+            <!-- Jugador titular -->
             <div class="group relative w-20 h-20 mx-auto">
                 <div class="relative w-full h-full rounded-full border-4 border-white shadow-xl overflow-hidden bg-white/90">
                     <img src="{{ $jugadorActual->imagen_url }}" 
@@ -10,9 +10,7 @@
                 <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 text-xs font-bold text-white bg-black/80 px-2 py-0.5 rounded-full whitespace-nowrap">
                     {{ $jugadorActual->nombre }}
                 </div>
-                <div class="absolute top-0 right-0 bg-indigo-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold border-2 border-white">
-                    {{ substr($posicion, 0, 1) }}
-                </div>
+                
             </div>
         @else
             <!-- Posición vacía -->

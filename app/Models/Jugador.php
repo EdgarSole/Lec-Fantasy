@@ -55,4 +55,10 @@ class Jugador extends Model
     {
         return $this->hasMany(EstadisticaJugador::class);
     }
+    
+    public function equipos()
+    {
+        return $this->belongsToMany(Equipo::class)->withPivot('es_titular');
+    }
+
 }

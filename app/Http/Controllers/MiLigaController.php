@@ -5,6 +5,7 @@ use App\Models\Liga;
 use App\Models\Equipo;
 use App\Models\JugadoresEquipo;
 use Illuminate\Http\Request;
+use App\Models\Jugador;
 
 
 class MiLigaController extends Controller
@@ -26,17 +27,24 @@ class MiLigaController extends Controller
         $user = auth()->user();
 
         // Buscar el equipo del usuario en esta liga específica
-        $equipo = Equipo::where('usuario_id', $user->id)
-                        ->where('liga_id', $liga->id)
-                        ->firstOrFail();
+        $equipo = Equipo::with(['jugadores' => function ($query) {
+        $query->withPivot('es_titular');
+        }])->where('usuario_id', $user->id)
+        ->where('liga_id', $liga->id)
+        ->firstOrFail();
 
-        $jugadores = JugadoresEquipo::with('jugador')
-            ->where('equipo_id', $equipo->id)
-            ->get()
-            ->pluck('jugador');
+        // Jugadores del equipo con información de la relación pivot
+        $jugadoresEquipo = $equipo->jugadores;
 
-        $valorTotal = $jugadores->sum('valor');
+        // Titulares filtrados directamente desde los jugadores del equipo
+        $titulares = $jugadoresEquipo->filter(function ($jugador) {
+            return $jugador->pivot->es_titular;
+        });
 
+        // Calcular valor total del equipo
+        $valorTotal = $jugadoresEquipo->sum('valor');
+
+        // Logos de los equipos reales
         $logosEquipos = [
             'Team Heretics' => 'https://res.cloudinary.com/dpsvxf3qg/image/upload/v1747036744/TeamHeretics.webp',
             'Fnatic' => 'https://res.cloudinary.com/dpsvxf3qg/image/upload/v1747036743/Fnatic.webp',
@@ -50,10 +58,16 @@ class MiLigaController extends Controller
             'BDS' => 'https://res.cloudinary.com/dpsvxf3qg/image/upload/v1747042008/BDS_bbprhw.webp',
         ];
 
-        return view('mi-equipo', compact('liga', 'jugadores', 'valorTotal', 'equipo', 'logosEquipos'));
+        return view('mi-equipo', compact(
+            'liga',
+            'equipo',
+            'jugadoresEquipo',
+            'titulares',
+            'valorTotal',
+            'logosEquipos'
+        ));
+
     }
-
-
 
     public function mercado(Liga $liga)
     {
@@ -172,46 +186,48 @@ class MiLigaController extends Controller
 
     public function asignarJugador(Request $request, Liga $liga, Equipo $equipo, Jugador $jugador)
     {
-        // Verifica que el usuario sea dueño del equipo
+        // Seguridad
         if ($equipo->usuario_id !== auth()->id()) {
-            return response()->json(['error' => 'No autorizado'], 403);
+            return response()->json(['error' => 'ACCESO DENEGADO: No eres el dueño de este equipo'], 403);
         }
-
-        // Verifica que el equipo pertenezca a esta liga
         if ($equipo->liga_id !== $liga->id) {
-            return response()->json(['error' => 'El equipo no pertenece a esta liga'], 403);
+            return response()->json(['error' => 'CONFLICTO: El equipo no pertenece a esta liga'], 403);
         }
 
-        // Recibe la posición del jugador (que está en la tabla jugadores)
-        $posicion = $jugador->posicion;
-        if (!$posicion) {
-            return response()->json(['error' => 'El jugador no tiene posición definida'], 422);
+        // Obtener relación jugador-equipo
+        $relacion = JugadoresEquipo::where('equipo_id', $equipo->id)
+            ->where('jugador_id', $jugador->id)
+            ->firstOrFail();
+
+        // Si el jugador ya es titular, al desactivarlo simplemente lo pasa a banquillo
+        if ($relacion->es_titular) {
+            $relacion->es_titular = false;
+            $relacion->save();
+            
+            return response()->json([
+                'success' => true,
+                'message' => "⚡ ¡JUGADOR MOVIDO AL BANQUILLO! {$jugador->nombre} ya no es titular",
+                'es_titular' => false
+            ]);
         }
 
-        // Primero, quitar cualquier jugador existente en esta posición
-        \App\Models\JugadoresEquipo::where('equipo_id', $equipo->id)
-            ->whereHas('jugador', function($query) use ($posicion) {
-                $query->where('posicion', $posicion);
+        // Si queremos poner este jugador como titular, primero desactivamos el titular actual en esa posición
+        JugadoresEquipo::where('equipo_id', $equipo->id)
+            ->whereHas('jugador', function($query) use ($jugador) {
+                $query->where('posicion', $jugador->posicion);
             })
+            ->where('es_titular', true)
             ->update(['es_titular' => false]);
 
-        // Buscar o crear la relación entre el jugador y el equipo
-        $jugadorEquipo = \App\Models\JugadoresEquipo::updateOrCreate(
-            [
-                'equipo_id' => $equipo->id,
-                'jugador_id' => $jugador->id
-            ],
-            [
-                'es_titular' => true
-            ]
-        );
+        // Ahora activamos al jugador que queremos titular
+        $relacion->es_titular = true;
+        $relacion->save();
 
         return response()->json([
             'success' => true,
-            'message' => 'Jugador asignado correctamente como titular en posición ' . $posicion
+            'message' => "🎮 ¡NUEVO TITULAR CONFIRMADO! {$jugador->nombre} es ahora tu {$jugador->posicion}",
+            'es_titular' => true
         ]);
     }
-
-
 
 }
