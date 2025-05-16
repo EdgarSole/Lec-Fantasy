@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('jugadores_equipos', function (Blueprint $table) {
-            $table->boolean('es_titular')->default(false);
+        Schema::table('mercado', function (Blueprint $table) {
+            $table->boolean('procesado')->nullable()->after('fecha_fin');
         });
     }
 
     public function down()
     {
-        Schema::table('jugadores_equipos', function (Blueprint $table) {
-            $table->dropColumn('es_titular');
+        Schema::table('mercado', function (Blueprint $table) {
+            $table->dropColumn('procesado');
         });
     }
 

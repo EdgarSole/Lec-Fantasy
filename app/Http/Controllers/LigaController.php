@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Liga;
 use App\Models\Equipo;
 use Illuminate\Http\Request;
+use App\Models\HistorialTransacciones;
 use Illuminate\Support\Facades\Auth;
 use Cloudinary\Cloudinary;
 
@@ -144,6 +145,13 @@ class LigaController extends Controller
                 'puntos' => $puntosTotales
             ]);
 
+            // Crear registro en el historial
+            HistorialTransacciones::create([
+                'liga_id' => $liga->id,
+                'equipo_id' => $equipo->id,
+                'tipo' => 'info',
+                'descripcion' => 'Liga creada por ' . Auth::user()->nombre,
+            ]);
 
             return redirect()->back()->with('success', 'Liga creada exitosamente y jugadores asignados.');
         } catch (\Exception $e) {
@@ -172,6 +180,13 @@ class LigaController extends Controller
             \App\Models\JugadoresEquipo::where('equipo_id', $equipo->id)->delete();
         }
 
+         // Registrar en el historial antes de borrar
+        HistorialTransacciones::create([
+            'liga_id' => $liga->id,
+            'equipo_id' => $equipo->id,
+            'tipo' => 'info',
+            'descripcion' => $user->nombre . ' ha abandonado la liga',
+        ]);
         // Eliminar el equipo del usuario
         $deleted = Equipo::where('usuario_id', $user->id)
                         ->where('liga_id', $ligaId)
@@ -285,6 +300,14 @@ class LigaController extends Controller
         $puntosTotales = $equipo->jugadores()->sum('puntos');
         $equipo->update([
             'puntos' => $puntosTotales
+        ]);
+
+        // Registrar en el historial
+        HistorialTransacciones::create([
+            'liga_id' => $liga->id,
+            'equipo_id' => $equipo->id,
+            'tipo' => 'info',
+            'descripcion' => $user->nombre . ' se ha unido a la liga',
         ]);
 
         return response()->json([

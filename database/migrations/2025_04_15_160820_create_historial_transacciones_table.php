@@ -13,12 +13,16 @@ return new class extends Migration
     {
         Schema::create('historial_transacciones', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('equipo_fantasy_id')->constrained('equipos')->onDelete('cascade');
-            $table->foreignId('jugador_id')->constrained('jugadores')->onDelete('cascade');
-            $table->enum('tipo', ['compra', 'venta']);
-            $table->decimal('precio', 10, 2);
+            $table->foreignId('liga_id')->nullable()->constrained('ligas')->onDelete('cascade');
+            $table->unsignedBigInteger('equipo_id')->nullable(); // SIN ->constrained() 
+            $table->foreignId('jugador_id')->nullable()->constrained('jugadores')->nullOnDelete();
+            $table->enum('tipo', ['compra', 'venta', 'info'])->nullable();
+            $table->decimal('precio', 12)->nullable();
+            $table->text('descripcion')->nullable();
             $table->timestamps();
         });
+
+
         
     }
 

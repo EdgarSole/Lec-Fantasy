@@ -46,6 +46,7 @@ Route::prefix('liga/{liga}')->group(function() {
     Route::post('/equipo/{equipo}/jugador/{jugador}/asignar', [MiLigaController::class, 'asignarJugador'])
     ->name('equipo.asignar-jugador');
     Route::get('mercado', [MiLigaController::class, 'mercado'])->name('mercado');
+    Route::post('mercado/pujar', [MiLigaController::class, 'pujar'])->name('mercado.pujar');
     Route::get('clasificacion', [MiLigaController::class, 'clasificacion'])->name('clasificacion');
     Route::get('/editar', [MiLigaController::class, 'editar'])->name('editar-liga');
     Route::put('', [MiLigaController::class, 'actualizarLiga'])->name('actualizar-liga');    
