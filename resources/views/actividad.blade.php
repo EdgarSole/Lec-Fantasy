@@ -95,7 +95,7 @@
                             @if(in_array($actividad->tipo, ['compra', 'venta']))
                             <div class="mt-1 flex items-center space-x-3">
                                 <span class="px-2 py-1 bg-gray-100 text-sm rounded-md">
-                                    💰 {{ number_format($actividad->precio, 0, ',', '.') }} €
+                                     {{ number_format($actividad->precio, 0, ',', '.') }} €
                                 </span>
                                 @if($actividad->jugador)
                                 <span class="px-2 py-1 bg-gray-100 text-sm rounded-md">

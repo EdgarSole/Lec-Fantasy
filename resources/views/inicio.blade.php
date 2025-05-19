@@ -66,7 +66,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 px-4">
             <div class="flex flex-wrap gap-5 mb-12 justify-center">
                 <button type="button" onclick="document.getElementById('create-league-modal').classList.remove('hidden')" class="px-8 py-3.5 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl font-bold text-white hover:from-blue-600 hover:to-cyan-600 transition-all duration-200 transform hover:scale-[1.03] shadow-lg shadow-cyan-300/40 border-b-2 border-cyan-600/70 active:scale-95">
-                    🏆 CREAR LIGA
+                    🏆 CREAR LIGA 
                 </button>
                 <button 
                     x-data

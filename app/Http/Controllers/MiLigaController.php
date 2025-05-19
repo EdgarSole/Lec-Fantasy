@@ -13,6 +13,9 @@ use Carbon\Carbon;
 use App\Jobs\ProcesarPujasFinalizadas;
 use App\Events\NuevoMensajeLiga;
 use App\Models\MensajeLiga;
+use Cloudinary\Cloudinary;  
+use Illuminate\Support\Facades\DB;
+
 
 
 class MiLigaController extends Controller
@@ -197,8 +200,7 @@ class MiLigaController extends Controller
         ];
     }
 
-    // En MercadoController.php
-public function pujar(Request $request, Liga $liga)
+   public function pujar(Request $request, Liga $liga)
 {
     $request->validate([
         'mercado_id' => 'required|exists:mercado,id',
@@ -207,41 +209,50 @@ public function pujar(Request $request, Liga $liga)
     
     $user = auth()->user();
     $mercado = Mercado::with('jugador')->findOrFail($request->mercado_id);
-    
-    // Verificaciones anteriores...
-    
+
+    // 🔧 Obtener el equipo del usuario en esta liga
+    $equipo = $user->equipos()->where('liga_id', $liga->id)->first();
+
+    if (!$equipo) {
+        return response()->json([
+            'success' => false,
+            'message' => 'No se encontró el equipo del usuario en esta liga.'
+        ], 404);
+    }
+
     // Crear o actualizar puja
     $puja = Puja::updateOrCreate(
         ['usuario_id' => $user->id, 'mercado_id' => $request->mercado_id],
         ['cantidad' => $request->cantidad]
     );
-    
+
     // Registrar en historial de transacciones
     DB::table('historial_transacciones')->insert([
-        'liga_id' => $liga->id,
-        'equipo_id' => $equipo->id,
-        'jugador_id' => $mercado->jugador_id,
-        'tipo' => 'compra',
-        'precio' => $request->cantidad,
+        'liga_id'     => $liga->id,
+        'equipo_id'   => $equipo->id,
+        'jugador_id'  => $mercado->jugador_id,
+        'tipo'        => 'compra',
+        'precio'      => $request->cantidad,
         'descripcion' => 'Puja por ' . $mercado->jugador->nombre,
         'created_at' => now(),
         'updated_at' => now()
     ]);
-    
+
     // Calcular nuevo presupuesto disponible
     $pujasTotales = Puja::where('usuario_id', $user->id)
-                    ->whereHas('mercado', function($q) use ($liga) {
-                        $q->where('liga_id', $liga->id)
-                          ->where('fecha_fin', '>', now());
-                    })
-                    ->sum('cantidad');
-    
+        ->whereHas('mercado', function($q) use ($liga) {
+            $q->where('liga_id', $liga->id)
+              ->where('fecha_fin', '>', now());
+        })
+        ->sum('cantidad');
+
     return response()->json([
         'success' => true,
         'presupuesto' => $equipo->presupuesto,
         'pujas_totales' => $pujasTotales
     ]);
 }
+
     private function procesarMercado(Mercado $mercado)
 {
     
@@ -482,24 +493,55 @@ public function eliminarPuja(Request $request, Liga $liga)
     }
 
     public function enviarChat(Request $request, Liga $liga)
-    {
-        $request->validate([
-            'mensaje' => 'required|string|max:1000'
-        ]);
+{
+    $request->validate([
+        'mensaje' => 'nullable|string|max:1000',
+        'imagen' => 'nullable|image|max:2048', // max 2MB por ejemplo
+    ]);
 
-        $mensaje = MensajeLiga::create([
-            'liga_id' => $liga->id,
-            'usuario_id' => auth()->id(),
-            'mensaje' => $request->mensaje,
-        ]);
+    $tipo = 'texto';
+    $imagen_url = null;
+    $foto= 'imagen';
+   if ($request->hasFile('imagen')) {
+    $foto = $request->file('imagen'); // Aquí obtienes el archivo correctamente
 
-        event(new NuevoMensajeLiga($mensaje));
+    $cloudinary = new \Cloudinary\Cloudinary([
+        'cloud' => [
+            'cloud_name' => config('services.cloudinary.cloud_name'),
+            'api_key'    => config('services.cloudinary.api_key'),
+            'api_secret' => config('services.cloudinary.api_secret'),
+        ]
+    ]);
+    $public_id = 'liga_' . $liga->id .
+             '_user_' . auth()->id() .
+             '_ts_' . now()->format('Ymd_His'); 
 
-        if ($request->expectsJson()) {
-            return response()->json(['success' => true]);
-        }
+    $uploadResult = $cloudinary->uploadApi()->upload($foto->getRealPath(), [
+        'folder' => 'Fotos_Chat',
+        'public_id' => $public_id,
+        'overwrite' => false, // no sobreescribe por si acaso
+    ]);
 
-        return back();
+    $imagen_url = $uploadResult['secure_url'];  // Aquí cambia $uploadedFileUrl a $uploadResult
+    $tipo = 'imagen';
+}
+
+
+    $mensaje = MensajeLiga::create([
+        'liga_id' => $liga->id,
+        'usuario_id' => auth()->id(),
+        'mensaje' => $request->mensaje ?? '', // puede ser vacío si solo hay imagen
+        'imagen_url' => $imagen_url,
+        'tipo' => $tipo,
+    ]);
+
+    event(new NuevoMensajeLiga($mensaje));
+
+    if ($request->expectsJson()) {
+        return response()->json(['success' => true]);
     }
+
+    return back();
+}
 
 }

@@ -16,6 +16,8 @@ return new class extends Migration
             $table->foreignId('liga_id')->constrained('ligas')->onDelete('cascade');
             $table->foreignId('usuario_id')->constrained('users')->onDelete('cascade');
             $table->text('mensaje');
+            $table->string('imagen_url')->nullable();
+            $table->string('tipo')->default('texto'); 
             $table->timestamps();
         });
         

@@ -1,74 +1,160 @@
 @extends('layouts.ligaMenu')
 
 @section('content')
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Exo+2:wght@400;500;600&display=swap" rel="stylesheet">
 <div class="container mx-auto px-4 py-6">
-    <div class="flex flex-col h-screen bg-gray-900 rounded-lg shadow-xl overflow-hidden">
-        <!-- Encabezado del chat -->
-        <div class="bg-indigo-800 text-white p-4 flex items-center">
-            <div class="flex-shrink-0">
-                <img src="{{ $liga->logo_url ?? asset('images/default-liga.png') }}" 
+    <div class="flex flex-col h-[80vh] bg-gray-900 rounded-xl shadow-2xl overflow-hidden border-2 border-indigo-500/20">
+        <div class="bg-gradient-to-r from-indigo-900 to-purple-900 text-white p-4 flex items-center border-b-2 border-indigo-500/30">
+            <div class="flex-shrink-0 relative">
+                <img src="{{ $liga->logo_url }}" 
                      alt="Logo de {{ $liga->nombre }}" 
-                     class="h-10 w-10 rounded-full object-cover">
+                     class="h-12 w-12 rounded-full object-cover border-2 border-indigo-400 shadow-glow">
+                <div class="absolute -bottom-1 -right-1 h-4 w-4 bg-green-500 rounded-full border-2 border-white shadow-pulse"></div>
             </div>
-            <div class="ml-3">
-                <h2 class="text-xl font-bold">Chat de {{ $liga->nombre }}</h2>
-                <p class="text-indigo-200 text-sm">{{ $liga->descripcion }}</p>
+            <div class="ml-4">
+                <h2 class="text-xl font-bold text-white font-orbitron tracking-wide">CHAT: {{ strtoupper($liga->nombre) }}</h2>
+                <p class="text-indigo-300 text-xs font-exo">{{ $liga->descripcion }}</p>
+            </div>
+            <div class="ml-auto flex space-x-2">
+                <button class="p-1 text-indigo-300 hover:text-white transition-all">
+                    <i class="fas fa-cog fa-sm"></i>
+                </button>
+                <button class="p-1 text-indigo-300 hover:text-white transition-all">
+                    <i class="fas fa-users fa-sm"></i>
+                </button>
             </div>
         </div>
 
-        <!-- Área de mensajes -->
-        <div id="mensajes-container" class="flex-1 p-4 overflow-y-auto bg-gray-800 space-y-3">
+        <!-- Área de mensajes - Estilo Terminal Gaming -->
+        <div id="mensajes-container" class="flex-1 p-4 overflow-y-auto bg-gray-900/80 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre-v2.png')] space-y-4 scrollbar-gaming">
             @foreach($mensajes as $mensaje)
-                <div class="flex {{ $mensaje->usuario_id == auth()->id() ? 'justify-end' : 'justify-start' }}">
-                    <div class="flex max-w-xs lg:max-w-md {{ $mensaje->usuario_id == auth()->id() ? 'flex-row-reverse' : '' }}">
-                        <!-- Avatar del usuario -->
-                        <div class="flex-shrink-0 h-10 w-10">
+                <div class="flex {{ $mensaje->usuario_id == auth()->id() ? 'justify-end' : 'justify-start' }} animate-fade-in">
+                    <div class="flex max-w-xs lg:max-w-md xl:max-w-lg {{ $mensaje->usuario_id == auth()->id() ? 'flex-row-reverse' : '' }}">
+                        <!-- Avatar del usuario con efecto gaming -->
+                        <div class="flex-shrink-0 h-12 w-12 relative group">
+                            <div class="absolute inset-0 bg-indigo-500/20 rounded-full blur-sm group-hover:blur-md transition-all duration-300"></div>
                             <img src="{{ $mensaje->usuario->foto_url ?? asset('images/default-user.png') }}" 
                                  alt="{{ $mensaje->usuario->nombre }}" 
-                                 class="h-10 w-10 rounded-full border-2 border-indigo-500">
+                                 class="relative h-12 w-12 rounded-full border-2 border-indigo-400 object-cover z-10 transform group-hover:scale-110 transition-transform">
+                            
                         </div>
                         
-                        <!-- Contenedor del mensaje -->
-                        <div class="ml-3 mr-3 {{ $mensaje->usuario_id == auth()->id() ? 'bg-indigo-600' : 'bg-gray-700' }} 
-                                    rounded-lg p-3 shadow-lg">
-                            <!-- Nombre y hora -->
+                        <!-- Contenedor del mensaje con efecto neón -->
+                        <div class="ml-3 mr-3 {{ $mensaje->usuario_id == auth()->id() ? 'bg-gradient-to-br from-indigo-600/90 to-indigo-800/90' : 'bg-gray-800/90' }} 
+                                    rounded-xl p-3 shadow-lg border {{ $mensaje->usuario_id == auth()->id() ? 'border-indigo-500/50' : 'border-gray-700' }} hover:shadow-glow transition-all">
+                            <!-- Nombre y hora con estilo gaming -->
                             <div class="flex items-center {{ $mensaje->usuario_id == auth()->id() ? 'justify-end' : 'justify-start' }} 
                                         space-x-2 mb-1">
-                                <span class="font-bold text-sm {{ $mensaje->usuario_id == auth()->id() ? 'text-indigo-100' : 'text-gray-300' }}">
+                                <span class="font-bold text-sm {{ $mensaje->usuario_id == auth()->id() ? 'text-indigo-300' : 'text-gray-300' }} font-exo tracking-wide">
                                     {{ $mensaje->usuario->nombre }}
                                 </span>
-                                <span class="text-xs {{ $mensaje->usuario_id == auth()->id() ? 'text-indigo-200' : 'text-gray-400' }}">
-                                    {{ $mensaje->created_at->format('H:i') }}
+                                <span class="text-xs {{ $mensaje->usuario_id == auth()->id() ? 'text-indigo-400' : 'text-gray-500' }} font-mono">
+                                    [{{ $mensaje->created_at->format('H:i') }}]
                                 </span>
                             </div>
                             
-                            <!-- Texto del mensaje -->
-                            <p class="text-sm {{ $mensaje->usuario_id == auth()->id() ? 'text-white' : 'text-gray-200' }}">
-                                {{ $mensaje->mensaje }}
-                            </p>
+                            <!-- Contenido del mensaje -->
+                            @if($mensaje->tipo === 'imagen' && $mensaje->imagen_url)
+                                <div class="mb-2 rounded-lg overflow-hidden border-2 border-gray-700/50 hover:border-indigo-400/50 transition-all">
+                                    <img src="{{ $mensaje->imagen_url }}" alt="Imagen del chat" 
+                                         class="max-w-full max-h-64 object-cover hover:scale-[1.02] transition-transform cursor-zoom-in" />
+                                </div>
+                            @endif
+                            @if($mensaje->mensaje)
+                                <p class="text-sm {{ $mensaje->usuario_id == auth()->id() ? 'text-indigo-100' : 'text-gray-200' }} font-exo leading-relaxed">
+                                    {{ $mensaje->mensaje }}
+                                </p>
+                            @endif
+                            
+                            <!-- Efecto de puntitos para mensajes largos -->
+                            @if(strlen($mensaje->mensaje) > 40)
+                                <div class="mt-1 flex space-x-1 justify-end">
+                                    <div class="h-1 w-1 rounded-full bg-indigo-400/50"></div>
+                                    <div class="h-1 w-1 rounded-full bg-indigo-400/50"></div>
+                                    <div class="h-1 w-1 rounded-full bg-indigo-400/50"></div>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
             @endforeach
         </div>
 
-        <!-- Formulario para enviar mensajes -->
-        <div class="bg-gray-700 p-4 border-t border-gray-600">
-            <form id="form-mensaje" action="{{ route('chat.enviar', $liga) }}" method="POST" class="flex">
+        <!-- Formulario para enviar mensajes - Estilo Gaming -->
+        <div class="bg-gray-800/90 p-4 border-t-2 border-indigo-500/20 backdrop-blur-sm">
+            <form id="form-mensaje" action="{{ route('chat.enviar', $liga) }}" method="POST" class="flex items-center space-x-2" enctype="multipart/form-data">
                 @csrf
+                
+                <!-- Botón para adjuntar archivos con estilo gaming -->
+                <label class="cursor-pointer bg-gray-700 hover:bg-indigo-600 rounded-lg p-2 border-2 border-gray-600 hover:border-indigo-400 transition-all group">
+                    <input type="file" name="imagen" accept="image/*" class="hidden">
+                    <i class="fa-solid fa-image text-gray-400 group-hover:text-white transition-colors"></i>
+                   
+                </label>
+                
+                <!-- Input de texto con efecto terminal -->
                 <input type="text" name="mensaje" id="input-mensaje" 
-                       class="flex-1 bg-gray-600 text-white rounded-l-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" 
-                       placeholder="Escribe un mensaje..." required>
-                <button type="submit" 
-                        class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-r-lg transition duration-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                    </svg>
+                    class="flex-1 bg-gray-700/80 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 border-2 border-gray-600 hover:border-indigo-400/50 font-exo placeholder-gray-400 transition-all"
+                    placeholder=" Escribe tu mensaje...">
+                
+                <!-- Botón de enviar con efecto gaming -->
+                <button type="submit" class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white px-5 py-3 rounded-lg border-2 border-indigo-400/30 hover:border-indigo-300/50 shadow-lg hover:shadow-indigo-500/20 transition-all transform hover:scale-105 active:scale-95">
+                    <i class="fas fa-paper-plane"></i>
+                    <span class="ml-1 font-exo text-sm">ENVIAR</span>
                 </button>
             </form>
+            
+            <!-- Vista previa de imagen seleccionada -->
+            <div id="image-preview" class="mt-3 hidden">
+                <div class="relative inline-block">
+                    <img id="preview-image" class="max-h-32 rounded-lg border-2 border-indigo-400/50">
+                    <button onclick="clearImage()" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center border-2 border-white shadow-lg hover:bg-red-600 transition-all">
+                        <i class="fas fa-times text-xs"></i>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+<!-- Efectos de estilo gaming -->
+<style>
+    .font-orbitron {
+        font-family: 'Orbitron', sans-serif;
+    }
+    .font-exo {
+        font-family: 'Exo 2', sans-serif;
+    }
+    .shadow-glow {
+        box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
+    }
+    .shadow-pulse {
+        animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); }
+        70% { box-shadow: 0 0 0 10px rgba(74, 222, 128, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+    }
+    .scrollbar-gaming::-webkit-scrollbar {
+        width: 8px;
+    }
+    .scrollbar-gaming::-webkit-scrollbar-track {
+        background: rgba(31, 41, 55, 0.5);
+        border-radius: 10px;
+    }
+    .scrollbar-gaming::-webkit-scrollbar-thumb {
+        background: linear-gradient(to bottom, #6366F1, #8B5CF6);
+        border-radius: 10px;
+    }
+    .animate-fade-in {
+        animation: fadeIn 0.3s ease-in-out;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(5px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
 
 <!-- JavaScript para el chat en tiempo real -->
 <script>
@@ -143,5 +229,34 @@
             });
         });
     });
+    document.querySelector('input[name="imagen"]').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                document.getElementById('preview-image').src = event.target.result;
+                document.getElementById('image-preview').classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    function clearImage() {
+        document.querySelector('input[name="imagen"]').value = '';
+        document.getElementById('image-preview').classList.add('hidden');
+    }
+
+    // Efecto de tecleo en el input
+    const inputMensaje = document.getElementById('input-mensaje');
+    inputMensaje.addEventListener('focus', function() {
+        this.parentElement.classList.add('ring-2', 'ring-indigo-500/50');
+    });
+    inputMensaje.addEventListener('blur', function() {
+        this.parentElement.classList.remove('ring-2', 'ring-indigo-500/50');
+    });
+
+    // Auto-scroll al final de los mensajes
+    const mensajesContainer = document.getElementById('mensajes-container');
+    mensajesContainer.scrollTop = mensajesContainer.scrollHeight;
 </script>
 @endsection

@@ -12,8 +12,10 @@ class MensajeLiga extends Model
         'liga_id', 
         'usuario_id', 
         'mensaje', 
-
+        'imagen_url',
+        'tipo',
     ];
+
     public function usuario()
     {
         return $this->belongsTo(User::class, 'usuario_id');
