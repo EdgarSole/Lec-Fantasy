@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('jugador_id')->constrained('jugadores')->onDelete('cascade');
             $table->dateTime('fecha_inicio');
             $table->dateTime('fecha_fin');
+            $table->boolean('procesado')->default(false);
             $table->timestamps();
         });
         

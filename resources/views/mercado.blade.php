@@ -82,7 +82,7 @@
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <span class="text-gray-500">€</span>
                         </div>
-                        <input type="number" id="cantidadModal" name="cantidad" 
+                        <input type="number" id="cantidadModal" name="cantidad"     
                                class="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 pr-12 py-2 border-gray-300 rounded-md" 
                                required min="0" step="1">
                     </div>
@@ -100,12 +100,14 @@
                     <p id="errorMinimoModal" class="mt-2 text-sm text-red-600 hidden">La puja mínima es <span id="valorMinimo"></span> €</p>
                 </div>
                 
+                <!-- En mercado.blade.php, dentro del modal -->
                 <div class="flex justify-end space-x-3 pt-4 border-t">
+                    
                     <button type="button" onclick="cerrarModal()" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition-colors">
                         Cancelar
                     </button>
                     <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
-                        Pujar
+                        {{ isset($pujasUsuario[$item->id]) ? 'Modificar' : 'Pujar' }}
                     </button>
                 </div>
             </form>
@@ -214,7 +216,7 @@
     });
     
     // Contador de actualización
-    function actualizarContador() {
+   function actualizarContador() {
     const contador = document.getElementById('contador');
     let segundos = Math.floor({{ $tiempoRestante['total_segundos'] }});
     
@@ -227,8 +229,29 @@
             `${String(horas).padStart(2, '0')}h ${String(minutos).padStart(2, '0')}m ${String(segs).padStart(2, '0')}s`;
         
         if (segundos <= 0) {
-            contador.textContent = "Actualizando...";
-            setTimeout(() => location.reload(), 2000);
+            contador.textContent = "Procesando pujas...";
+            
+            // Hacer petición al servidor para procesar pujas
+            fetch('{{ route("mercado.procesar", $liga) }}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success) {
+                    setTimeout(() => location.reload(), 2000);
+                } else {
+                    contador.textContent = "Error procesando pujas";
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                contador.textContent = "Error procesando pujas";
+            });
+            
             return;
         }
         
@@ -238,7 +261,7 @@
     
     actualizar();
 }
-
+    
     
     // Iniciar contador cuando la página cargue
     document.addEventListener('DOMContentLoaded', actualizarContador);

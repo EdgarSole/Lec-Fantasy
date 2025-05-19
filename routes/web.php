@@ -47,10 +47,13 @@ Route::prefix('liga/{liga}')->group(function() {
     ->name('equipo.asignar-jugador');
     Route::get('mercado', [MiLigaController::class, 'mercado'])->name('mercado');
     Route::post('mercado/pujar', [MiLigaController::class, 'pujar'])->name('mercado.pujar');
+     Route::post('mercado/procesar', [MiLigaController::class, 'procesarPujas'])->name('mercado.procesar');
+    Route::delete('mercado/eliminar-puja', [MiLigaController::class, 'eliminarPuja'])->name('mercado.eliminar-puja');
     Route::get('clasificacion', [MiLigaController::class, 'clasificacion'])->name('clasificacion');
     Route::get('/editar', [MiLigaController::class, 'editar'])->name('editar-liga');
     Route::put('', [MiLigaController::class, 'actualizarLiga'])->name('actualizar-liga');    
     Route::delete('', [MiLigaController::class, 'destroy'])->name('eliminar-liga');
+    Route::get('chat', [MiLigaController::class, 'chat'])->name('chat');
 });
 
 

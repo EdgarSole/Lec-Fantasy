@@ -13,41 +13,24 @@ class PujaGanadoraNotification extends Mailable
 {
     use Queueable, SerializesModels;
 
-    /**
-     * Create a new message instance.
-     */
-    public function __construct()
+    public $jugadorNombre;
+    public $cantidad;
+    public $equipoReal;
+    public $usuarioNombre;
+    public $urlEquipo;
+
+    public function __construct($usuarioNombre, $jugadorNombre, $cantidad, $equipoReal, $ligaId)
     {
-        //
+        $this->jugadorNombre = $jugadorNombre;
+        $this->cantidad = $cantidad;
+        $this->equipoReal = $equipoReal;
+        $this->usuarioNombre = $usuarioNombre;
+        $this->urlEquipo = route('mi-equipo', ['liga' => $ligaId]);
     }
 
-    /**
-     * Get the message envelope.
-     */
-    public function envelope(): Envelope
+    public function build()
     {
-        return new Envelope(
-            subject: 'Puja Ganadora Notification',
-        );
-    }
-
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
-    {
-        return new Content(
-            view: 'view.name',
-        );
-    }
-
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
-    {
-        return [];
+        return $this->markdown('emails.puja_ganadora')
+            ->subject('¡Has ganado una puja en el mercado!');
     }
 }

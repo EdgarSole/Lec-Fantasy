@@ -102,9 +102,6 @@ class MiLigaController extends Controller
                     ->where('liga_id', $liga->id)
                     ->firstOrFail();
         
-        // Procesar mercados finalizados primero
-        dispatch(new ProcesarPujasFinalizadas());
-        
         // Obtener mercado actual con pujas
         $mercadoActual = Mercado::with(['jugador', 'pujas.usuario'])
                         ->where('liga_id', $liga->id)
@@ -137,10 +134,23 @@ class MiLigaController extends Controller
 
     private function crearNuevoMercado(Liga $liga)
     {
-        // Eliminar mercados antiguos
-        Mercado::where('liga_id', $liga->id)->delete();
+        // 1. Procesar mercados finalizados no procesados
+        $mercadosFinalizados = Mercado::with(['pujas.usuario', 'jugador'])
+            ->where('liga_id', $liga->id)
+            ->where('fecha_fin', '<=', now())
+            ->where('procesado', false)
+            ->get();
         
-        // Obtener jugadores que no están en equipos
+        foreach ($mercadosFinalizados as $mercado) {
+            $this->procesarMercado($mercado);
+        }
+        
+        // 2. Eliminar mercados procesados antiguos
+        Mercado::where('liga_id', $liga->id)
+            ->where('procesado', true)
+            ->delete();
+        
+        // 3. Crear nuevo mercado
         $jugadoresEnEquipos = JugadoresEquipo::whereIn('equipo_id', 
             Equipo::where('liga_id', $liga->id)->pluck('id')
         )->pluck('jugador_id');
@@ -150,20 +160,27 @@ class MiLigaController extends Controller
             ->limit(5)
             ->get();
         
-        $fechaInicio = now();
-        $fechaFin = $fechaInicio->copy()->addMinutes(5); // 5 minutos para pruebas
+        if ($jugadoresDisponibles->isEmpty()) {
+            throw new \Exception("No hay jugadores disponibles para crear mercado");
+        }
         
+        $fechaInicio = now();
+        $fechaFin = $fechaInicio->copy()->addMinutes(5);
+        
+        $nuevosMercados = [];
         foreach ($jugadoresDisponibles as $jugador) {
-            Mercado::create([
+            $nuevosMercados[] = Mercado::create([
                 'liga_id' => $liga->id,
                 'jugador_id' => $jugador->id,
                 'fecha_inicio' => $fechaInicio,
                 'fecha_fin' => $fechaFin,
+                'procesado' => false
             ]);
         }
         
+        // Retornar con relaciones cargadas
         return Mercado::with(['jugador', 'pujas.usuario'])
-                ->where('liga_id', $liga->id)
+                ->whereIn('id', collect($nuevosMercados)->pluck('id'))
                 ->get();
     }
 
@@ -179,61 +196,122 @@ class MiLigaController extends Controller
         ];
     }
 
-    public function pujar(Request $request, Liga $liga)
+    // En MercadoController.php
+public function pujar(Request $request, Liga $liga)
+{
+    $request->validate([
+        'mercado_id' => 'required|exists:mercado,id',
+        'cantidad' => 'required|numeric|min:0',
+    ]);
+    
+    $user = auth()->user();
+    $mercado = Mercado::with('jugador')->findOrFail($request->mercado_id);
+    
+    // Verificaciones anteriores...
+    
+    // Crear o actualizar puja
+    $puja = Puja::updateOrCreate(
+        ['usuario_id' => $user->id, 'mercado_id' => $request->mercado_id],
+        ['cantidad' => $request->cantidad]
+    );
+    
+    // Registrar en historial de transacciones
+    DB::table('historial_transacciones')->insert([
+        'liga_id' => $liga->id,
+        'equipo_id' => $equipo->id,
+        'jugador_id' => $mercado->jugador_id,
+        'tipo' => 'compra',
+        'precio' => $request->cantidad,
+        'descripcion' => 'Puja por ' . $mercado->jugador->nombre,
+        'created_at' => now(),
+        'updated_at' => now()
+    ]);
+    
+    // Calcular nuevo presupuesto disponible
+    $pujasTotales = Puja::where('usuario_id', $user->id)
+                    ->whereHas('mercado', function($q) use ($liga) {
+                        $q->where('liga_id', $liga->id)
+                          ->where('fecha_fin', '>', now());
+                    })
+                    ->sum('cantidad');
+    
+    return response()->json([
+        'success' => true,
+        'presupuesto' => $equipo->presupuesto,
+        'pujas_totales' => $pujasTotales
+    ]);
+}
+    private function procesarMercado(Mercado $mercado)
+{
+    
+    // Cargar relaciones necesarias si no están ya cargadas
+    $mercado->load(['pujas.usuario', 'jugador']);
+    
+    \DB::transaction(function () use ($mercado) {
+        if ($mercado->pujas->isEmpty()) {
+            $mercado->update(['procesado' => true]);
+            return;
+        }
+
+        // Obtener puja ganadora (mayor cantidad)
+        $pujaGanadora = $mercado->pujas->sortByDesc('cantidad')->first();
+        
+        // Verificar que existe usuario y equipo
+        if (!$pujaGanadora->usuario) {
+            $mercado->update(['procesado' => true]);
+            return;
+        }
+
+        $equipoGanador = $pujaGanadora->usuario->equipos()
+            ->where('liga_id', $mercado->liga_id)
+            ->first();
+
+        if ($equipoGanador) {
+            // Verificar que el jugador no esté ya en el equipo
+            $existeJugador = JugadoresEquipo::where('jugador_id', $mercado->jugador_id)
+                ->where('equipo_id', $equipoGanador->id)
+                ->exists();
+                
+            if (!$existeJugador) {
+                JugadoresEquipo::create([
+                    'jugador_id' => $mercado->jugador_id,
+                    'equipo_id' => $equipoGanador->id,
+                    'es_titular' => false
+                ]);
+            }
+
+            // Restar el presupuesto
+            $equipoGanador->decrement('presupuesto', $pujaGanadora->cantidad);
+        }
+
+        // Marcar como procesado
+        $mercado->update(['procesado' => true]);
+    });
+}
+public function eliminarPuja(Request $request, Liga $liga)
+{
+    $request->validate([
+        'mercado_id' => 'required|exists:mercado,id',
+    ]);
+    
+    $user = auth()->user();
+    
+    $puja = Puja::where('usuario_id', $user->id)
+                ->where('mercado_id', $request->mercado_id)
+                ->firstOrFail();
+    
+    $puja->delete();
+    
+    return response()->json(['success' => true]);
+}
+
+    public function procesarPujas(Liga $liga)
     {
-        $request->validate([
-            'mercado_id' => 'required|exists:mercado,id',
-            'cantidad' => 'required|numeric|min:0',
-        ]);
+        // Despachar el job para procesar las pujas
+        ProcesarPujasFinalizadas::dispatch();
         
-        $user = auth()->user();
-        $mercado = Mercado::with('jugador')->findOrFail($request->mercado_id);
-        
-        // Verificar que el mercado esté activo
-        if ($mercado->fecha_fin <= now()) {
-            return back()->with('error', 'El mercado para este jugador ha finalizado');
-        }
-        
-        // Verificar puja mínima (valor del jugador)
-        if ($request->cantidad < $mercado->jugador->valor) {
-            return back()->with('error', 'La puja mínima es ' . number_format($mercado->jugador->valor, 0, ',', '.') . ' €');
-        }
-        
-        $equipo = Equipo::where('usuario_id', $user->id)
-                    ->where('liga_id', $liga->id)
-                    ->firstOrFail();
-        
-        // Calcular presupuesto disponible
-        $pujasActuales = Puja::where('usuario_id', $user->id)
-                        ->whereHas('mercado', function($q) use ($liga) {
-                            $q->where('liga_id', $liga->id)
-                              ->where('fecha_fin', '>', now());
-                        })
-                        ->sum('cantidad');
-        
-        $presupuestoDisponible = $equipo->presupuesto - $pujasActuales;
-        
-        // Si está modificando una puja, sumamos esa cantidad al presupuesto
-        $pujaExistente = Puja::where('usuario_id', $user->id)
-                        ->where('mercado_id', $request->mercado_id)
-                        ->first();
-        
-        if ($pujaExistente) {
-            $presupuestoDisponible += $pujaExistente->cantidad;
-        }
-        
-        if ($request->cantidad > $presupuestoDisponible) {
-            return back()->with('error', 'No tienes suficiente presupuesto para esta puja');
-        }
-        
-        // Crear o actualizar puja
-        Puja::updateOrCreate(
-            ['usuario_id' => $user->id, 'mercado_id' => $request->mercado_id],
-            ['cantidad' => $request->cantidad]
-        );
-        
-        return back()->with('success', 'Puja realizada con éxito');
-    }
+        return response()->json(['success' => true]);
+    }   
 
     public function clasificacion(Liga $liga)
     {
@@ -389,6 +467,11 @@ class MiLigaController extends Controller
             'message' => "🎮 ¡NUEVO TITULAR CONFIRMADO! {$jugador->nombre} es ahora tu {$jugador->posicion}",
             'es_titular' => true
         ]);
+    }
+
+    public function chat(Liga $liga){
+        $liga->load('usuarios'); 
+        return view('chat', compact('liga'));
     }
 
 }

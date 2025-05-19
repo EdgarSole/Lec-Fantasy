@@ -18,13 +18,15 @@ class Kernel extends ConsoleKernel
 
         require base_path('routes/console.php');
     }
-
+        protected $commands = [
+        // ... otros comandos ...
+        \App\Console\Commands\ProcesarPujasCommand::class,
+    ];
     /**
      * Define el programador de tareas.
      */
-  protected function schedule(Schedule $schedule)
-{
-    $schedule->command('mercados:procesar')->everyMinute();
-}
-
+    protected function schedule(Schedule $schedule)
+    {
+        $schedule->job(new ProcesarPujasFinalizadas)->everyMinute();
+    }
 }

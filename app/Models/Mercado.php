@@ -11,7 +11,7 @@ class Mercado extends Model
 
     protected $table = 'mercado';
 
-    protected $fillable = ['liga_id', 'jugador_id', 'fecha_inicio', 'fecha_fin'];
+    protected $fillable = ['liga_id', 'jugador_id', 'fecha_inicio', 'fecha_fin', 'procesado'];
 
     public function jugador()
     {
