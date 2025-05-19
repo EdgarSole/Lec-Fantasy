@@ -492,72 +492,81 @@ public function eliminarPuja(Request $request, Liga $liga)
             ->orderBy('created_at')
             ->get();
 
-        $participantes = User::withCount('mensajes')->get();
+        $participantes = User::whereHas('mensajes', function ($query) use ($liga) {
+            $query->where('liga_id', $liga->id);
+        })
+        ->withCount([
+            'mensajes' => function ($query) use ($liga) {
+                $query->where('liga_id', $liga->id);
+            }
+        ])
+        ->get();
 
 
         return view('chat', compact('liga', 'mensajes', 'participantes'));
     }
 
+
     public function enviarChat(Request $request, Liga $liga)
-{
-    $request->validate([
-        'mensaje' => 'nullable|string|max:1000',
-        'imagen' => 'nullable|image|max:2048', // max 2MB por ejemplo
-    ]);
+    {
+        $request->validate([
+            'mensaje' => 'nullable|string|max:1000',
+            'imagen' => 'nullable|image|max:2048', // max 2MB por ejemplo
+        ]);
 
-    $tipo = 'texto';
-    $imagen_url = null;
-    $foto= 'imagen';
-   if ($request->hasFile('imagen')) {
-    $foto = $request->file('imagen'); // Aquí obtienes el archivo correctamente
+        $tipo = 'texto';
+        $imagen_url = null;
+        $foto= 'imagen';
+    if ($request->hasFile('imagen')) {
+        $foto = $request->file('imagen'); // Aquí obtienes el archivo correctamente
 
-    $cloudinary = new \Cloudinary\Cloudinary([
-        'cloud' => [
-            'cloud_name' => config('services.cloudinary.cloud_name'),
-            'api_key'    => config('services.cloudinary.api_key'),
-            'api_secret' => config('services.cloudinary.api_secret'),
-        ]
-    ]);
-    $public_id = 'liga_' . $liga->id .
-             '_user_' . auth()->id() .
-             '_ts_' . now()->format('Ymd_His'); 
+        $cloudinary = new \Cloudinary\Cloudinary([
+            'cloud' => [
+                'cloud_name' => config('services.cloudinary.cloud_name'),
+                'api_key'    => config('services.cloudinary.api_key'),
+                'api_secret' => config('services.cloudinary.api_secret'),
+            ]
+        ]);
+        $public_id = 'liga_' . $liga->id .
+                '_user_' . auth()->id() .
+                '_ts_' . now()->format('Ymd_His'); 
 
-    $uploadResult = $cloudinary->uploadApi()->upload($foto->getRealPath(), [
-        'folder' => 'Fotos_Chat',
-        'public_id' => $public_id,
-        'overwrite' => false, // no sobreescribe por si acaso
-    ]);
+        $uploadResult = $cloudinary->uploadApi()->upload($foto->getRealPath(), [
+            'folder' => 'Fotos_Chat',
+            'public_id' => $public_id,
+            'overwrite' => false, // no sobreescribe por si acaso
+        ]);
 
-    $imagen_url = $uploadResult['secure_url'];  // Aquí cambia $uploadedFileUrl a $uploadResult
-    $tipo = 'imagen';
-}
-
-
-    $mensaje = MensajeLiga::create([
-        'liga_id' => $liga->id,
-        'usuario_id' => auth()->id(),
-        'mensaje' => $request->mensaje ?? '', // puede ser vacío si solo hay imagen
-        'imagen_url' => $imagen_url,
-        'tipo' => $tipo,
-    ]);
-
-    event(new NuevoMensajeLiga($mensaje));
-
-    if ($request->expectsJson()) {
-        return response()->json(['success' => true]);
+        $imagen_url = $uploadResult['secure_url'];  // Aquí cambia $uploadedFileUrl a $uploadResult
+        $tipo = 'imagen';
     }
 
-    return back();
-}
 
-public function borrarChat(Liga $liga)
-{
-    // Elimina los mensajes asociados a la liga
-    MensajeLiga::where('liga_id', $liga->id)->delete();
+        $mensaje = MensajeLiga::create([
+            'liga_id' => $liga->id,
+            'usuario_id' => auth()->id(),
+            'mensaje' => $request->mensaje ?? '', // puede ser vacío si solo hay imagen
+            'imagen_url' => $imagen_url,
+            'tipo' => $tipo,
+        ]);
 
-    // Devuelve respuesta JSON
-    return response()->json(['success' => true]);
-}
+        event(new NuevoMensajeLiga($mensaje));
+
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true]);
+        }
+
+        return back();
+    }
+
+    public function borrarChat(Liga $liga)
+    {
+        // Elimina los mensajes asociados a la liga
+        MensajeLiga::where('liga_id', $liga->id)->delete();
+
+        // Devuelve respuesta JSON
+        return response()->json(['success' => true]);
+    }
 
 
 }

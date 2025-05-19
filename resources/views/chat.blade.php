@@ -15,11 +15,28 @@
     <div id="config-menu" class="fixed right-4 top-20 bg-gray-800 border-2 border-indigo-500 rounded-lg shadow-2xl z-40 hidden w-64">
         <div class="p-4">
             <h3 class="text-indigo-400 font-bold mb-3 border-b border-indigo-500 pb-2">Opciones del Chat</h3>
-            <button onclick="confirmClearChat()" class="w-full text-left py-2 px-3 hover:bg-gray-700 rounded-lg text-red-400 hover:text-red-300 transition-all">
+            <button onclick="abrirModalConfirmacion()" class="w-full text-left py-2 px-3 hover:bg-gray-700 rounded-lg text-red-400 hover:text-red-300 transition-all">
                 <i class="fas fa-trash mr-2"></i> Borrar todo el chat
             </button>
         </div>
     </div>
+    <!-- Modal -->
+    <div id="modalConfirmacion" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-50">
+        <div class="bg-gray-900 rounded-xl shadow-2xl p-6 max-w-sm w-full text-center border-2 border-red-600">
+            <h2 class="text-xl font-mono font-extrabold mb-4 text-red-500 tracking-wide">Confirmar acción</h2>
+            <p class="mb-6 text-gray-300 text-sm">¿Estás seguro de que quieres borrar todo el historial del chat? Esta acción no se puede deshacer.</p>
+            <div class="flex justify-center gap-5">
+            <button onclick="confirmarBorrado()" class="bg-red-700 hover:bg-red-800 text-white font-semibold px-5 py-2 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-0.5">
+                Sí, borrar
+            </button>
+            <button onclick="cerrarModalConfirmacion()" class="bg-gray-700 hover:bg-gray-600 text-red-400 font-semibold px-5 py-2 rounded-lg border border-red-500 hover:text-red-300 transition duration-300 ease-in-out">
+                Cancelar
+            </button>
+            </div>
+            <p id="errorMensaje" class="text-red-500 mt-4 hidden font-semibold"></p>
+        </div>
+    </div>
+
 
     <!-- Menú desplegable para usuarios -->
     <div id="users-menu" class="fixed right-4 top-20 bg-gray-800 border-2 border-indigo-500 rounded-lg shadow-2xl z-40 hidden w-64 max-h-[60vh] overflow-y-auto">
@@ -215,28 +232,42 @@
     });
 
     // Función para confirmar borrado del chat
-    function confirmClearChat() {
-        if (confirm('¿Estás seguro de que quieres borrar todo el historial del chat? Esta acción no se puede deshacer.')) {
-            fetch('{{ route("chat.borrar", $liga) }}', {
-                method: 'DELETE',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    location.reload();
-                } else {
-                    alert('Error al borrar el chat');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        }
-    }
+     function abrirModalConfirmacion() {
+    document.getElementById('modalConfirmacion').classList.remove('hidden');
+    document.getElementById('errorMensaje').classList.add('hidden');
+  }
+
+  function cerrarModalConfirmacion() {
+    document.getElementById('modalConfirmacion').classList.add('hidden');
+  }
+
+  function confirmarBorrado() {
+    fetch('{{ route("chat.borrar", $liga) }}', {
+      method: 'DELETE',
+      headers: {
+        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        location.reload();
+      } else {
+        mostrarError('Error al borrar el chat');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      mostrarError('Error al borrar el chat');
+    });
+  }
+
+  function mostrarError(msg) {
+    const errorElem = document.getElementById('errorMensaje');
+    errorElem.textContent = msg;
+    errorElem.classList.remove('hidden');
+  }
 
     // Vista previa de imagen
     document.querySelector('input[name="imagen"]').addEventListener('change', function(e) {
