@@ -11,7 +11,8 @@ use App\Models\Jugador;
 use App\Models\HistorialTransacciones;
 use Carbon\Carbon;
 use App\Jobs\ProcesarPujasFinalizadas;
-
+use App\Events\NuevoMensajeLiga;
+use App\Models\MensajeLiga;
 
 
 class MiLigaController extends Controller
@@ -469,9 +470,36 @@ public function eliminarPuja(Request $request, Liga $liga)
         ]);
     }
 
-    public function chat(Liga $liga){
-        $liga->load('usuarios'); 
-        return view('chat', compact('liga'));
+    
+    public function mostrarChat(Liga $liga)
+    {
+        $mensajes = MensajeLiga::where('liga_id', $liga->id)
+            ->with('usuario')
+            ->orderBy('created_at')
+            ->get();
+
+        return view('chat', compact('liga', 'mensajes'));
+    }
+
+    public function enviarChat(Request $request, Liga $liga)
+    {
+        $request->validate([
+            'mensaje' => 'required|string|max:1000'
+        ]);
+
+        $mensaje = MensajeLiga::create([
+            'liga_id' => $liga->id,
+            'usuario_id' => auth()->id(),
+            'mensaje' => $request->mensaje,
+        ]);
+
+        event(new NuevoMensajeLiga($mensaje));
+
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true]);
+        }
+
+        return back();
     }
 
 }
