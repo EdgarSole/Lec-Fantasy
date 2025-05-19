@@ -43,10 +43,11 @@
                 
                 <!-- Pujas actuales -->
                 @if($item->pujas->count() > 0)
-                <div class="mt-3 pt-3 border-t border-gray-100">
-                    <p class="text-sm font-medium text-gray-700 mb-1">Pujas actuales: {{ $item->pujas->count() }}</p>
-                    
-                </div>
+                    <div class="mt-3 pt-3 border-t border-gray-100">
+                        <p class="text-sm font-medium text-gray-700 mb-1 pujas-count-{{ $item->id }}">
+                            Pujas actuales: {{ $item->pujas->count() }}
+                        </p>
+                    </div>
                 @endif
             </div>
             
@@ -195,7 +196,7 @@
     
     // Validación del formulario de puja
     document.getElementById('pujaForm').addEventListener('submit', function(e) {
-        e.preventDefault(); // Evita que se envíe el formulario tradicionalmente
+        e.preventDefault();
         
         const cantidad = parseFloat(document.getElementById('cantidadModal').value) || 0;
         const min = parseFloat(document.getElementById('cantidadRangeModal').min);
@@ -203,40 +204,89 @@
         
         if (cantidad < min || cantidad > max) {
             validarPuja();
-            return; // Sale si la validación falla
+            return false;
         }
         
-        const mercadoId = document.getElementById('mercadoIdModal').value;
+        const formData = new FormData(this);
         
-        fetch('{{ route("mercado.pujar", $liga) }}', {
+        fetch(this.action, {
             method: 'POST',
             headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                'Content-Type': 'application/json'
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
             },
-            body: JSON.stringify({
-                mercado_id: mercadoId,
-                cantidad: cantidad
-            })
+            body: formData
         })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert('Puja realizada correctamente');
+                // Actualizar la interfaz con los nuevos datos
+                actualizarInterfaz(data);
                 cerrarModal();
-                // Opcional: actualizar el presupuesto o lo que necesites en la UI
-                // Por ejemplo:
-                // document.getElementById('presupuestoActual').textContent = data.presupuesto + ' €';
+                
+                // Mostrar notificación de éxito
+                mostrarNotificacion('success', 'Puja realizada con éxito');
             } else {
-                alert('Error al realizar la puja: ' + (data.message || 'Error desconocido'));
+                mostrarNotificacion('error', data.message || 'Error al realizar la puja');
             }
         })
         .catch(error => {
-            console.error('Error en la puja:', error);
-            alert('Error al realizar la puja, intenta más tarde.');
+            console.error('Error:', error);
+            mostrarNotificacion('error', 'Error de conexión');
         });
     });
 
+    // Función para actualizar la interfaz con los nuevos datos
+    function actualizarInterfaz(data) {
+        // Actualizar presupuesto
+        const presupuestoElement = document.querySelector('.text-green-600.font-bold.text-lg');
+        const pujasTotalesElement = document.querySelector('.text-red-500.font-medium');
+        
+        if (presupuestoElement) {
+            presupuestoElement.textContent = data.presupuesto.toLocaleString('es-ES') + ' €';
+        }
+        
+        // Actualizar total de pujas
+        if (data.pujas_totales > 0) {
+            if (!pujasTotalesElement) {
+                const newElement = document.createElement('span');
+                newElement.className = 'text-red-500 font-medium ml-2';
+                newElement.textContent = '(' + data.pujas_totales.toLocaleString('es-ES') + ' € en pujas)';
+                presupuestoElement.parentNode.appendChild(newElement);
+            } else {
+                pujasTotalesElement.textContent = '(' + data.pujas_totales.toLocaleString('es-ES') + ' € en pujas)';
+            }
+        } else if (pujasTotalesElement) {
+            pujasTotalesElement.remove();
+        }
+        
+        // Actualizar contador de pujas específico
+        const contadorPujas = document.querySelector(`.pujas-count-${data.mercado_id}`);
+        if (contadorPujas) {
+            contadorPujas.textContent = `Pujas actuales: ${data.pujas_count}`;
+        }
+        
+        // Actualizar botón de puja
+        const botonPuja = document.querySelector(`button[onclick*="${data.mercado_id}"]`);
+        if (botonPuja) {
+            botonPuja.textContent = data.pujas_count > 0 ? 'Modificar Puja' : 'Pujar';
+            botonPuja.setAttribute('onclick', `abrirModalPuja('${data.mercado_id}', '${data.jugador_nombre}', '${data.jugador_valor}', '${data.presupuesto}', '${data.cantidad}')`);
+        }
+    }
+
+    // Función para mostrar notificaciones
+    function mostrarNotificacion(tipo, mensaje) {
+        const notificacion = document.createElement('div');
+        notificacion.className = `fixed top-4 right-4 px-4 py-2 rounded-md shadow-lg text-white ${
+            tipo === 'success' ? 'bg-green-500' : 'bg-red-500'
+        }`;
+        notificacion.textContent = mensaje;
+        document.body.appendChild(notificacion);
+        
+        setTimeout(() => {
+            notificacion.classList.add('opacity-0', 'transition-opacity', 'duration-500');
+            setTimeout(() => notificacion.remove(), 500);
+        }, 3000);
+    }
     
     // Cerrar modal al hacer clic fuera
     document.getElementById('pujaModal').addEventListener('click', function(e) {
@@ -246,8 +296,11 @@
     });
     
     // Contador de actualización
-   function actualizarContador() {
+    // Reemplaza tu función actualizarContador con esta versión mejorada
+function iniciarContador() {
     const contador = document.getElementById('contador');
+    if (!contador) return;
+
     let segundos = Math.floor({{ $tiempoRestante['total_segundos'] }});
     
     function actualizar() {
@@ -261,25 +314,29 @@
         if (segundos <= 0) {
             contador.textContent = "Procesando pujas...";
             
-            // Hacer petición al servidor para procesar pujas
             fetch('{{ route("mercado.procesar", $liga) }}', {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
                 }
             })
             .then(response => response.json())
             .then(data => {
                 if(data.success) {
-                    setTimeout(() => location.reload(), 2000);
+                    mostrarNotificacion('success', data.message);
+                    if (data.shouldReload) {
+                        setTimeout(() => location.reload(), 1500);
+                    }
                 } else {
-                    contador.textContent = "Error procesando pujas";
+                    throw new Error(data.message);
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
                 contador.textContent = "Error procesando pujas";
+                mostrarNotificacion('error', error.message);
             });
             
             return;
@@ -292,8 +349,17 @@
     actualizar();
 }
     
-    
     // Iniciar contador cuando la página cargue
-    document.addEventListener('DOMContentLoaded', actualizarContador);
+    document.addEventListener('DOMContentLoaded', function() {
+        iniciarContador();
+        
+        // También puedes inicializar otros elementos aquí si es necesario
+        if (document.getElementById('pujaForm')) {
+            document.getElementById('pujaForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                // El handler de submit ya está definido arriba
+            });
+        }
+    });
 </script>
 @endsection

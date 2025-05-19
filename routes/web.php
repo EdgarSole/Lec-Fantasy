@@ -39,24 +39,41 @@ Route::middleware('auth')->group(function () {
 
 });
 
-Route::prefix('liga/{liga}')->group(function() {
+Route::prefix('liga/{liga}')->middleware(['auth'])->group(function() {
+    // Rutas de visualización
     Route::get('mi-liga', [MiLigaController::class, 'index'])->name('mi-liga');
     Route::get('actividad', [MiLigaController::class, 'actividad'])->name('actividad');
     Route::get('mi-equipo', [MiLigaController::class, 'miEquipo'])->name('mi-equipo');
-    Route::post('/equipo/{equipo}/jugador/{jugador}/asignar', [MiLigaController::class, 'asignarJugador'])
-    ->name('equipo.asignar-jugador');
     Route::get('mercado', [MiLigaController::class, 'mercado'])->name('mercado');
-    Route::post('mercado/pujar', [MiLigaController::class, 'pujar'])->name('mercado.pujar');
-     Route::post('mercado/procesar', [MiLigaController::class, 'procesarPujas'])->name('mercado.procesar');
-    Route::delete('mercado/eliminar-puja', [MiLigaController::class, 'eliminarPuja'])->name('mercado.eliminar-puja');
     Route::get('clasificacion', [MiLigaController::class, 'clasificacion'])->name('clasificacion');
-    Route::get('/editar', [MiLigaController::class, 'editar'])->name('editar-liga');
+    Route::get('editar', [MiLigaController::class, 'editar'])->name('editar-liga');
+    Route::get('chat', [MiLigaController::class, 'mostrarChat'])->name('chat');
+    Route::get('chat/participantes', [MiLigaController::class, 'participantes'])->name('chat.participantes');
+
+    // Rutas de equipo (jugadores)
+    Route::prefix('equipo/{equipo}')->group(function() {
+        Route::post('jugador/{jugador}/asignar', [MiLigaController::class, 'asignarJugador'])
+            ->name('equipo.asignar-jugador');
+        Route::post('jugador/{jugador}/vender', [MiLigaController::class, 'venderJugador'])
+            ->name('equipo.vender-jugador');
+    });
+
+    // Rutas de mercado
+    Route::prefix('mercado')->group(function() {
+        Route::post('pujar', [MiLigaController::class, 'pujar'])->name('mercado.pujar');
+        Route::post('procesar', [MiLigaController::class, 'procesarPujas'])->name('mercado.procesar');
+        Route::delete('eliminar-puja', [MiLigaController::class, 'eliminarPuja'])->name('mercado.eliminar-puja');
+    });
+
+    // Rutas de chat
+    Route::prefix('chat')->group(function() {
+        Route::post('enviar', [MiLigaController::class, 'enviarChat'])->name('chat.enviar');
+        Route::delete('borrar', [MiLigaController::class, 'borrarChat'])->name('chat.borrar');
+    });
+
+    // Rutas de gestión de liga
     Route::put('', [MiLigaController::class, 'actualizarLiga'])->name('actualizar-liga');    
     Route::delete('', [MiLigaController::class, 'destroy'])->name('eliminar-liga');
-    Route::get('chat', [MiLigaController::class, 'mostrarChat'])->name('chat');
-    Route::post('chat/enviar', [MiLigaController::class, 'enviarChat'])->name('chat.enviar');
-    Route::delete('chat/borrar', [MiLigaController::class, 'borrarChat'])->name('chat.borrar');
-    Route::get('chat/participantes', [MiLigaController::class, 'participantes'])->name('chat.participantes');
 });
 
 

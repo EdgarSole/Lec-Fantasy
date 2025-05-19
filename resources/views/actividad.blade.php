@@ -78,12 +78,12 @@
                                     @switch($actividad->tipo)
                                         @case('compra')
                                             <span class="text-green-600">💰 Compra:</span>
-                                            {{ $actividad->equipo->usuario->nombre }} adquirió a <span class="font-bold">{{ $actividad->jugador->nombre ?? 'un jugador' }}</span>
+                                            {{ $actividad->equipo?->usuario?->nombre ?? 'Usuario desconocido' }} adquirió a <span class="font-bold">{{ $actividad->jugador->nombre ?? 'un jugador' }}</span>
                                         @break
                                         
                                         @case('venta')
                                             <span class="text-red-600">💸 Venta:</span>
-                                            {{ $actividad->equipo->usuario->nombre }} liberó a <span class="font-bold">{{ $actividad->jugador->nombre ?? 'un jugador' }}</span>
+                                            {{ $actividad->equipo?->usuario?->nombre ?? 'Usuario desconocido' }} liberó a <span class="font-bold">{{ $actividad->jugador->nombre ?? 'un jugador' }}</span>
                                         @break
                                         
                                         @default

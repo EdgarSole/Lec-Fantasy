@@ -41,7 +41,7 @@ class MiLigaController extends Controller
         }
     }
 
-    $actividades = $query->orderBy('created_at', 'desc')->paginate(15);
+    $actividades = $query->orderBy('created_at', 'desc')->paginate(7);
 
     $actividades->getCollection()->transform(function ($actividad) {
         $actividad->fecha_formateada = $actividad->created_at->addHours(2)->format('d/m/Y H:i');
@@ -98,6 +98,41 @@ class MiLigaController extends Controller
             'logosEquipos'
         ));
 
+    }
+    
+    public function venderJugador(Request $request, Liga $liga, Equipo $equipo)
+    {
+        $request->validate([
+            'jugador_id' => 'required|exists:jugadores,id',
+            'valor_venta' => 'required|numeric'
+        ]);
+        
+        // Verificar que el jugador pertenece al equipo
+        if (!$equipo->jugadores()->where('jugador_id', $request->jugador_id)->exists()) {
+            return response()->json(['success' => false, 'error' => 'El jugador no pertenece a este equipo']);
+        }
+        
+        DB::transaction(function () use ($equipo, $request) {
+            // Eliminar al jugador del equipo
+            $equipo->jugadores()->detach($request->jugador_id);
+            
+            // Aumentar el presupuesto del equipo
+            $equipo->increment('presupuesto', $request->valor_venta);
+            
+            // Registrar en historial de transacciones
+            DB::table('historial_transacciones')->insert([
+                'liga_id' => $equipo->liga_id,
+                'equipo_id' => $equipo->id,
+                'jugador_id' => $request->jugador_id,
+                'tipo' => 'venta',
+                'precio' => $request->valor_venta,
+                'descripcion' => 'Venta de jugador',
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+        });
+        
+        return response()->json(['success' => true]);
     }
 
     public function mercado(Liga $liga)
@@ -244,10 +279,11 @@ class MiLigaController extends Controller
     ]);
 }
 
-    private function procesarMercado(Mercado $mercado)
+   private function procesarMercado(Mercado $mercado)
 {
-    // Cargar relaciones necesarias si no están ya cargadas
-    $mercado->load(['pujas.usuario', 'jugador']);
+    $mercado->load(['pujas.usuario.equipos' => function($query) use ($mercado) {
+        $query->where('liga_id', $mercado->liga_id);
+    }, 'jugador']);
 
     \DB::transaction(function () use ($mercado) {
         if ($mercado->pujas->isEmpty()) {
@@ -255,53 +291,37 @@ class MiLigaController extends Controller
             return;
         }
 
-        // Obtener puja ganadora (mayor cantidad)
         $pujaGanadora = $mercado->pujas->sortByDesc('cantidad')->first();
-
-        // Verificar que existe usuario y equipo
-        if (!$pujaGanadora->usuario) {
-            $mercado->update(['procesado' => true]);
-            return;
-        }
-
-        $equipoGanador = $pujaGanadora->usuario->equipos()
-            ->where('liga_id', $mercado->liga_id)
-            ->first();
+        $equipoGanador = $pujaGanadora->usuario->equipos->first();
 
         if ($equipoGanador) {
-            // Verificar que el jugador no esté ya en el equipo
-            $existeJugador = JugadoresEquipo::where('jugador_id', $mercado->jugador_id)
-                ->where('equipo_id', $equipoGanador->id)
-                ->exists();
+            // Verificar y agregar jugador al equipo
+            JugadoresEquipo::firstOrCreate([
+                'jugador_id' => $mercado->jugador_id,
+                'equipo_id' => $equipoGanador->id
+            ], ['es_titular' => false]);
 
-            if (!$existeJugador) {
-                JugadoresEquipo::create([
-                    'jugador_id' => $mercado->jugador_id,
-                    'equipo_id' => $equipoGanador->id,
-                    'es_titular' => false
-                ]);
-            }
-
-            // Registrar en historial de transacciones
+            // Registrar transacción
             DB::table('historial_transacciones')->insert([
-                'liga_id'     => $mercado->liga_id, // corregido para usar liga actual
-                'equipo_id'   => $equipoGanador->id,
-                'jugador_id'  => $mercado->jugador_id,
-                'tipo'        => 'compra',
-                'precio'      => $pujaGanadora->cantidad, // usar cantidad de la puja ganadora
+                'liga_id' => $mercado->liga_id,
+                'equipo_id' => $equipoGanador->id,
+                'jugador_id' => $mercado->jugador_id,
+                'tipo' => 'compra',
+                'precio' => $pujaGanadora->cantidad,
                 'descripcion' => 'Puja por ' . $mercado->jugador->nombre,
-                'created_at'  => now(),
-                'updated_at'  => now()
+                'created_at' => now(),
+                'updated_at' => now()
             ]);
 
-            // Restar el presupuesto
+            // Actualizar presupuesto
             $equipoGanador->decrement('presupuesto', $pujaGanadora->cantidad);
+            $equipoGanador->refresh(); // Asegurarnos de tener los datos actualizados
         }
 
-        // Marcar como procesado
         $mercado->update(['procesado' => true]);
     });
 }
+
 
 public function eliminarPuja(Request $request, Liga $liga)
 {
@@ -320,13 +340,31 @@ public function eliminarPuja(Request $request, Liga $liga)
     return response()->json(['success' => true]);
 }
 
-    public function procesarPujas(Liga $liga)
-    {
-        // Despachar el job para procesar las pujas
-        ProcesarPujasFinalizadas::dispatch();
+    public function procesar(Liga $liga)
+{
+    try {
+        // Procesar inmediatamente en lugar de solo despachar el job
+        $mercados = Mercado::where('liga_id', $liga->id)
+            ->where('fecha_fin', '<=', now())
+            ->where('procesado', false)
+            ->get();
         
-        return response()->json(['success' => true]);
-    }   
+        foreach ($mercados as $mercado) {
+            $this->procesarMercado($mercado);
+        }
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Mercado procesado correctamente',
+            'shouldReload' => true // Añadimos esta bandera
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => $e->getMessage()
+        ], 500);
+    }
+}
 
     public function clasificacion(Liga $liga)
     {
