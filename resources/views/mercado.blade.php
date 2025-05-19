@@ -195,18 +195,48 @@
     
     // Validación del formulario de puja
     document.getElementById('pujaForm').addEventListener('submit', function(e) {
+        e.preventDefault(); // Evita que se envíe el formulario tradicionalmente
+        
         const cantidad = parseFloat(document.getElementById('cantidadModal').value) || 0;
         const min = parseFloat(document.getElementById('cantidadRangeModal').min);
         const max = parseFloat(document.getElementById('cantidadRangeModal').max);
         
         if (cantidad < min || cantidad > max) {
-            e.preventDefault();
             validarPuja();
-            return false;
+            return; // Sale si la validación falla
         }
         
-        return true;
+        const mercadoId = document.getElementById('mercadoIdModal').value;
+        
+        fetch('{{ route("mercado.pujar", $liga) }}', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                mercado_id: mercadoId,
+                cantidad: cantidad
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Puja realizada correctamente');
+                cerrarModal();
+                // Opcional: actualizar el presupuesto o lo que necesites en la UI
+                // Por ejemplo:
+                // document.getElementById('presupuestoActual').textContent = data.presupuesto + ' €';
+            } else {
+                alert('Error al realizar la puja: ' + (data.message || 'Error desconocido'));
+            }
+        })
+        .catch(error => {
+            console.error('Error en la puja:', error);
+            alert('Error al realizar la puja, intenta más tarde.');
+        });
     });
+
     
     // Cerrar modal al hacer clic fuera
     document.getElementById('pujaModal').addEventListener('click', function(e) {

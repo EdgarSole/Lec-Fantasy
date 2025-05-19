@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\MensajeLiga;
+
 
 class User extends Authenticatable
 {
@@ -43,6 +45,9 @@ class User extends Authenticatable
         return $this->belongsToMany(Liga::class, 'equipos', 'usuario_id', 'liga_id');
     }
 
-    
+     public function mensajes()
+    {
+        return $this->hasMany(MensajeLiga::class, 'usuario_id');
+    }
 
 }

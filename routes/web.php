@@ -55,6 +55,8 @@ Route::prefix('liga/{liga}')->group(function() {
     Route::delete('', [MiLigaController::class, 'destroy'])->name('eliminar-liga');
    Route::get('chat', [MiLigaController::class, 'mostrarChat'])->name('chat');
     Route::post('chat/enviar', [MiLigaController::class, 'enviarChat'])->name('chat.enviar');
+     Route::delete('chat/borrar/{liga}', [MiLigaController::class, 'borrarChat'])->name('chat.borrar');
+    Route::get('chat/participantes', [MiLigaController::class, 'participantes'])->name('chat.participantes');
 });
 
 

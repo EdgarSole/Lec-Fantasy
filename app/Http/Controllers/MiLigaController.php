@@ -11,6 +11,7 @@ use App\Models\Jugador;
 use App\Models\HistorialTransacciones;
 use Carbon\Carbon;
 use App\Jobs\ProcesarPujasFinalizadas;
+use App\Models\User;
 use App\Events\NuevoMensajeLiga;
 use App\Models\MensajeLiga;
 use Cloudinary\Cloudinary;  
@@ -226,17 +227,7 @@ class MiLigaController extends Controller
         ['cantidad' => $request->cantidad]
     );
 
-    // Registrar en historial de transacciones
-    DB::table('historial_transacciones')->insert([
-        'liga_id'     => $liga->id,
-        'equipo_id'   => $equipo->id,
-        'jugador_id'  => $mercado->jugador_id,
-        'tipo'        => 'compra',
-        'precio'      => $request->cantidad,
-        'descripcion' => 'Puja por ' . $mercado->jugador->nombre,
-        'created_at' => now(),
-        'updated_at' => now()
-    ]);
+    
 
     // Calcular nuevo presupuesto disponible
     $pujasTotales = Puja::where('usuario_id', $user->id)
@@ -255,10 +246,9 @@ class MiLigaController extends Controller
 
     private function procesarMercado(Mercado $mercado)
 {
-    
     // Cargar relaciones necesarias si no están ya cargadas
     $mercado->load(['pujas.usuario', 'jugador']);
-    
+
     \DB::transaction(function () use ($mercado) {
         if ($mercado->pujas->isEmpty()) {
             $mercado->update(['procesado' => true]);
@@ -267,7 +257,7 @@ class MiLigaController extends Controller
 
         // Obtener puja ganadora (mayor cantidad)
         $pujaGanadora = $mercado->pujas->sortByDesc('cantidad')->first();
-        
+
         // Verificar que existe usuario y equipo
         if (!$pujaGanadora->usuario) {
             $mercado->update(['procesado' => true]);
@@ -283,7 +273,7 @@ class MiLigaController extends Controller
             $existeJugador = JugadoresEquipo::where('jugador_id', $mercado->jugador_id)
                 ->where('equipo_id', $equipoGanador->id)
                 ->exists();
-                
+
             if (!$existeJugador) {
                 JugadoresEquipo::create([
                     'jugador_id' => $mercado->jugador_id,
@@ -291,6 +281,18 @@ class MiLigaController extends Controller
                     'es_titular' => false
                 ]);
             }
+
+            // Registrar en historial de transacciones
+            DB::table('historial_transacciones')->insert([
+                'liga_id'     => $mercado->liga_id, // corregido para usar liga actual
+                'equipo_id'   => $equipoGanador->id,
+                'jugador_id'  => $mercado->jugador_id,
+                'tipo'        => 'compra',
+                'precio'      => $pujaGanadora->cantidad, // usar cantidad de la puja ganadora
+                'descripcion' => 'Puja por ' . $mercado->jugador->nombre,
+                'created_at'  => now(),
+                'updated_at'  => now()
+            ]);
 
             // Restar el presupuesto
             $equipoGanador->decrement('presupuesto', $pujaGanadora->cantidad);
@@ -300,6 +302,7 @@ class MiLigaController extends Controller
         $mercado->update(['procesado' => true]);
     });
 }
+
 public function eliminarPuja(Request $request, Liga $liga)
 {
     $request->validate([
@@ -489,7 +492,10 @@ public function eliminarPuja(Request $request, Liga $liga)
             ->orderBy('created_at')
             ->get();
 
-        return view('chat', compact('liga', 'mensajes'));
+        $participantes = User::withCount('mensajes')->get();
+
+
+        return view('chat', compact('liga', 'mensajes', 'participantes'));
     }
 
     public function enviarChat(Request $request, Liga $liga)
@@ -543,5 +549,15 @@ public function eliminarPuja(Request $request, Liga $liga)
 
     return back();
 }
+
+public function borrarChat(Liga $liga)
+{
+    // Elimina los mensajes asociados a la liga
+    MensajeLiga::where('liga_id', $liga->id)->delete();
+
+    // Devuelve respuesta JSON
+    return response()->json(['success' => true]);
+}
+
 
 }
