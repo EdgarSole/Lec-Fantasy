@@ -11,16 +11,16 @@
                 <span class="text-red-500 font-medium">-{{ number_format($pujasUsuario->sum('cantidad'), 0, ',', '.') }} €</span>
             @endif
         </div>
-        <div class="bg-gray-100 px-4 py-2 rounded-full font-bold text-gray-700">
-            Próxima actualización en: 
-            <span id="contador" class="font-mono text-red-500">
+        <div class="bg-white/60 backdrop-blur-sm border border-blue-200 px-5 py-2 rounded-full font-bold text-blue-700 shadow-inner">
+            ⏳ Próxima actualización en: 
+            <span id="contador" class="font-mono text-pink-600">
                 {{ str_pad(intval($tiempoRestante['horas']), 2, '0', STR_PAD_LEFT) }}h
                 {{ str_pad(intval($tiempoRestante['minutos']), 2, '0', STR_PAD_LEFT) }}m
                 {{ str_pad(intval($tiempoRestante['segundos']), 2, '0', STR_PAD_LEFT) }}s
-
             </span>
         </div>
     </div>
+</div>
 
     <!-- Grid de jugadores -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
@@ -41,23 +41,38 @@
                     <span class="text-green-600 font-bold">{{ number_format($item->jugador->valor, 0, ',', '.') }} €</span>
                 </div>
                 
-                <!-- Pujas actuales -->
-                @if($item->pujas->count() > 0)
-                    <div class="mt-3 pt-3 border-t border-gray-100">
-                        <p class="text-sm font-medium text-gray-700 mb-1 pujas-count-{{ $item->id }}">
-                            Pujas actuales: {{ $item->pujas->count() }}
-                        </p>
+                <!-- Tabla de pujas (NUEVO) -->
+                <div class="mt-3 pt-3 border-t border-gray-100">
+                    <div class="overflow-auto max-h-40">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead>
+                                <tr>
+                                    <th class="px-2 py-1 text-left text-xs font-medium text-gray-500 uppercase">#</th>
+                                    <th class="px-2 py-1 text-left text-xs font-medium text-gray-500 uppercase">Equipo</th>
+                                    <th class="px-2 py-1 text-left text-xs font-medium text-gray-500 uppercase">Puja</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200" id="pujas-body-{{ $item->id }}">
+                                @foreach($item->pujas as $index => $puja)
+                                <tr class="{{ $index % 2 === 0 ? 'bg-gray-50' : 'bg-white' }}">
+                                    <td class="px-2 py-1 whitespace-nowrap text-xs text-gray-900">{{ $index + 1 }}</td>
+                                    <td class="px-2 py-1 whitespace-nowrap text-xs text-gray-500">{{ $puja->equipo->usuario->nombre }}</td>
+                                    <td class="px-2 py-1 whitespace-nowrap text-xs text-gray-500">{{ number_format($puja->cantidad, 0, ',', '.') }} €</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
-                @endif
+                </div>
             </div>
             
             <!-- Botón de puja -->
             <button class="mt-auto w-full py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold hover:from-blue-600 hover:to-purple-700 transition-colors"
                 onclick="abrirModalPuja(
                     '{{ $item->id }}',
-                    '{{ $item->jugador->nombre }}',
+                    '{{ addslashes($item->jugador->nombre) }}',
                     '{{ $item->jugador->valor }}',
-                    '{{ $equipo->presupuesto }}',
+                    '{{ $equipo->presupuesto - $pujasUsuario->sum('cantidad') }}',
                     '{{ $pujasUsuario[$item->id]->cantidad ?? 0 }}'
                 )">
                 {{ isset($pujasUsuario[$item->id]) ? 'Modificar Puja' : 'Pujar' }}
@@ -120,10 +135,10 @@
     // Función para abrir el modal de puja
     function abrirModalPuja(mercadoId, jugador, valorJugador, maxPresupuesto, pujaActual) {
         // Configurar valores mínimos y máximos
-        const valorMinimo = parseFloat(valorJugador);
-        const max = parseFloat(maxPresupuesto);
+       const valorMinimo = parseFloat(valorJugador);
         const actual = pujaActual ? parseFloat(pujaActual) : valorMinimo;
-        
+        const max = parseFloat(maxPresupuesto) + (pujaActual ? parseFloat(pujaActual) : 0);
+
         // Actualizar elementos del modal
         document.getElementById('jugadorNombreModal').textContent = jugador;
         document.getElementById('mercadoIdModal').value = mercadoId;
@@ -237,41 +252,58 @@
 
     // Función para actualizar la interfaz con los nuevos datos
     function actualizarInterfaz(data) {
-        // Actualizar presupuesto
-        const presupuestoElement = document.querySelector('.text-green-600.font-bold.text-lg');
-        const pujasTotalesElement = document.querySelector('.text-red-500.font-medium');
-        
-        if (presupuestoElement) {
-            presupuestoElement.textContent = data.presupuesto.toLocaleString('es-ES') + ' €';
-        }
-        
-        // Actualizar total de pujas
-        if (data.pujas_totales > 0) {
-            if (!pujasTotalesElement) {
-                const newElement = document.createElement('span');
-                newElement.className = 'text-red-500 font-medium ml-2';
-                newElement.textContent = '(' + data.pujas_totales.toLocaleString('es-ES') + ' € en pujas)';
-                presupuestoElement.parentNode.appendChild(newElement);
-            } else {
-                pujasTotalesElement.textContent = '(' + data.pujas_totales.toLocaleString('es-ES') + ' € en pujas)';
-            }
-        } else if (pujasTotalesElement) {
-            pujasTotalesElement.remove();
-        }
-        
-        // Actualizar contador de pujas específico
-        const contadorPujas = document.querySelector(`.pujas-count-${data.mercado_id}`);
-        if (contadorPujas) {
-            contadorPujas.textContent = `Pujas actuales: ${data.pujas_count}`;
-        }
-        
-        // Actualizar botón de puja
-        const botonPuja = document.querySelector(`button[onclick*="${data.mercado_id}"]`);
-        if (botonPuja) {
-            botonPuja.textContent = data.pujas_count > 0 ? 'Modificar Puja' : 'Pujar';
-            botonPuja.setAttribute('onclick', `abrirModalPuja('${data.mercado_id}', '${data.jugador_nombre}', '${data.jugador_valor}', '${data.presupuesto}', '${data.cantidad}')`);
-        }
+    // Actualizar presupuesto
+    const presupuestoElement = document.querySelector('.text-green-600.font-bold.text-lg');
+    const pujasTotalesElement = document.querySelector('.text-red-500.font-medium');
+    
+    if (presupuestoElement) {
+        presupuestoElement.textContent = data.presupuesto_restante.toLocaleString('es-ES') + ' €';
     }
+    
+    // Actualizar total de pujas
+    if (data.pujas_totales !== undefined) {
+        const formattedPujas = data.pujas_totales.toLocaleString('es-ES') + ' € en pujas';
+        
+        if (!pujasTotalesElement) {
+            const newElement = document.createElement('span');
+            newElement.className = 'text-red-500 font-medium ml-2';
+            newElement.textContent = `(${formattedPujas})`;
+            presupuestoElement.parentNode.appendChild(newElement);
+        } else {
+            pujasTotalesElement.textContent = `(${formattedPujas})`;
+        }
+    } else if (pujasTotalesElement) {
+        pujasTotalesElement.remove();
+    }
+
+    // Actualizar tabla de pujas
+    const pujasBody = document.querySelector(`#pujas-body-${data.mercado_id}`);
+    if (pujasBody && data.pujas_mercado) {
+        pujasBody.innerHTML = '';
+        
+        data.pujas_mercado.forEach((puja, index) => {
+            const row = document.createElement('tr');
+            row.className = index % 2 === 0 ? 'bg-gray-50' : 'bg-white';
+            
+            row.innerHTML = `
+                <td class="px-2 py-1 whitespace-nowrap text-xs text-gray-900">${index + 1}</td>
+                <td class="px-2 py-1 whitespace-nowrap text-xs text-gray-500">${puja.equipo_nombre}</td>
+                <td class="px-2 py-1 whitespace-nowrap text-xs text-gray-500">${puja.cantidad.toLocaleString('es-ES')} €</td>
+            `;
+            
+            pujasBody.appendChild(row);
+        });
+    }
+    
+    // Actualizar botón de puja
+    const botonPuja = document.querySelector(`button[onclick*="${data.mercado_id}"]`);
+    if (botonPuja) {
+        botonPuja.textContent = data.cantidad_pujada > 0 ? 'Modificar Puja' : 'Pujar';
+        botonPuja.setAttribute('onclick', 
+            `abrirModalPuja('${data.mercado_id}', '${data.jugador_nombre.replace(/'/g, "\\'")}', 
+            '${data.jugador_valor}', '${data.presupuesto_restante}', '${data.cantidad_pujada}')`);
+    }
+}
 
     // Función para mostrar notificaciones
     function mostrarNotificacion(tipo, mensaje) {
@@ -296,7 +328,6 @@
     });
     
     // Contador de actualización
-    // Reemplaza tu función actualizarContador con esta versión mejorada
 function iniciarContador() {
     const contador = document.getElementById('contador');
     if (!contador) return;

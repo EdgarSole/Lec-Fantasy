@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('pujas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('usuario_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('equipo_id')->constrained('equipos')->onDelete('cascade');
             $table->foreignId('mercado_id')->constrained('mercado')->onDelete('cascade');
             $table->decimal('cantidad', 12);
             $table->timestamps();

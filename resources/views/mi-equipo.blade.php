@@ -1,11 +1,41 @@
 @extends('layouts.ligaMenu')
 
 @section('content')
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <div class="min-h-screen bg-gray-50 py-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="min-h-screen bg-gray-50 py-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Mensajes Flash Gaming -->
+       <!-- Notificación Flash Gaming Mejorada -->
+        <!-- Notificación Gaming Pro -->
+<div id="flash-notification" class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-xl px-4 hidden">
+    <div class="relative bg-gray-900 rounded-xl border-2 p-5 shadow-2xl overflow-hidden">
+        <!-- Efecto de borde neón -->
+        <div class="absolute inset-0 rounded-lg border-2 border-opacity-20 pointer-events-none flash-border"></div>
+        
+            <div class="flex items-start">
+                <!-- Icono animado -->
+                <div class="flex-shrink-0 mr-4 flash-icon text-3xl"></div>
+                
+                <!-- Contenido -->
+                <div class="flex-1">
+                    <h3 class="font-bold text-xl mb-1 flash-title tracking-wider"></h3>
+                    <p class="flash-message text-gray-300"></p>
+                </div>
+                
+                <!-- Botón de cerrar -->
+                <button class="flash-close ml-3 text-gray-400 hover:text-white text-2xl transition-transform hover:scale-110">
+                    &times;
+                </button>
+            </div>
+            
+            <!-- Barra de progreso estilo gaming -->
+            <div class="absolute bottom-0 left-0 right-0 h-1 bg-black/20">
+                <div class="flash-timer h-full"></div>
+            </div>
+        </div>
+    </div>
+
         @if(session('success'))
             <div class="mt-4 mb-6 p-4 rounded-lg border-2 border-green-400 bg-gradient-to-br from-green-900/80 to-green-800/90 text-green-100 shadow-lg shadow-green-500/20 relative overflow-hidden gaming-notification">
                 <div class="absolute inset-0 border-2 border-green-300/30 rounded-lg pointer-events-none"></div>
@@ -302,6 +332,7 @@
         </div>
     </div>
 </div>
+
 <form id="titularidad-form" method="POST" action="" style="display: none;">
     @csrf
 </form>
@@ -343,35 +374,29 @@
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
             'Accept': 'application/json'
-        },
-        body: JSON.stringify({})
-    })
-    .then(response => {
-        if (!response.ok) {
-            return response.json().then(err => { throw err; });
         }
-        return response.json();
     })
+    .then(response => response.json())
     .then(data => {
         if (data.success) {
-            // Mostrar mensaje flash con estilo gaming
-            const flashMessage = {
-                success: data.message
-            };
-            sessionStorage.setItem('flashMessage', JSON.stringify(flashMessage));
+            sessionStorage.setItem('flashMessage', JSON.stringify({
+                success: data.message || (esTitular ? 'Jugador movido al banquillo' : 'Jugador asignado como titular')
+            }));
             location.reload();
         } else {
-            throw new Error(data.error || 'Error al actualizar titularidad');
+            sessionStorage.setItem('flashError', JSON.stringify({
+                error: data.error || 'Error al actualizar titularidad'
+            }));
+            location.reload();
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        const flashError = {
-            error: error.message || 'Ocurrió un error al cambiar la titularidad'
-        };
-        sessionStorage.setItem('flashError', JSON.stringify(flashError));
+        sessionStorage.setItem('flashError', JSON.stringify({
+            error: 'Error al conectar con el servidor'
+        }));
         location.reload();
     });
 }
@@ -406,21 +431,121 @@ function venderJugador(jugadorId, equipoId, ligaId, valorVenta, nombreJugador) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            alert('Jugador vendido con éxito! Presupuesto actualizado.');
+            // Guardar mensaje en sessionStorage para mostrarlo después del recarga
+            sessionStorage.setItem('flashMessage', JSON.stringify({
+                success: data.message
+            }));
             location.reload();
         } else {
-            alert('Error al vender el jugador: ' + (data.error || 'Error desconocido'));
+            // Guardar mensaje de error
+            sessionStorage.setItem('flashError', JSON.stringify({
+                error: data.error || 'Error al vender el jugador'
+            }));
+            location.reload();
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('Error al conectar con el servidor');
+        sessionStorage.setItem('flashError', JSON.stringify({
+            error: 'Error al conectar con el servidor'
+        }));
+        location.reload();
     });
 }
-
+// Mostrar mensajes flash al cargar la página
+document.addEventListener('DOMContentLoaded', function() {
+    const showFlashNotification = (type, title, message) => {
+        const notification = document.getElementById('flash-notification');
+        const icon = notification.querySelector('.flash-icon');
+        const notificationTitle = notification.querySelector('.flash-title');
+        const notificationMessage = notification.querySelector('.flash-message');
+        const closeBtn = notification.querySelector('.flash-close');
+        const timerBar = notification.querySelector('.flash-timer');
+        const border = notification.querySelector('.flash-border');
+        
+        // Resetear clases
+        notification.className = 'fixed top-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-xl px-4';
+        border.className = 'absolute inset-0 rounded-lg border-2 border-opacity-20 pointer-events-none flash-border';
+        
+        // Configurar según el tipo
+        if (type === 'success') {
+            // Estilo éxito
+            notification.classList.add('text-green-100');
+            border.classList.add('border-green-500', 'animate-pulse');
+            icon.innerHTML = '🎯';
+            icon.classList.add('text-green-400', 'animate-bounce');
+            timerBar.classList.add('bg-gradient-to-r', 'from-green-500', 'to-cyan-500');
+            title = '¡OPERACIÓN EXITOSA!';
+        } else {
+            // Estilo error
+            notification.classList.add('text-red-100');
+            border.classList.add('border-red-500', 'animate-pulse');
+            icon.innerHTML = '⚡';
+            icon.classList.add('text-red-400', 'animate-pulse');
+            timerBar.classList.add('bg-gradient-to-r', 'from-red-500', 'to-amber-500');
+            title = '¡ALERTA!';
+        }
+        
+        // Configurar contenido
+        notificationTitle.textContent = title;
+        notificationMessage.textContent = message;
+        notification.classList.remove('hidden');
+        
+        // Animación de la barra de tiempo
+        timerBar.style.transition = 'none';
+        timerBar.style.width = '100%';
+        setTimeout(() => {
+            timerBar.style.transition = 'width 5s linear';
+            timerBar.style.width = '0%';
+        }, 50);
+        
+        // Efecto de aparición
+        notification.style.opacity = '0';
+        notification.style.transform = 'translate(-50%, -20px)';
+        notification.style.transition = 'all 0.3s ease-out';
+        
+        setTimeout(() => {
+            notification.style.opacity = '1';
+            notification.style.transform = 'translate(-50%, 0)';
+        }, 10);
+        
+        // Cerrar manualmente
+        closeBtn.addEventListener('click', hideNotification);
+        
+        // Cerrar automáticamente después de 5 segundos
+        const autoClose = setTimeout(hideNotification, 5000);
+        
+        function hideNotification() {
+            clearTimeout(autoClose);
+            notification.style.opacity = '0';
+            notification.style.transform = 'translate(-50%, -20px)';
+            
+            setTimeout(() => {
+                notification.classList.add('hidden');
+            }, 300);
+        }
+    };
     
+    // Comprobar mensajes flash almacenados
+    const flashMessage = sessionStorage.getItem('flashMessage');
+    const flashError = sessionStorage.getItem('flashError');
+    
+    if (flashMessage) {
+        const data = JSON.parse(flashMessage);
+        showFlashNotification('success', '', data.success);
+        sessionStorage.removeItem('flashMessage');
+    }
+    
+    if (flashError) {
+        const data = JSON.parse(flashError);
+        showFlashNotification('error', '', data.error);
+        sessionStorage.removeItem('flashError');
+    }
+});
+
 </script>
 <style>
+    
     .gaming-card {
         position: relative;
         overflow: hidden;

@@ -11,7 +11,7 @@ class Puja extends Model
 
     protected $table = 'pujas';
 
-    protected $fillable = ['usuario_id', 'mercado_id', 'cantidad'];
+    protected $fillable = ['equipo_id', 'mercado_id', 'cantidad'];
 
     public function mercado()
     {
@@ -22,4 +22,10 @@ class Puja extends Model
     {
         return $this->belongsTo(User::class);
     }
+    
+    public function equipo()
+    {
+        return $this->belongsTo(Equipo::class);
+    }
+
 }
