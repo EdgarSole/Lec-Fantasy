@@ -255,16 +255,16 @@
                             <!-- Estadísticas -->
                             <div class="grid grid-cols-3 gap-2 mt-4 text-center">
                                 <div class="bg-blue-50 p-2 rounded-lg">
-                                    <p class="text-xs text-blue-500">CS/M</p>
-                                    <p class="font-bold text-blue-700">{{ $jugador->cs }}</p>
+                                    <p class="text-xs text-blue-500">Kills</p>
+                                    <p class="font-bold text-blue-700">{{ $jugador->estadisticas->kills }}</p>
                                 </div>
                                 <div class="bg-purple-50 p-2 rounded-lg">
-                                    <p class="text-xs text-purple-500">Kills</p>
-                                    <p class="font-bold text-purple-700">{{ $jugador->kills ?? '-' }}</p>
+                                    <p class="text-xs text-purple-500">Deads</p>
+                                    <p class="font-bold text-purple-700">{{ $jugador->estadisticas->muertes ?? '-' }}</p>
                                 </div>
                                 <div class="bg-green-50 p-2 rounded-lg">
-                                    <p class="text-xs text-green-500">Asists</p>
-                                    <p class="font-bold text-green-700">{{ $jugador->assists ?? '-' }}</p>
+                                    <p class="text-xs text-green-500">Asist</p>
+                                    <p class="font-bold text-green-700">{{ $jugador->estadisticas->asistencias ?? '-' }}</p>
                                 </div>
                             </div>
 

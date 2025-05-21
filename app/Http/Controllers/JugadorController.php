@@ -9,7 +9,7 @@ class JugadorController extends Controller
 {
     public function index()
     {
-        $jugadores = Jugador::all();
+        $jugadores = Jugador::with('estadisticas')->get();
         $equipos = Jugador::select('equipo_real')->distinct()->pluck('equipo_real');
         $logosEquipos = [
             'Team Heretics' => 'https://res.cloudinary.com/dpsvxf3qg/image/upload/v1747036744/TeamHeretics.webp',
@@ -23,6 +23,8 @@ class JugadorController extends Controller
             'Rogue' => 'https://res.cloudinary.com/dpsvxf3qg/image/upload/v1747042005/RGE_p1dwbo.webp',
             'BDS' => 'https://res.cloudinary.com/dpsvxf3qg/image/upload/v1747042008/BDS_bbprhw.webp',
         ];
+        
+
 
         return view('jugadores', [
             'jugadores' => $jugadores,

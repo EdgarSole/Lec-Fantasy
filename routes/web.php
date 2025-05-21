@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\LigaController;
 use App\Http\Controllers\MiLigaController;
 use App\Http\Controllers\JugadorController;
+use App\Http\Controllers\TopGlobalController;
 
 Route::get('/', function () {
     return view('index');
@@ -46,6 +47,7 @@ Route::prefix('liga/{liga}')->middleware(['auth'])->group(function() {
     Route::get('mi-equipo', [MiLigaController::class, 'miEquipo'])->name('mi-equipo');
     Route::get('mercado', [MiLigaController::class, 'mercado'])->name('mercado');
     Route::get('clasificacion', [MiLigaController::class, 'clasificacion'])->name('clasificacion');
+    
     Route::get('editar', [MiLigaController::class, 'editar'])->name('editar-liga');
     Route::get('chat', [MiLigaController::class, 'mostrarChat'])->name('chat');
     Route::get('chat/participantes', [MiLigaController::class, 'participantes'])->name('chat.participantes');
@@ -78,7 +80,7 @@ Route::prefix('liga/{liga}')->middleware(['auth'])->group(function() {
 
 
 Route::get('/jugadores', [JugadorController::class, 'index'])->name('jugadores');
-
+Route::get('/top-global', [TopGlobalController::class, 'index'])->name('top-global');
 
 
 

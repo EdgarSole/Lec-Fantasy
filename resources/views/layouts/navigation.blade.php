@@ -44,15 +44,15 @@
                     <span class="absolute bottom-0 left-0 h-0.5 bg-blue-500 w-0 group-hover:w-full transition-all duration-500"></span>
                 </x-nav-link>
 
-                <x-nav-link :href="route('inicio')" :active="request()->routeIs('inicio')" 
+                <x-nav-link :href="route('top-global')" :active="request()->routeIs('top-global')" 
                     class="px-5 py-2 font-medium text-sm transition-all duration-300 
                     bg-white text-gray-800 hover:text-blue-600 
                     border border-gray-300 rounded-xl shadow-sm hover:shadow-lg hover:-translate-y-0.5 transform 
                     hover:border-blue-400 hover:bg-gradient-to-br from-white to-blue-50
                     relative overflow-hidden group">
                     <span class="relative z-10 flex items-center">
-                        <span class="mr-2">📜</span>
-                        {{ __('Reglas') }}
+                        <span class="mr-2"><i class="fa-solid fa-earth-americas"></i>   </span>
+                        {{ __('Top Global') }}
                     </span>
                     <span class="absolute bottom-0 left-0 h-0.5 bg-blue-500 w-0 group-hover:w-full transition-all duration-500"></span>
                 </x-nav-link>
@@ -159,12 +159,12 @@
                 {{ __('Jugadores') }}
             </x-responsive-nav-link>
             
-            <x-responsive-nav-link :href="route('inicio')" :active="request()->routeIs('inicio')" 
+            <x-responsive-nav-link :href="route('top-global')" :active="request()->routeIs('top-global')" 
                 class="block px-4 py-3 text-gray-800 hover:bg-blue-50 
                 border border-gray-200 rounded-xl my-1 transition-all duration-300
                 hover:shadow-md hover:-translate-y-0.5 transform flex items-center">
                 <span class="mr-3">📜</span>
-                {{ __('Reglas') }}
+                {{ __('Top Global') }}
             </x-responsive-nav-link>
         </div>
 

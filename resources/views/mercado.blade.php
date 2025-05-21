@@ -1,26 +1,26 @@
 @extends('layouts.ligaMenu')
 
 @section('content')
-<div class="container mx-auto px-4 py-6">
-    <!-- Header con presupuesto y contador -->
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center bg-white rounded-lg shadow-md p-4 mb-6 gap-4">
-        <div class="flex items-center flex-wrap gap-2">
-            <span class="font-bold text-lg text-gray-800">Presupuesto:</span>
-            <span class="text-green-600 font-bold text-lg">{{ number_format($equipo->presupuesto, 0, ',', '.') }} €</span>
-            @if($pujasUsuario->sum('cantidad') > 0)
-                <span class="text-red-500 font-medium">-{{ number_format($pujasUsuario->sum('cantidad'), 0, ',', '.') }} €</span>
-            @endif
-        </div>
-        <div class="bg-white/60 backdrop-blur-sm border border-blue-200 px-5 py-2 rounded-full font-bold text-blue-700 shadow-inner">
-            ⏳ Próxima actualización en: 
-            <span id="contador" class="font-mono text-pink-600">
-                {{ str_pad(intval($tiempoRestante['horas']), 2, '0', STR_PAD_LEFT) }}h
-                {{ str_pad(intval($tiempoRestante['minutos']), 2, '0', STR_PAD_LEFT) }}m
-                {{ str_pad(intval($tiempoRestante['segundos']), 2, '0', STR_PAD_LEFT) }}s
-            </span>
+    <div class="container mx-auto px-4 py-6">
+        <!-- Header con presupuesto y contador -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center bg-white rounded-lg shadow-md p-4 mb-6 gap-4">
+            <div class="flex items-center flex-wrap gap-2">
+                <span class="font-bold text-lg text-gray-800">Presupuesto:</span>
+                <span class="text-green-600 font-bold text-lg">{{ number_format($equipo->presupuesto, 0, ',', '.') }} €</span>
+                @if($pujasUsuario->sum('cantidad') > 0)
+                    <span class="text-red-500 font-medium">-{{ number_format($pujasUsuario->sum('cantidad'), 0, ',', '.') }} €</span>
+                @endif
+            </div>
+            <div class="bg-white/60 backdrop-blur-sm border border-blue-200 px-5 py-2 rounded-full font-bold text-blue-700 shadow-inner">
+                ⏳ Próxima actualización en: 
+                <span id="contador" class="font-mono text-pink-600">
+                    {{ str_pad(intval($tiempoRestante['horas']), 2, '0', STR_PAD_LEFT) }}h
+                    {{ str_pad(intval($tiempoRestante['minutos']), 2, '0', STR_PAD_LEFT) }}m
+                    {{ str_pad(intval($tiempoRestante['segundos']), 2, '0', STR_PAD_LEFT) }}s
+                </span>
+            </div>
         </div>
     </div>
-</div>
 
     <!-- Grid de jugadores -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
@@ -393,4 +393,28 @@ function iniciarContador() {
         }
     });
 </script>
+<style>
+    .scrollbar-thin::-webkit-scrollbar {
+        width: 4px;
+        height: 4px;
+    }
+    
+    .scrollbar-thin::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+    
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 10px;
+    }
+    
+    .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+        background: #a1a1a1;
+    }
+    
+    .accent-blue-600 {
+        accent-color: #2563eb;
+    }
+</style>
 @endsection

@@ -30,7 +30,10 @@
             <!-- Cuerpo de la tabla -->
             <div class="divide-y divide-gray-200">
                 @foreach($equipos as $index => $equipo)
-                <div class="hover:bg-gray-50 transition-colors duration-200 {{ $equipo->usuario_id == auth()->id() ? 'bg-indigo-50' : '' }}">
+                <div 
+                    class="hover:bg-gray-50 transition-colors duration-200 {{ $equipo->usuario_id == auth()->id() ? 'bg-indigo-50' : '' }} cursor-pointer"
+                    onclick="mostrarJugadoresEquipo({{ $equipo->id }})"
+                >
                     <div class="px-6 py-4 flex items-center">
                         <!-- Posición -->
                         <div class="w-12 flex-shrink-0 text-center">
@@ -141,8 +144,105 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
+
+<!-- Modal de jugadores - Versión mejorada -->
+<div id="jugadoresModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+    <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <!-- Fondo del modal con transición suave -->
+        <div class="fixed inset-0 transition-opacity duration-300 ease-in-out" aria-hidden="true">
+            <div class="absolute inset-0 bg-gray-900 bg-opacity-75 backdrop-blur-sm"></div>
+        </div>
+        
+        <!-- Contenido del modal con animación -->
+        <div class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full">
+            <!-- Header con gradiente -->
+            <div class="bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <h3 id="modalTitulo" class="text-xl font-bold text-white truncate"></h3>
+                    <button onclick="cerrarModal()" class="text-white hover:text-gray-200 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Cuerpo del modal -->
+            <div class="bg-white px-6 py-4 max-h-[70vh] overflow-y-auto">
+                <div id="jugadoresList" class="space-y-3">
+                    <!-- Aquí se cargarán los jugadores dinámicamente -->
+                </div>
+            </div>
+            
+            <!-- Footer del modal -->
+            <div class="bg-gray-50 px-6 py-3 border-t border-gray-200">
+                <button 
+                    type="button" 
+                    onclick="cerrarModal()" 
+                    class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-base font-medium text-white hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 sm:ml-3 sm:w-auto sm:text-sm"
+                >
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const jugadoresEquipos = @json($jugadoresEquiposArray);
+    
+    function mostrarJugadoresEquipo(equipoId) {
+        // Filtrar jugadores del equipo seleccionado
+        const jugadores = jugadoresEquipos.filter(je => je.equipo_id === equipoId);
+        
+        // Obtener el nombre del equipo (del elemento HTML)
+        const equipoNombre = document.querySelector(`[onclick="mostrarJugadoresEquipo(${equipoId})"] .text-lg`).textContent.trim();
+        
+        // Configurar el título del modal
+        document.getElementById('modalTitulo').textContent = `Jugadores de ${equipoNombre}`;
+        
+        // Generar HTML de los jugadores con nuevo diseño
+        const jugadoresHTML = jugadores.map(jugador => `
+            <div class="flex items-center p-4 bg-white rounded-lg border border-gray-200 hover:border-indigo-300 transition-colors duration-200 shadow-sm">
+                <div class="flex-shrink-0 relative">
+                    <img 
+                        src="${jugador.imagen_url}" 
+                        alt="${jugador.nombre}" 
+                        class="h-14 w-14 rounded-lg object-cover border-2 border-white shadow-md"
+                    >
+                    
+                </div>
+                <div class="ml-4 flex-1 min-w-0">
+                    <h4 class="text-md font-semibold text-gray-900 truncate">${jugador.nombre}</h4>
+                    <div class="flex items-center mt-1 space-x-2">
+                        <span class="text-xs font-medium px-2 py-0.5 rounded bg-gray-100 text-gray-800">${jugador.posicion}</span>
+                        <span class="text-xs text-gray-500">${jugador.equipo_real}</span>
+                    </div>
+                    <div class="mt-2">
+                        <span class="text-sm font-semibold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">${jugador.valor.toLocaleString()} €</span>
+                        <span class="text-sm font-semibold text-amber-700 bg-indigo-50 px-2 py-0.5 rounded">${jugador.puntos.toLocaleString()} Puntos</span>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+        
+        // Insertar en el modal
+        document.getElementById('jugadoresList').innerHTML = jugadoresHTML;
+        
+        // Mostrar el modal con animación
+        const modal = document.getElementById('jugadoresModal');
+        modal.classList.remove('hidden');
+        modal.style.opacity = '0';
+        setTimeout(() => { modal.style.opacity = '1' }, 10);
+    }
+    
+    function cerrarModal() {
+        const modal = document.getElementById('jugadoresModal');
+        modal.style.opacity = '0';
+        setTimeout(() => { modal.classList.add('hidden') }, 300);
+    }
+</script>
 @endsection

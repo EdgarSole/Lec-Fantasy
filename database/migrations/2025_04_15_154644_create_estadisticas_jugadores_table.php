@@ -32,7 +32,6 @@ return new class extends Migration
             $table->integer('botin_perdido')->default(0);
             $table->boolean('primera_sangre')->default(false);
             $table->boolean('primera_torre')->default(false);
-            $table->timestamp('fecha_jornada'); // Fecha de la jornada o partida
             $table->timestamps();
         });
     }

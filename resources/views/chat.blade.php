@@ -90,52 +90,70 @@
             </div>
         </div>
 
-        <!-- Área de mensajes -->
-        <div id="mensajes-container" class="flex-1 p-4 overflow-y-auto bg-gray-900/80 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre-v2.png')] space-y-4 scrollbar-gaming">
-            @foreach($mensajes as $mensaje)
-                <div class="flex {{ $mensaje->usuario_id == auth()->id() ? 'justify-end' : 'justify-start' }} animate-fade-in">
-                    <div class="flex max-w-xs lg:max-w-md xl:max-w-lg {{ $mensaje->usuario_id == auth()->id() ? 'flex-row-reverse' : '' }}">
-                        <!-- Avatar del usuario -->
-                        <div class="flex-shrink-0 h-12 w-12 relative group">
-                            <div class="absolute inset-0 bg-indigo-500/20 rounded-full blur-sm group-hover:blur-md transition-all duration-300"></div>
-                            <img src="{{ $mensaje->usuario->foto_url ?? asset('images/default-user.png') }}" 
-                                 alt="{{ $mensaje->usuario->nombre }}" 
-                                 class="relative h-12 w-12 rounded-full border-2 border-indigo-400 object-cover z-10 transform group-hover:scale-110 transition-transform">
-                            <div class="absolute -bottom-1 -right-1 h-4 w-4 {{ $mensaje->usuario->is_online ? 'bg-green-500 shadow-pulse' : 'bg-gray-500' }} rounded-full border-2 border-gray-900 z-20"></div>
+      <!-- Área de mensajes -->
+<div id="mensajes-container" class="flex-1 p-4 overflow-y-auto bg-gray-900/80 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre-v2.png')] space-y-4 scrollbar-gaming">
+    @foreach($mensajes as $fecha => $mensajesDelDia)
+        <!-- Separador de fecha -->
+        <div class="flex justify-center my-4">
+            <div class="bg-gray-800/80 text-gray-400 text-xs px-3 py-1 rounded-full border border-gray-700">
+                @if($fecha == now()->format('Y-m-d'))
+                    Hoy
+                @elseif($fecha == now()->subDay()->format('Y-m-d'))
+                    Ayer
+                @else
+                    {{ \Carbon\Carbon::parse($fecha)->isoFormat('D MMMM YYYY') }}
+                @endif
+            </div>
+        </div>
+
+        @foreach($mensajesDelDia as $mensaje)
+            <div class="flex {{ $mensaje->usuario_id == auth()->id() ? 'justify-end' : 'justify-start' }} animate-fade-in" data-fecha="{{ $fecha }}">
+                <div class="flex max-w-xs lg:max-w-md xl:max-w-lg {{ $mensaje->usuario_id == auth()->id() ? 'flex-row-reverse' : '' }}">
+                    
+                    <!-- Avatar del usuario -->
+                    <div class="flex-shrink-0 h-12 w-12 relative group">
+                        <div class="absolute inset-0 bg-indigo-500/20 rounded-full blur-sm group-hover:blur-md transition-all duration-300"></div>
+                        <img src="{{ $mensaje->usuario->foto_url ?? asset('images/default-user.png') }}"
+                             alt="{{ $mensaje->usuario->nombre }}"
+                             class="relative h-12 w-12 rounded-full border-2 border-indigo-400 object-cover z-10 transform group-hover:scale-110 transition-transform">
+                        <div class="absolute -bottom-1 -right-1 h-4 w-4 {{ $mensaje->usuario->is_online ? 'bg-green-500 shadow-pulse' : 'bg-gray-500' }} rounded-full border-2 border-gray-900 z-20"></div>
+                    </div>
+
+                    <!-- Contenedor del mensaje -->
+                    <div class="ml-3 mr-3 {{ $mensaje->usuario_id == auth()->id() ? 'bg-gradient-to-br from-indigo-600/90 to-indigo-800/90' : 'bg-gray-800/90' }}
+                                rounded-xl p-3 shadow-lg border {{ $mensaje->usuario_id == auth()->id() ? 'border-indigo-500/50' : 'border-gray-700' }} hover:shadow-glow transition-all">
+
+                        <!-- Nombre y hora -->
+                        <div class="flex items-center {{ $mensaje->usuario_id == auth()->id() ? 'justify-end' : 'justify-start' }} space-x-2 mb-1">
+                            <span class="font-bold text-sm {{ $mensaje->usuario_id == auth()->id() ? 'text-indigo-300' : 'text-gray-300' }} font-exo tracking-wide">
+                                {{ $mensaje->usuario->nombre }}
+                            </span>
+                            <span class="text-xs {{ $mensaje->usuario_id == auth()->id() ? 'text-indigo-400' : 'text-gray-500' }} font-mono">
+                                [{{ $mensaje->created_at->addHours(2)->format('H:i') }}]
+                            </span>
                         </div>
-                        
-                        <!-- Contenedor del mensaje -->
-                        <div class="ml-3 mr-3 {{ $mensaje->usuario_id == auth()->id() ? 'bg-gradient-to-br from-indigo-600/90 to-indigo-800/90' : 'bg-gray-800/90' }} 
-                                    rounded-xl p-3 shadow-lg border {{ $mensaje->usuario_id == auth()->id() ? 'border-indigo-500/50' : 'border-gray-700' }} hover:shadow-glow transition-all">
-                            <!-- Nombre y hora -->
-                            <div class="flex items-center {{ $mensaje->usuario_id == auth()->id() ? 'justify-end' : 'justify-start' }} 
-                                        space-x-2 mb-1">
-                                <span class="font-bold text-sm {{ $mensaje->usuario_id == auth()->id() ? 'text-indigo-300' : 'text-gray-300' }} font-exo tracking-wide">
-                                    {{ $mensaje->usuario->nombre }}
-                                </span>
-                                <span class="text-xs {{ $mensaje->usuario_id == auth()->id() ? 'text-indigo-400' : 'text-gray-500' }} font-mono">
-                                    [{{ $mensaje->created_at->format('H:i') }}]
-                                </span>
+
+                        <!-- Contenido del mensaje -->
+                        @if($mensaje->tipo === 'imagen' && $mensaje->imagen_url)
+                            <div class="mb-2 rounded-lg overflow-hidden border-2 border-gray-700/50 hover:border-indigo-400/50 transition-all cursor-zoom-in"
+                                 onclick="openImageModal('{{ $mensaje->imagen_url }}')">
+                                <img src="{{ $mensaje->imagen_url }}" alt="Imagen del chat"
+                                     class="max-w-full max-h-64 object-cover hover:scale-[1.02] transition-transform" />
                             </div>
-                            
-                            <!-- Contenido del mensaje -->
-                            @if($mensaje->tipo === 'imagen' && $mensaje->imagen_url)
-                                <div class="mb-2 rounded-lg overflow-hidden border-2 border-gray-700/50 hover:border-indigo-400/50 transition-all cursor-zoom-in" 
-                                     onclick="openImageModal('{{ $mensaje->imagen_url }}')">
-                                    <img src="{{ $mensaje->imagen_url }}" alt="Imagen del chat" 
-                                         class="max-w-full max-h-64 object-cover hover:scale-[1.02] transition-transform" />
-                                </div>
-                            @endif
-                            @if($mensaje->mensaje)
-                                <p class="text-sm {{ $mensaje->usuario_id == auth()->id() ? 'text-indigo-100' : 'text-gray-200' }} font-exo leading-relaxed">
-                                    {{ $mensaje->mensaje }}
-                                </p>
-                            @endif
-                        </div>
+                        @endif
+
+                        @if($mensaje->mensaje)
+                            <p class="text-sm {{ $mensaje->usuario_id == auth()->id() ? 'text-indigo-100' : 'text-gray-200' }} font-exo leading-relaxed">
+                                {{ $mensaje->mensaje }}
+                            </p>
+                        @endif
                     </div>
                 </div>
-            @endforeach
-        </div>
+            </div>
+        @endforeach
+    @endforeach
+</div>
+
 
         <!-- Formulario para enviar mensajes -->
         <div class="bg-gray-800/90 p-4 border-t-2 border-indigo-500/20 backdrop-blur-sm">
@@ -372,41 +390,106 @@
         mensajesContainer.scrollTop = mensajesContainer.scrollHeight;
         
         // Configuración de Echo para recibir mensajes en tiempo real
-        window.Echo.private(`liga.${'{{ $liga->id }}'}`)
-            .listen('NuevoMensajeLiga', (data) => {
-                const mensaje = data.mensaje;
-                const esPropio = mensaje.usuario_id == {{ auth()->id() }};
-                
-                const mensajeHTML = `
-                    <div class="flex ${esPropio ? 'justify-end' : 'justify-start'}">
-                        <div class="flex max-w-xs lg:max-w-md ${esPropio ? 'flex-row-reverse' : ''}">
-                            <div class="flex-shrink-0 h-10 w-10">
-                                <img src="${mensaje.usuario.foto_perfil || '/images/default-user.png'}" 
-                                     alt="${mensaje.usuario.name}" 
-                                     class="h-10 w-10 rounded-full border-2 border-indigo-500">
-                            </div>
-                            <div class="ml-3 mr-3 ${esPropio ? 'bg-indigo-600' : 'bg-gray-700'} 
-                                        rounded-lg p-3 shadow-lg">
-                                <div class="flex items-center ${esPropio ? 'justify-end' : 'justify-start'} 
-                                            space-x-2 mb-1">
-                                    <span class="font-bold text-sm ${esPropio ? 'text-indigo-100' : 'text-gray-300'}">
-                                        ${mensaje.usuario.name}
-                                    </span>
-                                    <span class="text-xs ${esPropio ? 'text-indigo-200' : 'text-gray-400'}">
-                                        ${new Date(mensaje.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
-                                    </span>
-                                </div>
-                                <p class="text-sm ${esPropio ? 'text-white' : 'text-gray-200'}">
-                                    ${mensaje.mensaje}
-                                </p>
-                            </div>
-                        </div>
+        // Configuración de Echo para recibir mensajes en tiempo real
+window.Echo.private(`liga.${'{{ $liga->id }}'}`)
+    .listen('NuevoMensajeLiga', (data) => {
+        const mensaje = data.mensaje;
+        const esPropio = mensaje.usuario_id == {{ auth()->id() }};
+        const fechaMensaje = new Date(mensaje.created_at).toISOString().split('T')[0];
+        const hoy = new Date().toISOString().split('T')[0];
+        
+        // Verificar si necesitamos agregar un separador de fecha
+        const ultimosMensajes = document.querySelectorAll('#mensajes-container > div.flex');
+        const ultimoMensaje = ultimosMensajes[ultimosMensajes.length - 1];
+        
+        let necesitaSeparador = false;
+        
+        if (!ultimoMensaje) {
+            necesitaSeparador = true;
+        } else {
+            const ultimaFecha = ultimoMensaje.getAttribute('data-fecha');
+            if (ultimaFecha !== fechaMensaje) {
+                necesitaSeparador = true;
+            }
+        }
+        
+        // Agregar separador si es necesario
+        if (necesitaSeparador) {
+            let textoFecha;
+            if (fechaMensaje === hoy) {
+                textoFecha = 'Hoy';
+            } else {
+                const ayer = new Date();
+                ayer.setDate(ayer.getDate() - 1);
+                if (fechaMensaje === ayer.toISOString().split('T')[0]) {
+                    textoFecha = 'Ayer';
+                } else {
+                    textoFecha = new Date(mensaje.created_at).toLocaleDateString('es-ES', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric'
+                    });
+                }
+            }
+            
+            const separadorHTML = `
+                <div class="flex justify-center my-4">
+                    <div class="bg-gray-800/80 text-gray-400 text-xs px-3 py-1 rounded-full border border-gray-700">
+                        ${textoFecha}
                     </div>
-                `;
-                
-                mensajesContainer.insertAdjacentHTML('beforeend', mensajeHTML);
-                mensajesContainer.scrollTop = mensajesContainer.scrollHeight;
-            });
+                </div>
+            `;
+            
+            document.getElementById('mensajes-container').insertAdjacentHTML('beforeend', separadorHTML);
+        }
+        
+        // HTML del mensaje
+        const mensajeHTML = `
+            <div class="flex ${esPropio ? 'justify-end' : 'justify-start'} animate-fade-in" data-fecha="${fechaMensaje}">
+                <div class="flex max-w-xs lg:max-w-md xl:max-w-lg ${esPropio ? 'flex-row-reverse' : ''}">
+                    <div class="flex-shrink-0 h-12 w-12 relative group">
+                        <div class="absolute inset-0 bg-indigo-500/20 rounded-full blur-sm group-hover:blur-md transition-all duration-300"></div>
+                        <img src="${mensaje.usuario.foto_url}" 
+                             alt="${mensaje.usuario.nombre}" 
+                             class="relative h-12 w-12 rounded-full border-2 border-indigo-400 object-cover z-10 transform group-hover:scale-110 transition-transform">
+                        <div class="absolute -bottom-1 -right-1 h-4 w-4 ${mensaje.usuario.is_online ? 'bg-green-500 shadow-pulse' : 'bg-gray-500'} rounded-full border-2 border-gray-900 z-20"></div>
+                    </div>
+                    
+                    <div class="ml-3 mr-3 ${esPropio ? 'bg-gradient-to-br from-indigo-600/90 to-indigo-800/90' : 'bg-gray-800/90'} 
+                                rounded-xl p-3 shadow-lg border ${esPropio ? 'border-indigo-500/50' : 'border-gray-700'} hover:shadow-glow transition-all">
+                        <div class="flex items-center ${esPropio ? 'justify-end' : 'justify-start'} 
+                                    space-x-2 mb-1">
+                            <span class="font-bold text-sm ${esPropio ? 'text-indigo-300' : 'text-gray-300'} font-exo tracking-wide">
+                                ${mensaje.usuario.nombre}
+                            </span>
+                            <span class="text-xs ${esPropio ? 'text-indigo-400' : 'text-gray-500'} font-mono">
+                                [${new Date(mensaje.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}]
+                            </span>
+                        </div>
+                        
+                        ${mensaje.tipo === 'imagen' && mensaje.imagen_url ? `
+                            <div class="mb-2 rounded-lg overflow-hidden border-2 border-gray-700/50 hover:border-indigo-400/50 transition-all cursor-zoom-in" 
+                                 onclick="openImageModal('${mensaje.imagen_url}')">
+                                <img src="${mensaje.imagen_url}" alt="Imagen del chat" 
+                                     class="max-w-full max-h-64 object-cover hover:scale-[1.02] transition-transform" />
+                            </div>
+                        ` : ''}
+                        ${mensaje.mensaje ? `
+                            <p class="text-sm ${esPropio ? 'text-indigo-100' : 'text-gray-200'} font-exo leading-relaxed">
+                                ${mensaje.mensaje}
+                            </p>
+                        ` : ''}
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('mensajes-container').insertAdjacentHTML('beforeend', mensajeHTML);
+        
+        // Auto-scroll al final
+        const mensajesContainer = document.getElementById('mensajes-container');
+        mensajesContainer.scrollTop = mensajesContainer.scrollHeight;
+    });
         
         // Enviar mensaje con AJAX
         formMensaje.addEventListener('submit', function(e) {

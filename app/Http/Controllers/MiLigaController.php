@@ -57,25 +57,22 @@ class MiLigaController extends Controller
     {
         $user = auth()->user();
 
-        // Buscar el equipo del usuario en esta liga específica
+        // Buscar el equipo del usuario en esta liga específica, cargando estadisticas de jugadores
         $equipo = Equipo::with(['jugadores' => function ($query) {
-        $query->withPivot('es_titular');
-        }])->where('usuario_id', $user->id)
+            $query->withPivot('es_titular')->with('estadisticas'); 
+        }])
+        ->where('usuario_id', $user->id)
         ->where('liga_id', $liga->id)
         ->firstOrFail();
 
-        // Jugadores del equipo con información de la relación pivot
         $jugadoresEquipo = $equipo->jugadores;
 
-        // Titulares filtrados directamente desde los jugadores del equipo
         $titulares = $jugadoresEquipo->filter(function ($jugador) {
             return $jugador->pivot->es_titular;
         });
 
-        // Calcular valor total del equipo
         $valorTotal = $jugadoresEquipo->sum('valor');
 
-        // Logos de los equipos reales
         $logosEquipos = [
             'Team Heretics' => 'https://res.cloudinary.com/dpsvxf3qg/image/upload/v1747036744/TeamHeretics.webp',
             'Fnatic' => 'https://res.cloudinary.com/dpsvxf3qg/image/upload/v1747036743/Fnatic.webp',
@@ -97,8 +94,8 @@ class MiLigaController extends Controller
             'valorTotal',
             'logosEquipos'
         ));
-
     }
+
     
     public function venderJugador(Request $request, Liga $liga, Equipo $equipo)
 {
@@ -401,27 +398,37 @@ public function eliminarPuja(Request $request, Liga $liga)
     public function clasificacion(Liga $liga)
     {
         $equipos = $liga->equipos()
-            ->with(['usuario']) // cargamos el usuario para cada equipo
+            ->with(['usuario'])
             ->orderByDesc('puntos')
             ->get()
             ->map(function ($equipo) {
-                // Cargamos los jugadores reales del equipo desde la tabla intermedia
                 $jugadores = \App\Models\JugadoresEquipo::with('jugador')
                     ->where('equipo_id', $equipo->id)
                     ->get()
                     ->pluck('jugador');
-
-                // Sumamos el valor de todos los jugadores
                 $equipo->valor_total = $jugadores->sum('valor');
-
                 return $equipo;
             });
 
-        return view('clasificacion', [
-            'liga' => $liga,
-            'equipos' => $equipos,
-        ]);
+        // Todos los jugadores por equipo (para filtrar en frontend)
+        $jugadoresEquipos = \App\Models\JugadoresEquipo::with('jugador')->get();
+
+        $jugadoresEquiposArray = $jugadoresEquipos->map(function($je) {
+            return [
+                'equipo_id' => $je->equipo_id,
+                'jugador_id' => $je->jugador_id,
+                'nombre' => $je->jugador->nombre,
+                'posicion' => $je->jugador->posicion,
+                'valor' => $je->jugador->valor,
+                'imagen_url' => $je->jugador->imagen_url,
+                'equipo_real' => $je->jugador->equipo_real,
+                'puntos' => $je->jugador->puntos,
+            ];
+        });
+        return view('clasificacion', compact('liga', 'equipos', 'jugadoresEquiposArray'));
+
     }
+
 
 
     public function actualizarLiga(Request $request, Liga $liga)
@@ -557,10 +564,14 @@ public function eliminarPuja(Request $request, Liga $liga)
     
     public function mostrarChat(Liga $liga)
     {
+        // Agrupa los mensajes por fecha
         $mensajes = MensajeLiga::where('liga_id', $liga->id)
             ->with('usuario')
             ->orderBy('created_at')
-            ->get();
+            ->get()
+            ->groupBy(function($item) {
+                return $item->created_at->format('Y-m-d');
+            });
 
         $participantes = User::whereHas('mensajes', function ($query) use ($liga) {
             $query->where('liga_id', $liga->id);
@@ -571,7 +582,6 @@ public function eliminarPuja(Request $request, Liga $liga)
             }
         ])
         ->get();
-
 
         return view('chat', compact('liga', 'mensajes', 'participantes'));
     }

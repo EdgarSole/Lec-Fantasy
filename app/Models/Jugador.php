@@ -51,10 +51,13 @@ class Jugador extends Model
         return $value ?? 'https://via.placeholder.com/150'; // Imagen por defecto
     }
 
+    // app/Models/Jugador.php
+
     public function estadisticas()
     {
-        return $this->hasMany(EstadisticaJugador::class);
+        return $this->hasOne(EstadisticasJugador::class, 'jugador_id');
     }
+
     
     public function equipos()
     {

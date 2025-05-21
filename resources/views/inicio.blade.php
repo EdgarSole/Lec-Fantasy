@@ -475,27 +475,141 @@
         </div>
             <br><br>
             <!-- Sección de reglas estilo terminal -->
-            <div class="bg-white p-6 rounded-2xl border-2 border-gray-200 shadow-lg shadow-blue-100/30 mb-8">
-                <div class="flex items-center mb-5">
-                    <div class="flex space-x-2 mr-4">
-                        <div class="w-3 h-3 rounded-full bg-red-400"></div>
-                        <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
-                        <div class="w-3 h-3 rounded-full bg-green-400"></div>
-                    </div>
-                    <h3 class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">
-                        SISTEMA DE PUNTUACIÓN
-                    </h3>
-                </div>
-                <div class="bg-gray-50/80 p-5 rounded-xl border border-gray-200 font-mono text-green-600">
-                    <p class="mb-3"><span class="text-purple-500">>></span> <span class="text-yellow-600">POR CADA KILL <i class="fa-solid fa-skull"></i>:</span> <span class="text-gray-800">2 PUNTOS</span></p>
-                    <p class="mb-3"><span class="text-purple-500">>></span> <span class="text-yellow-600">POR CADA ASISTENCIA <i class="fa-solid fa-handshake-angle"></i>:</span> <span class="text-gray-800">1 PUNTO </span></p>
-                    <p class="mb-3"><span class="text-purple-500">>></span> <span class="text-yellow-600">POR CADA TORRE DESTRUIDA <i class="fa-solid fa-gopuram"></i>:</span> <span class="text-gray-800">1 PUNTO</span></p>
-                    <p class="mb-3"><span class="text-purple-500">>></span> <span class="text-yellow-600">POR CADA OBJETIVO <i class="fa-solid fa-spaghetti-monster-flying"></i>:</span> <span class="text-gray-800">4 PUNTOS</span></p>
-                    <p><span class="text-purple-500">>></span> <span class="text-yellow-600">ACTUALIZACIÓN <i class="fa-solid fa-rotate-right"></i>:</span> <span class="text-gray-800">Automática tras cada jornada</span></p>
-                </div>
-            </div>
+            <div class="bg-white p-6 rounded-2xl border-2 border-gray-200 shadow-lg shadow-blue-100/30 mb-8 animate-fade-in-up transition-all duration-700">
+    <div class="flex items-center mb-5">
+        <div class="flex space-x-2 mr-4">
+            <div class="w-3 h-3 rounded-full bg-red-400 animate-pulse"></div>
+            <div class="w-3 h-3 rounded-full bg-yellow-400 animate-pulse delay-100"></div>
+            <div class="w-3 h-3 rounded-full bg-green-400 animate-pulse delay-200"></div>
         </div>
+        <h3 class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500 animate-gradient">
+            SISTEMA DE PUNTUACIÓN
+        </h3>
     </div>
+
+    <div class="bg-gray-50/80 p-5 rounded-xl border border-gray-200 font-mono text-green-600 space-y-3">
+        <!-- Cada regla con efecto de hover -->
+        <p class="transition-all duration-300 hover:bg-gray-100 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+            <span class="text-purple-500">>></span>
+            <span class="text-yellow-600 group inline-flex items-center">
+                POR CADA KILL <i class="fa-solid fa-skull ml-1 group-hover:animate-spin-slow"></i>:
+            </span>
+            <span class="text-gray-800">2 PUNTOS</span>
+        </p>
+
+        <p class="transition-all duration-300 hover:bg-gray-100 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+            <span class="text-purple-500">>></span>
+            <span class="text-yellow-600 group inline-flex items-center">
+                POR CADA ASISTENCIA <i class="fa-solid fa-handshake-angle ml-1 group-hover:animate-spin-slow"></i>:
+            </span>
+            <span class="text-gray-800">1 PUNTO</span>
+        </p>
+                
+        <p class="transition-all duration-300 hover:bg-gray-100 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+            <span class="text-purple-500">>></span>
+            <span class="text-yellow-600 group inline-flex items-center">POR CADA MUERTE <i class="fa-solid fa-skull-crossbones ml-1 group-hover:animate-spin-slow"></i>:</span>
+            <span class="text-gray-800">-1 PUNTO</span>
+        </p>
+
+        <p class="transition-all duration-300 hover:bg-gray-100 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+            <span class="text-purple-500">>></span>
+            <span class="text-yellow-600 group inline-flex items-center">POR PUNTOS DE VISIÓN <i class="fa-solid fa-eye ml-1 group-hover:animate-spin-slow"></i>:</span>
+            <span class="text-gray-800">1 PUNTO POR CADA 10 PUNTOS DE VISION</span>
+        </p>
+
+        <p class="transition-all duration-300 hover:bg-gray-100 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+            <span class="text-purple-500">>></span>
+            <span class="text-yellow-600 group inline-flex items-center">POR OBJETIVOS ROBADOS <i class="fa-solid fa-hand-rock ml-1 group-hover:animate-spin-slow"></i>:</span>
+            <span class="text-gray-800">3 PUNTOS</span>
+        </p>
+
+        <p class="transition-all duration-300 hover:bg-gray-100 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+            <span class="text-purple-500">>></span>
+            <span class="text-yellow-600 group inline-flex items-center">POR DAÑO A TORRES <i class="fa-solid fa-gopuram ml-1 group-hover:animate-spin-slow"></i>:</span>
+            <span class="text-gray-800">1 PUNTO CADA 1000 DE DAÑO</span>
+        </p>
+
+        <p class="transition-all duration-300 hover:bg-gray-100 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+            <span class="text-purple-500">>></span>
+            <span class="text-yellow-600 group inline-flex items-center">POR ORO CONSEGUIDO <i class="fa-solid fa-coins ml-1 group-hover:animate-spin-slow"></i>:</span>
+            <span class="text-gray-800">1 PUNTO CADA 1000 DE ORO</span>
+        </p>
+
+        <p class="transition-all duration-300 hover:bg-gray-100 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+            <span class="text-purple-500">>></span>
+            <span class="text-yellow-600 group inline-flex items-center">POR DOUBLE KILL <i class="fa-solid fa-2 ml-1 group-hover:animate-spin-slow"></i>:</span>
+            <span class="text-gray-800">3 PUNTOS</span>
+        </p>
+
+        <p class="transition-all duration-300 hover:bg-gray-100 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+            <span class="text-purple-500">>></span>
+            <span class="text-yellow-600 group inline-flex items-center">POR TRIPLE KILL <i class="fa-solid fa-3 ml-1 group-hover:animate-spin-slow"></i>:</span>
+            <span class="text-gray-800">5 PUNTOS</span>
+        </p>
+
+        <p class="transition-all duration-300 hover:bg-gray-100 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+            <span class="text-purple-500">>></span>
+            <span class="text-yellow-600 group inline-flex items-center">POR QUADRA KILL <i class="fa-solid fa-4 ml-1 group-hover:animate-spin-slow"></i>:</span>
+            <span class="text-gray-800">8 PUNTOS</span>
+        </p>
+
+        <p class="transition-all duration-300 hover:bg-gray-100 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+            <span class="text-purple-500">>></span>
+            <span class="text-yellow-600 group inline-flex items-center">POR PENTA KILL <i class="fa-solid fa-5 ml-1 group-hover:animate-spin-slow"></i>:</span>
+            <span class="text-gray-800">12 PUNTOS</span>
+        </p>
+
+        <p class="transition-all duration-300 hover:bg-gray-100 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+            <span class="text-purple-500">>></span>
+            <span class="text-yellow-600 group inline-flex items-center">POR DAÑO A CAMPEONES <i class="fa-solid fa-bolt ml-1 group-hover:animate-spin-slow"></i>:</span>
+            <span class="text-gray-800">1 PUNTO CADA 2000 DE DAÑO</span>
+        </p>
+
+        <p class="transition-all duration-300 hover:bg-gray-100 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+            <span class="text-purple-500">>></span>
+            <span class="text-yellow-600 group inline-flex items-center">POR DAÑO RECIBIDO <i class="fa-solid fa-shield-halved ml-1 group-hover:animate-spin-slow"></i>:</span>
+            <span class="text-gray-800">1 PUNTO CADA 2000 DE DAÑO</span>
+        </p>
+
+        <p class="transition-all duration-300 hover:bg-gray-100 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+            <span class="text-purple-500">>></span>
+            <span class="text-yellow-600 group inline-flex items-center">POR TIEMPO MUERTO <i class="fa-solid fa-hourglass-end ml-1 group-hover:animate-spin-slow"></i>:</span>
+            <span class="text-gray-800">-1 PUNTO CADA 10 SEGUNDOS</span>
+        </p>
+
+        <p class="transition-all duration-300 hover:bg-gray-100 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+            <span class="text-purple-500">>></span>
+            <span class="text-yellow-600 group inline-flex items-center">POR BOTÍN CONSEGUIDO <i class="fa-solid fa-gift ml-1 group-hover:animate-spin-slow"></i>:</span>
+            <span class="text-gray-800">1 PUNTO</span>
+        </p>
+
+        <p class="transition-all duration-300 hover:bg-gray-100 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+            <span class="text-purple-500">>></span>
+            <span class="text-yellow-600 group inline-flex items-center">POR BOTÍN PERDIDO <i class="fa-solid fa-box-open ml-1 group-hover:animate-spin-slow"></i>:</span>
+            <span class="text-gray-800">-1 PUNTO</span>
+        </p>
+
+        <p class="transition-all duration-300 hover:bg-gray-100 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+            <span class="text-purple-500">>></span>
+            <span class="text-yellow-600 group inline-flex items-center">POR PRIMERA SANGRE <i class="fa-solid fa-droplet ml-1 group-hover:animate-spin-slow"></i>:</span>
+            <span class="text-gray-800">5 PUNTOS</span>
+        </p>
+
+        <p class="transition-all duration-300 hover:bg-gray-100 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+            <span class="text-purple-500">>></span>
+            <span class="text-yellow-600 group inline-flex items-center">POR PRIMERA TORRE <i class="fa-solid fa-tower-broadcast ml-1 group-hover:animate-spin-slow"></i>:</span>
+            <span class="text-gray-800">5 PUNTOS</span>
+        </p>
+
+        <p class="transition-all duration-300 hover:bg-gray-100 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+            <span class="text-purple-500">>></span>
+            <span class="text-yellow-600 group inline-flex items-center">
+                ACTUALIZACIÓN <i class="fa-solid fa-rotate-right ml-1 group-hover:animate-spin-slow"></i>:
+            </span>
+            <span class="text-gray-800">Automática tras cada jornada</span>
+        </p>
+    </div>
+</div>
 
     <!-- Pequeño script para mostrar/ocultar campo de contraseña -->
     <script>
@@ -664,6 +778,26 @@ function confirmarSalida(ligaId, miembrosCount) {
         }
         .custom-scrollbar-light::-webkit-scrollbar-thumb:hover {
             background: rgba(59, 130, 246, 0.7);
+        }
+        @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.6s ease-out both;
+        }
+        @keyframes spinSlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+            animation: spinSlow 2s linear infinite;
         }
     </style>
 </x-app-layout>

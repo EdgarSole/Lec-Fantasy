@@ -1,5 +1,12 @@
+@php
+    use App\Models\User;
+    use App\Models\Equipo;
+
+    $totalUsuarios = User::count();
+    $totalEquipos = Equipo::count();
+@endphp  
 <x-app-layout>
-    
+  
 <div class="relative overflow-hidden">
     <div x-data="{
             currentSlide: 0,
@@ -284,21 +291,23 @@
                                             
                                         </div>
                                     </div>
+                                
                                     <div class="mt-6">
                                         <div class="flex justify-between items-center">
-                                            <span class="text-sm font-medium text-gray-500">Participantes</span>
-                                            <span class="text-sm font-bold text-gray-900">1,245</span>
+                                            <span class="text-sm font-medium text-gray-500">Usuarios</span>
+                                            <span class="text-sm font-bold text-gray-900">{{ number_format($totalUsuarios, 0, ',', '.') }}</span>
                                         </div>
                                         <div class="mt-2 flex justify-between items-center">
-                                            <span class="text-sm font-medium text-gray-500">Posición</span>
-                                            <span class="text-sm font-bold text-gray-900">#342</span>
+                                            <span class="text-sm font-medium text-gray-500">Equipos</span>
+                                            <span class="text-sm font-bold text-gray-900">{{ number_format($totalEquipos, 0, ',', '.') }}</span>
                                         </div>
                                         <div class="mt-4">
-                                            <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 transform hover:scale-105">
+                                            <a href="{{ route('top-global') }}" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 transform hover:scale-105">
                                                 Ver clasificación
-                                            </button>
+                                            </a>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                             

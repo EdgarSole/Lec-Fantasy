@@ -140,6 +140,7 @@
     </div>
 </div>
 
+
 <style>
     /* Efectos y animaciones gaming */
     .activity-item {
