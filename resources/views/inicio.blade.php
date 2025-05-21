@@ -3,7 +3,7 @@
         <div class="text-center mb-10 px-4 sm:px-0">
             <h2 class="text-3xl font-extrabold text-gray-800 inline-flex items-center">
                 <span class="inline-block animate-bounce mr-3 text-amber-600">🏆</span>
-                MIS LIGAS
+                @lang('messages.mis-ligas')
                 <span class="inline-block animate-bounce ml-3 text-gray-700 delay-100">⚔️</span>
             </h2>
             <div class="mt-3 h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent rounded-full opacity-70 max-w-md mx-auto"></div>

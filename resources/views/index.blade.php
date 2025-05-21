@@ -76,23 +76,23 @@
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
                     <div class="lg:w-1/2">
                         <h1 class="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl">
-                            <b><span class="block">Crea tu equipo</span>
+                            <b><span class="block">@lang('messages.crea-equipo')</span>
                             <span class="block text-blue-300">LEC Fantasy</span></b>
                         </h1>
                         <p class="mt-3 text-base text-gray-200 sm:mt-5 sm:text-lg sm:max-w-xl md:mt-5 md:text-xl">
-                            Construye tu dream team con los mejores jugadores de la LEC y compite por los primeros puestos.
+                            @lang('messages.texto-construye')
                         </p>
                         <div class="mt-8 sm:mt-10 sm:flex space-y-4 sm:space-y-0 sm:space-x-4">
                             <div class="rounded-md shadow-lg">
                                 <a href="{{ route('login') }}" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 md:py-4 md:text-lg md:px-10 transition-all duration-300 hover:scale-105 transform">
-                                    Empezar ahora
+                                    @lang('messages.empezar-ahora')
                                 </a>
                             </div>  
                             <div x-data="{ open: false }" class="rounded-md shadow-lg">
                                 <button 
                                     @click="open = true" 
-                                    class="w-full flex items-center justify-center px-8 py-3 border border-gray-300 text-base font-medium rounded-md text-white bg-gray-800 hover:bg-gray-700 md:py-4 md:text-lg md:px-10 transition-all duration-300 hover:scale-105 transform">
-                                    Ver tutorial
+                                    class="w-full flex items-center justify-center px-8 py-3 border border-gray-300 text-base font-medium rounded-md text-white bg-gray-800 hover:bg-gray-700 md:py-4 md:text-lg md:px-10 transition-all duration-300 hover:scale-105 transform">                                   
+                                    @lang('messages.ver-tutorial')
                                 </button>
                                 <div 
                                     x-show="open"
@@ -167,11 +167,11 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="lg:text-center">
                 <h2 class="text-base text-[rgb(50,155,137)] font-semibold tracking-wide uppercase">LEC Fantasy</h2>
-                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-                    ¿Cómo funciona?
+                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">                 
+                     @lang('messages.como-funciona')
                 </p>
                 <p class="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
-                    Todo lo que necesitas saber para dominar la competición
+                    @lang('messages.necesitas-saber')      
                 </p>
             </div>
 
@@ -183,23 +183,23 @@
                         <div class="absolute -top-6 left-6 bg-red-600 text-white rounded-full p-3">
                             <span class="text-xl">🏆</span>
                         </div>
-                        <h3 class="mt-8 text-lg font-medium text-gray-900">Cómo jugar</h3>
+                        <h3 class="mt-8 text-lg font-medium text-gray-900">@lang('messages.como-jugar')</h3>
                         <ul class="mt-4 space-y-2 text-gray-600">
                             <li class="flex items-start">
                                 <span class="mr-2">✨</span>
-                                <span>Selecciona jugadores para tu equipo</span>
+                                <span>@lang('messages.selecciona-jugadores')</span>
                             </li>
                             <li class="flex items-start">
                                 <span class="mr-2">📊</span>
-                                <span>Gana puntos basados en su rendimiento real</span>
+                                <span>@lang('messages.gana-puntos')</span>
                             </li>
                             <li class="flex items-start">
                                 <span class="mr-2">🎮</span>
-                                <span>Gestiona traspasos</span>
+                                <span>@lang('messages.gestiona-transpasos')</span>
                             </li>
                             <li class="flex items-start">
                                 <span class="mr-2">🏅</span>
-                                <span>Compite en ligas privadas</span>
+                                <span>@lang('messages.compite-ligas')</span>
                             </li>
                         </ul>
                     </div>
@@ -211,23 +211,23 @@
                         <div class="absolute -top-6 left-6 bg-blue-600 text-white rounded-full p-3">
                             <span class="text-xl">💎</span>
                         </div>
-                        <h3 class="mt-8 text-lg font-medium text-gray-900">Puntuación</h3>
+                        <h3 class="mt-8 text-lg font-medium text-gray-900">@lang('messages.puntuacion')</h3>
                         <ul class="mt-4 space-y-2 text-gray-600">
                             <li class="flex items-start">
                                 <span class="mr-2 text-green-500">+2</span>
-                                <span>Por cada kill <i class="fa-solid fa-skull"></i></span>
+                                <span>@lang('messages.cada-kill') <i class="fa-solid fa-skull"></i></span>
                             </li>
                             <li class="flex items-start">
                                 <span class="mr-2 text-green-500">+1</span>
-                                <span>Por cada asistencia <i class="fa-solid fa-handshake-angle"></i></span>
+                                <span>@lang('messages.cada-asistencia') <i class="fa-solid fa-handshake-angle"></i></span>
                             </li>
                             <li class="flex items-start">
                                 <span class="mr-2 text-green-500">+1</span>
-                                <span>Por cada torre destruida <i class="fa-solid fa-gopuram"></i></span>
+                                <span>@lang('messages.cada-torre') <i class="fa-solid fa-gopuram"></i></span>
                             </li>
                             <li class="flex items-start">
                                 <span class="mr-2 text-green-500">+4</span>
-                                <span>Por cada objetivo <i class="fa-solid fa-spaghetti-monster-flying"></i></span>
+                                <span>@lang('messages.cada-objetivo') <i class="fa-solid fa-spaghetti-monster-flying"></i></span>
                             </li>
                         </ul>
                     </div>
@@ -238,23 +238,23 @@
                         <div class="absolute -top-6 left-6 bg-purple-600 text-white rounded-full p-3">
                             <span class="text-xl">🌟</span>
                         </div>
-                        <h3 class="mt-8 text-lg font-medium text-gray-900">Características</h3>
+                        <h3 class="mt-8 text-lg font-medium text-gray-900">@lang('messages.caracteristicas')</h3>
                         <ul class="mt-4 space-y-2 text-gray-600">
                             <li class="flex items-start">
                                 <span class="mr-2">📱</span>
-                                <span>Aplicación móvil para jugar desde cualquier lugar</span>
+                                <span>@lang('messages.aplicacion-movil')</span>
                             </li>
                             <li class="flex items-start">
                                 <span class="mr-2">🤝</span>
-                                <span>Compras y ventas entre managers</span>
+                                <span>@lang('messages.compras-ventas')</span>
                             </li>
                             <li class="flex items-start">
                                 <span class="mr-2">📈</span>
-                                <span>Estadísticas detalladas de jugadores</span>
+                                <span>@lang('messages.estadisticas-jugadores')</span>
                             </li>
                             <li class="flex items-start">
                                 <span class="mr-2">🏆</span>
-                                <span>Premios para los mejores managers</span>
+                                <span>@lang('messages.premios-managers')</span>
                             </li>
                         </ul>
                     </div>
@@ -268,10 +268,10 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="sm:flex sm:flex-col sm:align-center">
                 <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl text-center">
-                    Ligas públicas
+                     @lang('messages.ligas-publicas')
                 </h2>
                 <p class="mt-5 text-xl text-gray-600 text-center max-w-3xl mx-auto">
-                    Participa en la liga global o únete a una competición pública.
+                    @lang('messages.participa-liga')
                 </p>
                 <div class="relative mt-12 bg-white shadow-md rounded-lg overflow-hidden border border-gray-200">
                     <!-- Leagues Grid -->
@@ -287,23 +287,23 @@
                                             </svg>
                                         </div>
                                         <div class="ml-5 w-0 flex-1">
-                                            <h3 class="text-lg font-medium text-gray-900">Clasificación Global LEC</h3>
+                                            <h3 class="text-lg font-medium text-gray-900"> @lang('messages.clasificacion-global')</h3>
                                             
                                         </div>
                                     </div>
                                 
                                     <div class="mt-6">
                                         <div class="flex justify-between items-center">
-                                            <span class="text-sm font-medium text-gray-500">Usuarios</span>
+                                            <span class="text-sm font-medium text-gray-500"> @lang('messages.usuarios')</span>
                                             <span class="text-sm font-bold text-gray-900">{{ number_format($totalUsuarios, 0, ',', '.') }}</span>
                                         </div>
                                         <div class="mt-2 flex justify-between items-center">
-                                            <span class="text-sm font-medium text-gray-500">Equipos</span>
+                                            <span class="text-sm font-medium text-gray-500"> @lang('messages.equipos')</span>
                                             <span class="text-sm font-bold text-gray-900">{{ number_format($totalEquipos, 0, ',', '.') }}</span>
                                         </div>
                                         <div class="mt-4">
                                             <a href="{{ route('top-global') }}" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 transform hover:scale-105">
-                                                Ver clasificación
+                                                 @lang('messages.ver-clasificacion')
                                             </a>
                                         </div>
                                     </div>
@@ -322,21 +322,21 @@
                                         </div>
                                         <div class="ml-5 w-0 flex-1">
                                             <h3 class="text-lg font-medium text-gray-900">Liga THunders</h3>
-                                            <p class="mt-1 text-sm text-gray-500">Liga pública</p>
+                                            <p class="mt-1 text-sm text-gray-500"> @lang('messages.liga-publica')</p>
                                         </div>
                                     </div>
                                     <div class="mt-6">
                                         <div class="flex justify-between items-center">
-                                            <span class="text-sm font-medium text-gray-500">Participantes</span>
+                                            <span class="text-sm font-medium text-gray-500"> @lang('messages.participantes')</span>
                                             <span class="text-sm font-bold text-gray-900">8/10</span>
                                         </div>
                                         <div class="mt-2 flex justify-between items-center">
-                                            <span class="text-sm font-medium text-gray-500">Posición</span>
+                                            <span class="text-sm font-medium text-gray-500"> @lang('messages.posicion')</span>
                                             <span class="text-sm font-bold text-gray-900">#2</span>
                                         </div>
                                         <div class="mt-4">
                                             <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 transform hover:scale-105">
-                                                Ver liga
+                                                 @lang('messages.ver-liga')
                                             </button>
                                         </div>
                                     </div>
@@ -349,11 +349,11 @@
                                     <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" >
                                         <path stroke-linecap="round"  stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                     </svg>
-                                    <h3 class="mt-2 text-lg font-medium text-gray-900">Crear nueva liga</h3>
-                                    <p class="mt-1 text-sm text-gray-500">Invita a tus amigos y competid</p>
+                                    <h3 class="mt-2 text-lg font-medium text-gray-900"> @lang('messages.crear-nueva-liga')</h3>
+                                    <p class="mt-1 text-sm text-gray-500"> @lang('messages.invita-amigos')</p>
                                     <div class="mt-4">
                                         <a href="{{ route('login') }}" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 transform hover:scale-105">
-                                            Crear liga
+                                             @lang('messages.crear-liga')
                                         </a>
                                     </div>
                                 </div>
@@ -369,20 +369,20 @@
     <div class="bg-[rgb(51,175,154)]">
         <div class="max-w-2xl mx-auto text-center py-16 px-4 sm:py-20 sm:px-6 lg:px-8">
             <h2 class="text-3xl font-extrabold text-white sm:text-4xl">
-                <span class="block">¿Listo para competir?</span>
-                <span class="block">Crea tu equipo ahora.</span>
+                <span class="block"> @lang('messages.listo-competir')</span>
+                <span class="block"> @lang('messages.crea-equipo-ahora')</span>
             </h2>
             <p class="mt-4 text-lg leading-6 text-red-100">
-                La próxima jornada de la LEC comienza pronto. No te quedes fuera.
+                 @lang('messages.proxima-jornada')
             </p>
             <a href="{{ route('login') }}" class="mt-8 w-full inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-[rgb(50,155,137)] bg-white hover:bg-red-50 sm:w-auto transition-all duration-300 transform hover:scale-105">
-                Seleccionar jugadores
+                @lang('messages.seleccionar-jugadores')
             </a>
         </div>
     </div>
 </x-app-layout>
 <script>
-function carousel() {
+function carousel() {   
     return {
         currentSlide: 0,
         slides: [

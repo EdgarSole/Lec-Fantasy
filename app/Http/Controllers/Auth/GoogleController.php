@@ -26,7 +26,7 @@ class GoogleController extends Controller
                 'foto_url' => $googleUser->getAvatar(),
             ]
         );
-
+        
         Auth::login($user);
 
         return redirect()->intended(route('inicio'));

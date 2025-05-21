@@ -29,27 +29,27 @@ class MiLigaController extends Controller
 
     // Métodos para otras vistas
      public function actividad(Liga $liga)
-{
-    $query = HistorialTransacciones::with(['equipo.usuario', 'jugador'])
-        ->where('liga_id', $liga->id);
+    {
+        $query = HistorialTransacciones::with(['equipo.usuario', 'jugador'])
+            ->where('liga_id', $liga->id);
 
-    if ($tipo = request('tipo')) {
-        if ($tipo == 'evento') {
-            $query->whereNotIn('tipo', ['compra', 'venta']);
-        } else {
-            $query->where('tipo', $tipo);
+        if ($tipo = request('tipo')) {
+            if ($tipo == 'evento') {
+                $query->whereNotIn('tipo', ['compra', 'venta']);
+            } else {
+                $query->where('tipo', $tipo);
+            }
         }
+
+        $actividades = $query->orderBy('created_at', 'desc')->paginate(7);
+
+        $actividades->getCollection()->transform(function ($actividad) {
+            $actividad->fecha_formateada = $actividad->created_at->addHours(2)->format('d/m/Y H:i');
+            return $actividad;
+        });
+
+        return view('actividad', compact('liga', 'actividades'));
     }
-
-    $actividades = $query->orderBy('created_at', 'desc')->paginate(7);
-
-    $actividades->getCollection()->transform(function ($actividad) {
-        $actividad->fecha_formateada = $actividad->created_at->addHours(2)->format('d/m/Y H:i');
-        return $actividad;
-    });
-
-    return view('actividad', compact('liga', 'actividades'));
-}
 
 
 

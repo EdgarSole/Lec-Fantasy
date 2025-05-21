@@ -7,6 +7,7 @@ use App\Http\Controllers\LigaController;
 use App\Http\Controllers\MiLigaController;
 use App\Http\Controllers\JugadorController;
 use App\Http\Controllers\TopGlobalController;
+use App\Http\Controllers\LocaleController;
 
 Route::get('/', function () {
     return view('index');
@@ -82,6 +83,8 @@ Route::prefix('liga/{liga}')->middleware(['auth'])->group(function() {
 Route::get('/jugadores', [JugadorController::class, 'index'])->name('jugadores');
 Route::get('/top-global', [TopGlobalController::class, 'index'])->name('top-global');
 
+// Ruta para cambiar el idioma
+Route::get('locale/{lang}', [LocaleController::class, 'setLocale']);
 
 
 

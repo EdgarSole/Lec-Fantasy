@@ -25,41 +25,49 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        // Obtener el campo 'login' (puede ser nombre o email)
         $login = $request->input('login');
-    
-        // Verificamos si el 'login' es un email o un nombre
+
         $user = filter_var($login, FILTER_VALIDATE_EMAIL)
             ? \App\Models\User::where('email', $login)->first()
             : \App\Models\User::where('nombre', $login)->first();
-    
-        // Verificamos si el usuario existe y si la contraseña es correcta
+
         if ($user && \Hash::check($request->password, $user->password)) {
-            // Iniciar sesión
+            // Guardar el idioma actual antes de loguear
+            $locale = session('locale', 'es');
+
             Auth::login($user);
             $request->session()->regenerate();
-    
-            // Redirigir siempre a la página de inicio
-            return redirect()->route('inicio'); 
+
+            // Restaurar el idioma después del login
+            session(['locale' => $locale]);
+
+            return redirect()->route('inicio');
         }
-    
-        // Si no se encuentra el usuario o la contraseña es incorrecta
+
         throw ValidationException::withMessages([
             'login' => trans('auth.failed'),
         ]);
     }
+
     
+
 
     /**
      * Destroy an authenticated session.
      */
     public function destroy(Request $request): RedirectResponse
     {
+        $locale = session('locale', 'es'); // Guardar idioma actual
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
+        // Restaurar idioma después de logout
+        session(['locale' => $locale]);
+
         return redirect('/');
     }
+
 }
