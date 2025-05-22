@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.dark {
+  @apply bg-gray-900 text-gray-100;
+  /* Añade aquí otros estilos globales para el modo oscuro */
+}
 @keyframes spin {
     to { transform: rotate(360deg); }
 }

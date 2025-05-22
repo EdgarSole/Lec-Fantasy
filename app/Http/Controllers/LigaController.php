@@ -153,7 +153,7 @@ class LigaController extends Controller
                 'descripcion' => 'Liga creada por ' . Auth::user()->nombre,
             ]);
 
-            return redirect()->back()->with('success', 'Liga creada exitosamente y jugadores asignados.');
+            return redirect()->back()->with('success', __('messages.liga_creada_exitosamente'));
         } catch (\Exception $e) {
             return back()->withErrors(['error' => 'Error al crear la liga: ' . $e->getMessage()]);
         }
