@@ -105,7 +105,7 @@ return [
     'por_primera_torre' => 'FOR FIRST TOWER',
     'actualizacion' => 'UPDATE',
     'automatica_tras_jornada' => 'Automatic after each matchday',
-
+    'league_password_placeholder' => 'Enter the league password',
     'puntos_kill' => '2 POINTS',
     'puntos_asistencia' => '1 POINT',
     'puntos_muerte' => '-1 POINT',
@@ -126,13 +126,16 @@ return [
     'puntos_primera_torre' => '5 POINTS',
     'abandonar_liga' => 'Leave league?',
     'confirmar_abandonar' => 'Are you sure you want to leave this league?',
+    'abandonar_min' => 'Leave',
     'buscar_ligas_por_nombre' => 'Search leagues by name...',
     'showing' => 'Showing',
     'league' => 'League',
     'miembros' => 'members',
+    'miembro' => 'Member',
+    'lider' => 'Leader',
     'liga_privada' => 'Private League',
     'liga_publica' => 'Public League',
-      'liga_creada_exitosamente' => 'League created successfully and players assigned.',
+    'liga_creada_exitosamente' => 'League created successfully and players assigned.',
     'errordetectado' => ' ERROR DETECTED!',
      
 

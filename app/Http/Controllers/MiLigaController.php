@@ -32,6 +32,7 @@ class MiLigaController extends Controller
     {
         $query = HistorialTransacciones::with(['equipo.usuario', 'jugador'])
             ->where('liga_id', $liga->id);
+            
 
         if ($tipo = request('tipo')) {
             if ($tipo == 'evento') {
@@ -135,7 +136,7 @@ class MiLigaController extends Controller
         
         return response()->json([
             'success' => true,
-            'message' => 'Jugador vendido con éxito!'
+            'message' => "El jugador fue vendido con éxito!"
         ]);
         
     } catch (\Exception $e) {
@@ -287,22 +288,23 @@ class MiLigaController extends Controller
         ->sum('cantidad');
 
     return response()->json([
-        'success' => true,
-        'presupuesto' => $equipo->presupuesto,
-        'pujas_totales' => $pujasTotales,
-        'pujas_mercado' => $pujasMercado->map(function($puja) {
-            return [
-                'equipo_nombre' => $puja->equipo->usuario->nombre,
-                'cantidad' => $puja->cantidad,
-                'fecha' => $puja->created_at->format('H:i:s')
-            ];
-        }),
-        'mercado_id' => $request->mercado_id,
-        'jugador_nombre' => $mercado->jugador->nombre,
-        'jugador_valor' => $mercado->jugador->valor,
-        'cantidad_pujada' => $request->cantidad,
-        'presupuesto_restante' => $equipo->presupuesto - $pujasTotales
-    ]);
+    'success' => true, // Indica que la operación fue exitosa
+    'presupuesto' => $equipo->presupuesto, // Presupuesto total del equipo
+    'pujas_totales' => $pujasTotales, // Suma total de las pujas realizadas
+    'pujas_mercado' => $pujasMercado->map(function($puja) {
+        return [
+            'equipo_nombre' => $puja->equipo->usuario->nombre, // Nombre del equipo que realizó la puja
+            'cantidad' => $puja->cantidad, // Cantidad pujada
+            'fecha' => $puja->created_at->format('H:i:s') // Hora en que se hizo la puja
+        ];
+    }),
+    'mercado_id' => $request->mercado_id, // ID del mercado consultado
+    'jugador_nombre' => $mercado->jugador->nombre, // Nombre del jugador subastado
+    'jugador_valor' => $mercado->jugador->valor, // Valor base o actual del jugador
+    'cantidad_pujada' => $request->cantidad, // Cantidad que se intenta pujar
+    'presupuesto_restante' => $equipo->presupuesto - $pujasTotales // Presupuesto que queda después de las pujas
+]);
+
 }
 
    private function procesarMercado(Mercado $mercado)
@@ -573,6 +575,12 @@ public function eliminarPuja(Request $request, Liga $liga)
                 return $item->created_at->format('Y-m-d');
             });
 
+        $imagenesChat = MensajeLiga::where('liga_id', $liga->id)
+            ->where('tipo', 'imagen')
+            ->with('usuario')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
         $participantes = User::whereHas('mensajes', function ($query) use ($liga) {
             $query->where('liga_id', $liga->id);
         })
@@ -583,7 +591,7 @@ public function eliminarPuja(Request $request, Liga $liga)
         ])
         ->get();
 
-        return view('chat', compact('liga', 'mensajes', 'participantes'));
+        return view('chat', compact('liga', 'mensajes', 'participantes', 'imagenesChat'));
     }
 
 
@@ -591,7 +599,7 @@ public function eliminarPuja(Request $request, Liga $liga)
     {
         $request->validate([
             'mensaje' => 'nullable|string|max:1000',
-            'imagen' => 'nullable|image|max:2048', // max 2MB por ejemplo
+            'imagen' => 'nullable|image|max:2048', 
         ]);
 
         $tipo = 'texto';
@@ -617,7 +625,7 @@ public function eliminarPuja(Request $request, Liga $liga)
             'overwrite' => false, // no sobreescribe por si acaso
         ]);
 
-        $imagen_url = $uploadResult['secure_url'];  // Aquí cambia $uploadedFileUrl a $uploadResult
+        $imagen_url = $uploadResult['secure_url'];  
         $tipo = 'imagen';
     }
 
@@ -625,7 +633,7 @@ public function eliminarPuja(Request $request, Liga $liga)
         $mensaje = MensajeLiga::create([
             'liga_id' => $liga->id,
             'usuario_id' => auth()->id(),
-            'mensaje' => $request->mensaje ?? '', // puede ser vacío si solo hay imagen
+            'mensaje' => $request->mensaje ?? '', 
             'imagen_url' => $imagen_url,
             'tipo' => $tipo,
         ]);

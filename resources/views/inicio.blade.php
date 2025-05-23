@@ -30,7 +30,6 @@
 
     @if($errors->any())
         <div class="mt-4 mb-6 p-4 rounded-lg border-2 border-red-400 dark:border-red-600 bg-gradient-to-br from-red-900/80 dark:from-red-900 to-red-800/90 dark:to-red-900/90 text-red-100 dark:text-red-50 shadow-lg shadow-red-500/20 dark:shadow-red-600/20 relative overflow-hidden">
-            <!-- Efecto de borde gaming -->
             <div class="absolute inset-0 border-2 border-red-300/30 dark:border-red-400/20 rounded-lg pointer-events-none"></div>
             
             <!-- Icono y contenido -->
@@ -61,16 +60,16 @@
     @endif
 </x-slot>
 
-<div class="py-8 bg-gray-50 dark:bg-gray-900 min-h-screen">
+<div class="py-8 bg-gray-50 dark:bg-gray-900 min-h-screen border-t border-[#3b82f6] shadow-[0_0_10px_#3b82f6] dark:border-t-1 dark:border-[#39ff14] dark:shadow-[0_0_10px_#39ff14]">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 px-4">
         <div class="flex flex-wrap gap-5 mb-12 justify-center">
-            <button type="button" onclick="document.getElementById('create-league-modal').classList.remove('hidden')" class="px-8 py-3.5 bg-gradient-to-r from-blue-500 to-cyan-500 dark:from-blue-600 dark:to-cyan-600 rounded-xl font-bold text-white hover:from-blue-600 hover:to-cyan-600 dark:hover:from-blue-700 dark:hover:to-cyan-700 transition-all duration-200 transform hover:scale-[1.03] shadow-lg shadow-cyan-300/40 dark:shadow-cyan-500/30 border-b-2 border-cyan-600/70 dark:border-cyan-700/70 active:scale-95">
+            <button type="button" onclick="document.getElementById('create-league-modal').classList.remove('hidden')" class="px-8 py-3.5 bg-gradient-to-r from-blue-500 to-cyan-500 dark:from-blue-600 dark:to-cyan-600 rounded-xl font-bold text-white hover:from-blue-600 hover:to-cyan-600 dark:hover:from-blue-700 dark:hover:to-cyan-700 transition-all  transform hover:scale-[1.03] shadow-lg shadow-cyan-300/40 dark:shadow-cyan-500/30 border-b-2 border-cyan-600/70 dark:border-cyan-700/70 active:scale-95">
                 🏆  @lang('messages.crear-liga-may')
             </button>
             <button 
                 x-data
                 @click="$dispatch('open-join-modal')" 
-                class="px-8 py-3.5 bg-gradient-to-r from-green-400 to-emerald-500 dark:from-green-500 dark:to-emerald-600 rounded-xl font-bold text-white hover:from-green-500 hover:to-emerald-600 dark:hover:from-green-600 dark:hover:to-emerald-700 transition-all duration-200 transform hover:scale-[1.03] shadow-lg shadow-emerald-300/40 dark:shadow-emerald-500/30 border-b-2 border-emerald-600/70 dark:border-emerald-700/70 active:scale-95">
+                class="px-8 py-3.5 bg-gradient-to-r from-green-400 to-emerald-500 dark:from-green-500 dark:to-emerald-600 rounded-xl font-bold text-white hover:from-green-500 hover:to-emerald-600 dark:hover:from-green-600 dark:hover:to-emerald-700 transition-all  transform hover:scale-[1.03] shadow-lg shadow-emerald-300/40 dark:shadow-emerald-500/30 border-b-2 border-emerald-600/70 dark:border-emerald-700/70 active:scale-95">
                 🎮  @lang('messages.unirse-liga')
             </button>
         </div>
@@ -240,9 +239,9 @@
                 class="w-full max-w-md bg-white dark:bg-gray-800 rounded-xl shadow-2xl overflow-hidden border border-gray-200 dark:border-gray-700"
                 @click.away="showConfirmModal = false"
             >
-                <div class="bg-white dark:bg-gray-800 p-5 border-b border-gray-200 dark:border-gray-700 relative">
-                    <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 text-center"> @lang('messages.confirmar_union')</h3>
-                    <button @click="showConfirmModal = false" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition">
+                <div class="bg-gradient-to-r from-green-500 to-emerald-600 p-4 relative">
+                    <h3 class="text-xl font-bold text-gray-200 text-center"> @lang('messages.confirmar_union')</h3>
+                    <button @click="showConfirmModal = false" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-300 hover:text-white transition">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                         </svg>
@@ -257,9 +256,7 @@
                                 alt="Logo liga" 
                                 class="w-16 h-16 rounded-full object-cover border-2 border-gray-200 dark:border-gray-600"
                             >
-                            <span class="absolute -bottom-1 -right-1 bg-blue-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center shadow-md">
-                                <span x-text="selectedLeague?.usuarios_count || 0" class="text-xs"></span>
-                            </span>
+                            
                         </div>
                         <div class="ml-4">
                             <h4 class="font-bold text-lg text-gray-800 dark:text-gray-200" x-text="selectedLeague?.nombre"></h4>
@@ -280,7 +277,7 @@
                                 <input 
                                     x-model="password"
                                     type="password" 
-                                    placeholder="Ingresa la contraseña de la liga" 
+                                    placeholder="{{ __('messages.league_password_placeholder') }}" 
                                     class="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600 focus:border-blue-500 dark:focus:border-blue-600 transition-all"
                                 >
                                 <div class="absolute right-3 top-3.5 text-gray-400 dark:text-gray-500">
@@ -307,7 +304,8 @@
                         </button>
                         <button 
                             @click="joinLeague()" 
-                            class="px-5 py-2.5 bg-blue-500 dark:bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-600 dark:hover:bg-blue-700 transition-all shadow hover:shadow-md border border-blue-600 dark:border-blue-700 flex items-center"
+                            class="px-5 py-2.5 from-green-400 to-emerald-500 dark:from-green-500 dark:to-emerald-600 bg-gradient-to-r rounded-xl font-bold text-white hover:from-green-500 hover:to-emerald-600 dark:hover:from-green-600 dark:hover:to-emerald-700 transition-all  transform hover:scale-[1.03] shadow-lg shadow-emerald-300/40 dark:shadow-emerald-500/30 border-b-2 border-emerald-600/70 dark:border-emerald-700/70 active:scale-95 flex items-center"
+
                         >
                             <svg class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
@@ -327,10 +325,10 @@
                 $posicion = $equipoUsuario ? $equipoUsuario->posicion : '--';
             @endphp
             
-            <div class="bg-[#fff7f0] dark:bg-gray-800/90 rounded-2xl overflow-hidden border-2 border-cyan-300 dark:border-cyan-600 hover:border-cyan-400 dark:hover:border-cyan-500 transition-all duration-300 shadow-lg shadow-cyan-100/50 dark:shadow-cyan-900/30 relative group">
+            <div class="bg-[#fff7f0] dark:bg-gray-800/90 rounded-2xl overflow-hidden border-2 border-cyan-300 dark:border-cyan-600 hover:border-cyan-400 dark:hover:border-cyan-500 transition-all  shadow-lg shadow-cyan-100/50 dark:shadow-cyan-900/30 relative group">
 
                     <!-- Efecto de brillo sutil al hover -->
-                    <div class="absolute inset-0 bg-gradient-to-br from-cyan-100/20 dark:from-cyan-900/10 to-blue-100/10 dark:to-blue-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="absolute inset-0 bg-gradient-to-br from-cyan-100/20 dark:from-cyan-900/10 to-blue-100/10 dark:to-blue-900/10 opacity-0 group-hover:opacity-100 transition-opacity "></div>
                     
                     <!-- Parte superior: Info de la Liga -->
                     <div class="p-6 relative z-10 border-b border-gray-100 dark:border-gray-700">
@@ -358,8 +356,9 @@
                                 <h3 class="font-bold text-xl text-gray-800 dark:text-gray-200">{{ strtoupper($liga->nombre) }}</h3>
                                 <p class="text-cyan-600 dark:text-cyan-400 flex items-center text-sm mt-1">
                                     <span class="inline-block w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
-                                    {{ $liga->usuario_id == auth()->id() ? 'Líder' : 'Miembro' }}
+                                    {{ $liga->usuario_id == auth()->id() ? __('messages.lider') : __('messages.miembro') }}
                                 </p>
+
                             </div>
                         </div>
 
@@ -423,7 +422,7 @@
                         
                         <!-- Botones de Acción -->
                         <div class="flex space-x-3">
-                            <a href="{{ route('mi-liga', $liga->id) }}" class="flex-[65] bg-gradient-to-r from-cyan-500 to-blue-600 dark:from-cyan-600 dark:to-blue-700 hover:from-cyan-400 hover:to-blue-500 dark:hover:from-cyan-500 dark:hover:to-blue-600 text-white py-3 px-4 rounded-lg text-center font-medium transition-all duration-200 hover:scale-[1.02] active:scale-95 shadow-md shadow-cyan-400/30 dark:shadow-cyan-600/30 border-b border-cyan-500/50 dark:border-cyan-600/50 text-sm flex items-center justify-center">
+                            <a href="{{ route('mi-liga', $liga->id) }}" class="flex-[65] bg-gradient-to-r from-cyan-500 to-blue-600 dark:from-cyan-600 dark:to-blue-700 hover:from-cyan-400 hover:to-blue-500 dark:hover:from-cyan-500 dark:hover:to-blue-600 text-white py-3 px-4 rounded-lg text-center font-medium transition-all  hover:scale-[1.02] active:scale-95 shadow-md shadow-cyan-400/30 dark:shadow-cyan-600/30 border-b border-cyan-500/50 dark:border-cyan-600/50 text-sm flex items-center justify-center">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
@@ -437,7 +436,7 @@
                                     <button 
                                         type="button" 
                                         onclick="confirmarSalida({{ $liga->id }}, {{ $liga->miembros_count }})" 
-                                        class="w-full bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-400 hover:to-pink-500 text-white py-3 px-4 rounded-lg font-medium transition-all duration-200 hover:scale-[1.02] active:scale-95 shadow-md shadow-pink-400/30 border-b border-pink-500/50 text-sm flex items-center justify-center"
+                                        class="w-full bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-400 hover:to-pink-500 text-white py-3 px-4 rounded-lg font-medium transition-all  hover:scale-[1.02] active:scale-95 shadow-md shadow-pink-400/30 border-b border-pink-500/50 text-sm flex items-center justify-center"
                                     >
                                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -473,7 +472,7 @@
         </div>
             <br><br>
             <!-- Sección de reglas estilo terminal -->
-            <div class="bg-white dark:bg-gray-900 p-6 rounded-2xl border-2 border-gray-200 dark:border-gray-700 shadow-lg shadow-blue-100/30 dark:shadow-blue-900/40 mb-8 animate-fade-in-up transition-all duration-700">
+            <div class="bg-white dark:bg-gray-900 p-6 rounded-2xl border-2 border-gray-200 dark:border-gray-700 shadow-lg shadow-blue-100/30 dark:shadow-blue-900/40 mb-8 animate-fade-in-up transition-all ">
                 <div class="flex items-center mb-5">
                     <div class="flex space-x-2 mr-4">
                         <div class="w-3 h-3 rounded-full bg-red-400 animate-pulse"></div>
@@ -487,7 +486,7 @@
 
                 <div class="bg-gray-50/80 dark:bg-gray-800 p-5 rounded-xl border border-gray-200 dark:border-gray-600 font-mono text-green-600 dark:text-green-400 space-y-3">
                     <!-- Repite para cada regla -->
-                    <p class="transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
                         <span class="text-purple-500">>></span>
                         <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
                             @lang('messages.por_cada_kill') <i class="fa-solid fa-skull ml-1 group-hover:animate-spin-slow"></i>:
@@ -495,7 +494,7 @@
                         <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_kill')</span>
                     </p>
 
-                    <p class="transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
                         <span class="text-purple-500">>></span>
                         <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
                             @lang('messages.por_cada_asistencia') <i class="fa-solid fa-handshake-angle ml-1 group-hover:animate-spin-slow"></i>:
@@ -503,7 +502,7 @@
                         <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_asistencia')</span>
                     </p>
                                 
-                    <p class="transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
                         <span class="text-purple-500">>></span>
                         <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
                             @lang('messages.por_cada_muerte') <i class="fa-solid fa-skull-crossbones ml-1 group-hover:animate-spin-slow"></i>:
@@ -511,7 +510,7 @@
                         <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_muerte')</span>
                     </p>
 
-                    <p class="transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
                         <span class="text-purple-500">>></span>
                         <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
                             @lang('messages.por_puntos_vision') <i class="fa-solid fa-eye ml-1 group-hover:animate-spin-slow"></i>:
@@ -519,7 +518,7 @@
                         <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_vision')</span>
                     </p>
 
-                    <p class="transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
                         <span class="text-purple-500">>></span>
                         <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
                             @lang('messages.por_objetivos_robados') <i class="fa-solid fa-hand-rock ml-1 group-hover:animate-spin-slow"></i>:
@@ -527,7 +526,7 @@
                         <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_objetivos_robados')</span>
                     </p>
 
-                    <p class="transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
                         <span class="text-purple-500">>></span>
                         <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
                             @lang('messages.por_dano_torres') <i class="fa-solid fa-gopuram ml-1 group-hover:animate-spin-slow"></i>:
@@ -535,7 +534,7 @@
                         <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_dano_torres')</span>
                     </p>
 
-                    <p class="transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
                         <span class="text-purple-500">>></span>
                         <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
                             @lang('messages.por_oro_conseguido') <i class="fa-solid fa-coins ml-1 group-hover:animate-spin-slow"></i>:
@@ -543,7 +542,7 @@
                         <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_oro')</span>
                     </p>
 
-                    <p class="transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
                         <span class="text-purple-500">>></span>
                         <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
                             @lang('messages.por_double_kill') <i class="fa-solid fa-2 ml-1 group-hover:animate-spin-slow"></i>:
@@ -551,7 +550,7 @@
                         <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_double_kill')</span>
                     </p>
 
-                    <p class="transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
                         <span class="text-purple-500">>></span>
                         <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
                             @lang('messages.por_triple_kill') <i class="fa-solid fa-3 ml-1 group-hover:animate-spin-slow"></i>:
@@ -559,7 +558,7 @@
                         <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_triple_kill')</span>
                     </p>
 
-                    <p class="transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
                         <span class="text-purple-500">>></span>
                         <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
                             @lang('messages.por_quadra_kill') <i class="fa-solid fa-4 ml-1 group-hover:animate-spin-slow"></i>:
@@ -567,7 +566,7 @@
                         <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_quadra_kill')</span>
                     </p>
 
-                    <p class="transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
                         <span class="text-purple-500">>></span>
                         <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
                             @lang('messages.por_penta_kill') <i class="fa-solid fa-5 ml-1 group-hover:animate-spin-slow"></i>:
@@ -575,7 +574,7 @@
                         <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_penta_kill')</span>
                     </p>
 
-                    <p class="transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
                         <span class="text-purple-500">>></span>
                         <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
                             @lang('messages.por_dano_campeones') <i class="fa-solid fa-bolt ml-1 group-hover:animate-spin-slow"></i>:
@@ -583,7 +582,7 @@
                         <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_dano_campeones')</span>
                     </p>
 
-                    <p class="transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
                         <span class="text-purple-500">>></span>
                         <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
                             @lang('messages.por_dano_recibido') <i class="fa-solid fa-shield-halved ml-1 group-hover:animate-spin-slow"></i>:
@@ -591,7 +590,7 @@
                         <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_dano_recibido')</span>
                     </p>
 
-                    <p class="transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
                         <span class="text-purple-500">>></span>
                         <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
                             @lang('messages.por_tiempo_muerto') <i class="fa-solid fa-hourglass-end ml-1 group-hover:animate-spin-slow"></i>:
@@ -599,7 +598,7 @@
                         <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_tiempo_muerto')</span>
                     </p>
 
-                    <p class="transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
                         <span class="text-purple-500">>></span>
                         <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
                             @lang('messages.por_botin_conseguido') <i class="fa-solid fa-gift ml-1 group-hover:animate-spin-slow"></i>:
@@ -607,7 +606,7 @@
                         <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_botin_conseguido')</span>
                     </p>
 
-                    <p class="transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
                         <span class="text-purple-500">>></span>
                         <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
                             @lang('messages.por_botin_perdido') <i class="fa-solid fa-box-open ml-1 group-hover:animate-spin-slow"></i>:
@@ -615,7 +614,7 @@
                         <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_botin_perdido')</span>
                     </p>
 
-                    <p class="transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
                         <span class="text-purple-500">>></span>
                         <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
                             @lang('messages.por_primera_sangre') <i class="fa-solid fa-droplet ml-1 group-hover:animate-spin-slow"></i>:
@@ -623,7 +622,7 @@
                         <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_primera_sangre')</span>
                     </p>
 
-                    <p class="transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
                         <span class="text-purple-500">>></span>
                         <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
                             @lang('messages.por_primera_torre') <i class="fa-solid fa-tower-broadcast ml-1 group-hover:animate-spin-slow"></i>:
@@ -631,7 +630,7 @@
                         <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_primera_torre')</span>
                     </p>
 
-                    <p class="transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
                         <span class="text-purple-500">>></span>
                         <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
                             @lang('messages.actualizacion') <i class="fa-solid fa-rotate-right ml-1 group-hover:animate-spin-slow"></i>:

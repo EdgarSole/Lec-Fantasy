@@ -67,17 +67,17 @@
                 <img src="{{ $liga->logo_url ?? asset('images/default-liga.png') }}" 
                      alt="Logo de {{ $liga->nombre }}" 
                      class="h-12 w-12 rounded-full object-cover border-2 border-indigo-400 shadow-glow">
-                <div class="absolute -bottom-1 -right-1 h-4 w-4 bg-green-500 rounded-full border-2 border-white shadow-pulse"></div>
+                
             </div>
             <div class="ml-4">
-                <h2 class="text-xl font-bold text-white font-orbitron tracking-wide">CHAT: {{ strtoupper($liga->nombre) }}</h2>
+                <h2 class="text-xl font-bold text-white  tracking-wide">CHAT: {{ strtoupper($liga->nombre) }}</h2>
                 <p class="text-indigo-300 text-xs font-exo">{{ $liga->descripcion }}</p>
             </div>
             <div class="ml-auto flex space-x-2">
                 <!-- Botón de configuración -->
                 <button id="config-btn" class="p-2 text-indigo-300 hover:text-white hover:bg-indigo-700/50 rounded-lg transition-all relative group">
                     <i class="fas fa-cog"></i>
-                    <span class="tooltip-text">Configuración</span>
+                    <span class="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Configuración</span>
                 </button>
                 
                 <!-- Botón de usuarios -->
@@ -389,7 +389,7 @@
         // Hacer scroll al final de los mensajes al cargar
         mensajesContainer.scrollTop = mensajesContainer.scrollHeight;
         
-        // Configuración de Echo para recibir mensajes en tiempo real
+
         // Configuración de Echo para recibir mensajes en tiempo real
 window.Echo.private(`liga.${'{{ $liga->id }}'}`)
     .listen('NuevoMensajeLiga', (data) => {
