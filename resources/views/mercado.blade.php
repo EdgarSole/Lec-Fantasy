@@ -265,7 +265,9 @@
                 // Actualizar la interfaz con los nuevos datos
                 actualizarInterfaz(data);
                 cerrarModal();
-                
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
                 // Mostrar notificación de éxito
                 mostrarNotificacion('success', data.message || 'Puja realizada con éxito');
             } else {
@@ -365,6 +367,8 @@
     document.getElementById('pujaModal').addEventListener('click', function(e) {
         if (e.target === this) {
             cerrarModal();
+            
+
         }
     });
     

@@ -2,8 +2,8 @@
     
         <div class="w-full max-w-md px-6 py-6 bg-white rounded-2xl shadow-xl">
             <div class="text-center mb-8">
-                <h2 class="text-3xl font-bold text-gray-800">Bienvenido a <span class="text-blue-600">LEC Fantasy</span></h2>
-                <p class="mt-2 text-gray-600">Inicia sesión para gestionar tu equipo</p>
+                <h2 class="text-3xl font-bold text-gray-800"> @lang('messages.bienvenido_a')<span class="text-blue-600">LEC Fantasy</span></h2>
+                <p class="mt-2 text-gray-600">@lang('messages.incia_sesion_gestiona')</p>
             </div>
 
             <form method="POST" action="{{ route('login') }}" class="space-y-6">
@@ -11,7 +11,7 @@
 
                 <!-- Campo login -->
                 <div>
-                    <label for="login" class="block text-sm font-medium text-gray-700 mb-1">Correo electrónico o Nombre</label>
+                    <label for="login" class="block text-sm font-medium text-gray-700 mb-1"> @lang('messages.email_o_nombre')</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <svg class="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
@@ -29,7 +29,7 @@
 
                 <!-- Contraseña -->
                 <div>
-                    <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-1">@lang('messages.contraseña')</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <svg class="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
@@ -50,12 +50,12 @@
                     <div class="flex items-center">
                         <input id="remember_me" name="remember" type="checkbox" 
                             class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
-                        <label for="remember_me" class="ml-2 block text-sm text-gray-700">Recordarme</label>
+                        <label for="remember_me" class="ml-2 block text-sm text-gray-700">@lang('messages.recordarme')</label>
                     </div>
 
                     @if (Route::has('password.request'))
                         <a href="{{ route('password.request') }}" class="text-sm text-blue-600 hover:text-blue-500 transition duration-150">
-                            ¿Olvidaste tu contraseña?
+                             @lang('messages.olvide_contra')
                         </a>
                     @endif
                 </div>
@@ -64,15 +64,15 @@
                 <div>
                     <button type="submit" 
                         class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-300 transform hover:scale-105">
-                        Iniciar sesión
+                         @lang('messages.login')
                     </button>
                 </div>
 
                 <!-- Registro -->
                 <div class="text-center text-sm text-gray-600">
-                    <p>¿No tienes cuenta? 
+                    <p> @lang('messages.no_cuenta')
                         <a href="{{ route('register') }}" class="font-medium text-blue-600 hover:text-blue-500 transition duration-150">
-                            Regístrate aquí
+                             @lang('messages.registrate_aqui')
                         </a>
                     </p>
                 </div>
@@ -85,7 +85,7 @@
                         <div class="w-full border-t border-gray-300"></div>
                     </div>
                     <div class="relative flex justify-center text-sm">
-                        <span class="px-2 bg-white text-gray-500">O continúa con</span>
+                        <span class="px-2 bg-white text-gray-500"> @lang('messages.continua_con')</span>
                     </div>
                 </div>
 

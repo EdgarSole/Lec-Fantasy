@@ -31,7 +31,9 @@
                         <span class="absolute bottom-0 left-0 h-0.5 bg-blue-500 dark:bg-cyan-400 w-0 group-hover:w-full transition-all duration-500"></span>
                     </x-nav-link>
 
-                    <x-nav-link :href="route('jugadores')" :active="request()->routeIs('jugadores')" 
+                    <x-nav-link :href="route('jugadores')" 
+                    @click.prevent="window.location.href = '{{ route('jugadores') }}'"
+                    :active="request()->routeIs('jugadores')" 
                         class="px-5 py-2 font-medium relative overflow-hidden group dark:text-gray-300">
                         <span class="relative z-10 flex items-center">
                             <span class="mr-2"><i class="fa-solid fa-gamepad"></i></span>
@@ -40,7 +42,8 @@
                         <span class="absolute bottom-0 left-0 h-0.5 bg-blue-500 dark:bg-cyan-400 w-0 group-hover:w-full transition-all duration-500"></span>
                     </x-nav-link>
 
-                    <x-nav-link :href="route('top-global')" :active="request()->routeIs('top-global')" 
+                    <x-nav-link :href="route('top-global')" @click.prevent="window.location.href = '{{ route('top-global') }}'"
+                    :active="request()->routeIs('top-global')" 
                         class="px-5 py-2 font-medium relative overflow-hidden group dark:text-gray-300">
                         <span class="relative z-10 flex items-center">
                             <span class="mr-2"><i class="fa-solid fa-earth-americas"></i></span>

@@ -327,6 +327,33 @@ return [
     'ligas_activas' => 'Ligas Activas',
     'miembro_desde' => 'Miembro desde',
     'deja_blanco' => 'Dejar en blanco para no cambiar',
+
+
+    //Vista Login
+    'bienvenido_a' => 'Bienvenido a',
+    'incia_sesion_gestiona' => 'Inicia sesión para gestionar tu equipo',
+    'email_o_nombre' => 'Correo electrónico o Nombre',
+    'recordarme' => 'Recordarme',
+    'olvide_contra' => '¿Olvidaste tu contraseña?',
+    'no_cuenta' => '¿No tienes cuenta? ',
+    'registrate_aqui' => 'Regístrate aquí',
+    'continua_con' => 'O continúa con',
+    'nombre_user' => 'Nombre',
+    
+    //Vista Register
+    'tu_nombre' => 'Tu nombre de usuario',
+    'unete_a' => 'Únete a',
+    'crea_y_empieza' => 'Crea tu cuenta para empezar a competir',
+    'nombre_user' => 'Nombre de usuario',
+    'foto_perfil_op' => 'Foto de perfil (opcional)',
+    'clic_subir' => 'Haz clic para subir',
+    'arrastra' => 'o arrastra una imagen',
+    'ya_cuenta' => '¿Ya tienes una cuenta?',
+    'inicia_aqui' => 'Inicia sesión aquí',
+
+
+
+
 ];
 
 ?>

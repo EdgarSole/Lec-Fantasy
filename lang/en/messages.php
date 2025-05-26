@@ -319,6 +319,27 @@ return [
     'miembro_desde' => 'Member since',
     'deja_blanco' => 'Leave blank to keep unchanged',
 
+    //View Login
+    'bienvenido_a' => 'Welcome to',
+    'incia_sesion_gestiona' => 'Log in to manage your team',
+    'email_o_nombre' => 'Email or Username',
+    'recordarme' => 'Remember me',
+    'olvide_contra' => 'Forgot your password?',
+    'no_cuenta' => "Don't have an account?",
+    'registrate_aqui' => 'Sign up here',
+    'continua_con' => 'Or continue with',
+
+    // Register View
+    'tu_nombre' => 'Your name',
+    'unete_a' => 'Join',
+    'crea_y_empieza' => 'Create your account to start competing',
+    'nombre_user' => 'Username',
+    'foto_perfil_op' => 'Profile Picture (Optional)',
+    'clic_subir' => 'Click to upload',
+    'arrastra' => 'or drag an image',
+    'ya_cuenta' => 'Already have an account?',
+    'inicia_aqui' => 'Log in here',
+
     ];
 
 ?>

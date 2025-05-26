@@ -1,8 +1,8 @@
 <x-guest-layout>
         <div class="w-full max-w-md px-8 py-10 bg-white rounded-2xl shadow-xl">
             <div class="text-center mb-8">
-                <h2 class="text-3xl font-bold text-gray-800">Únete a <span class="text-blue-600">LEC Fantasy</span></h2>
-                <p class="mt-2 text-gray-600">Crea tu cuenta para empezar a competir</p>
+                <h2 class="text-3xl font-bold text-gray-800"> @lang('messages.unete_a')<span class="text-blue-600"> LEC Fantasy</span></h2>
+                <p class="mt-2 text-gray-600"> @lang('messages.crea_y_empieza')</p>
             </div>
 
             <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data" class="space-y-5">
@@ -10,7 +10,7 @@
 
                 <!-- Nombre de usuario -->
                 <div>
-                    <label for="nombre" class="block text-sm font-medium text-gray-700 mb-1">Nombre de usuario</label>
+                    <label for="nombre" class="block text-sm font-medium text-gray-700 mb-1">@lang('messages.nombre_user')</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <svg class="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
@@ -19,7 +19,8 @@
                         </div>
                         <input id="nombre" name="nombre" type="text" value="{{ old('nombre') }}" required autofocus
                             class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition duration-150"
-                            placeholder="Tu nombre de usuario">
+                            placeholder="{{ __('messages.tu_nombre') }}">
+
                     </div>
                     @error('nombre')
                         <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
@@ -47,7 +48,7 @@
 
                 <!-- Contraseña -->
                 <div>
-                    <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-1">@lang('messages.contraseña')</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <svg class="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
@@ -65,7 +66,7 @@
 
                 <!-- Confirmar Contraseña -->
                 <div>
-                    <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-1">Confirmar Contraseña</label>
+                    <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-1">@lang('messages.confirma_contraseña')</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <svg class="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
@@ -83,7 +84,7 @@
 
                 <!-- Foto de Perfil -->
                 <div class="pt-2">
-                    <label for="foto" class="block text-sm font-medium text-gray-700 mb-2">Foto de Perfil (Opcional)</label>
+                    <label for="foto" class="block text-sm font-medium text-gray-700 mb-2">@lang('messages.foto_perfil_op')</label>
                     <div class="flex items-center justify-center w-full">
                         <label for="foto" class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition duration-150">
                             <div class="flex flex-col items-center justify-center pt-5 pb-6">
@@ -91,7 +92,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
                                 </svg>
                                 <p class="mb-2 text-sm text-gray-500">
-                                    <span class="font-semibold">Haz clic para subir</span> o arrastra una imagen
+                                    <span class="font-semibold">@lang('messages.clic_subir')</span>  @lang('messages.arrastra')
                                 </p>
                                 <p class="text-xs text-gray-500">PNG, JPG (MAX. 2MB)</p>
                             </div>
@@ -110,16 +111,16 @@
                 <div class="pt-2">
                     <button type="submit" 
                         class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-300 transform hover:scale-105">
-                        Registrarse
+                         @lang('messages.register')
                     </button>
                     <br>
                 </div>
 
                 <!-- Enlace a Login -->
                 <div class="text-center text-sm text-gray-600">
-                    <p>¿Ya tienes cuenta? 
+                    <p>  @lang('messages.ya_cuenta')
                         <a href="{{ route('login') }}" class="font-medium text-blue-600 hover:text-blue-500 transition duration-150">
-                            Inicia sesión aquí
+                            @lang('messages.inicia_aqui')
                         </a>
                     </p>
                 </div>

@@ -11,11 +11,11 @@
     <div x-data="{
             currentSlide: 0,
             slides: [
-                '{{ asset('imagenes/fondo.jpg') }}',
-                '{{ asset('imagenes/fondo2-estadio.jpg') }}',
+                '{{ asset('imagenes/fondo5_2.jpg') }}',
+                '{{ asset('imagenes/foto_fondo3.avif') }}',
                 '{{ asset('imagenes/fondo3-estadio.jpg') }}',
                 '{{ asset('imagenes/fondo2-arena.jpg') }}',
-                '{{ asset('imagenes/fondo5-estadio.jpg') }}'
+                '{{ asset('imagenes/fondo4.jpg') }}'
             ],
             interval: null,
             init() {
