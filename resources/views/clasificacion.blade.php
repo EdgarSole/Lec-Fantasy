@@ -7,11 +7,11 @@
         <div class="text-center mb-12">
             <h1 class="text-4xl font-extrabold text-gray-900 dark:text-white sm:text-5xl mb-4">
                 <span class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">
-                    Clasificación
+                    @lang('messages.clasificacion')
                 </span>
             </h1>
             <h2 class="text-2xl font-semibold text-gray-700 dark:text-gray-300">
-                Liga: <span class="text-indigo-600 dark:text-indigo-400">{{ $liga->nombre }}</span>
+                @lang('messages.liga'): <span class="text-indigo-600 dark:text-indigo-400">{{ $liga->nombre }}</span>
             </h2>
         </div>
 
@@ -20,9 +20,9 @@
             <!-- Cabecera de la tabla -->
             <div class="bg-gradient-to-r from-indigo-500 to-purple-600 px-6 py-4">
                 <div class="flex items-center justify-between">
-                    <h3 class="text-xl font-bold text-white">General</h3>
+                    <h3 class="text-xl font-bold text-white">@lang('messages.general')</h3>
                     <span class="text-white/90 text-sm">
-                        Actualizado: {{ now()->addHours(2)->format('d/m/Y H:i') }}
+                        @lang('messages.actualizando'): {{ now()->addHours(2)->format('d/m/Y H:i') }}
                     </span>
                 </div>
             </div>
@@ -69,7 +69,7 @@
                                     </p>
                                 </div>
                                 <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                                    Valor del equipo: <span class="font-semibold text-indigo-600 dark:text-indigo-400">{{ number_format($equipo->valor_total, 0, ',', '.') }} €</span>
+                                    @lang('messages.valor_equipo'): <span class="font-semibold text-indigo-600 dark:text-indigo-400">{{ number_format($equipo->valor_total, 0, ',', '.') }} €</span>
                                 </p>
                             </div>
                         </div>
@@ -78,7 +78,7 @@
                         <div class="ml-4 flex-shrink-0">
                             <div class="text-right">
                                 <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ number_format($equipo->puntos, 0, ',', '.') }}</p>
-                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Puntos</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">@lang('messages.puntos')</p>
                             </div>
                         </div>
                     </div>
@@ -91,7 +91,7 @@
         <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
             <!-- Mejor equipo -->
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-700">
-                <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">🏆 Mejor equipo</h3>
+                <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">🏆@lang('messages.mejor_equipo')</h3>
                 <div class="flex items-center">
                     <div class="flex-shrink-0 h-12 w-12 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-600 flex items-center justify-center text-white font-bold">
                         1
@@ -105,7 +105,7 @@
             
             <!-- Tu posición -->
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-700">
-                <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">🎯 Tu posición</h3>
+                <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">🎯 @lang('messages.tu_posicion')</h3>
                 @php
                     $tuPosicion = $equipos->search(function($item) {
                         return $item->usuario_id == auth()->id();
@@ -116,7 +116,7 @@
                         {{ $tuPosicion }}
                     </div>
                     <div class="ml-4">
-                        <p class="font-medium text-gray-900 dark:text-white">Tú</p>
+                        <p class="font-medium text-gray-900 dark:text-white">@lang('messages.tu')</p>
                         <p class="text-sm text-gray-500 dark:text-gray-400">
                             {{ number_format($equipos->where('usuario_id', auth()->id())->first()->puntos ?? 0, 0, ',', '.') }} pts
                         </p>
@@ -126,7 +126,7 @@
             
             <!-- Peor equipo -->
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-700">
-                <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">💩 Peor equipo</h3>
+                <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">💩 @lang('messages.peor_equipo')</h3>
                 <div class="flex items-center">
                     <!-- Imagen del usuario -->
                     <div class="relative h-12 w-12 rounded-full overflow-hidden border border-gray-300 dark:border-gray-600 shadow-md bg-white dark:bg-gray-700 p-0.5">
@@ -149,7 +149,7 @@
 </div>
 
 <!-- Modal de jugadores - Versión mejorada -->
-<div id="jugadoresModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+<div id="jugadoresModal" class="fixed inset-0 z-250 hidden overflow-y-auto">
     <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
         <!-- Fondo del modal con transición suave -->
         <div class="fixed inset-0 transition-opacity duration-300 ease-in-out" aria-hidden="true">
@@ -184,7 +184,7 @@
                     onclick="cerrarModal()" 
                     class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-base font-medium text-white hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all   sm:ml-3 sm:w-auto sm:text-sm"
                 >
-                    Cerrar
+                     @lang('messages.cerrar')
                 </button>
             </div>
         </div>
@@ -202,7 +202,7 @@
         const equipoNombre = document.querySelector(`[onclick="mostrarJugadoresEquipo(${equipoId})"] .text-lg`).textContent.trim();
         
         // Configurar el título del modal
-        document.getElementById('modalTitulo').textContent = `Jugadores de ${equipoNombre}`;
+        document.getElementById('modalTitulo').textContent = `@lang('messages.jugadores_de') ${equipoNombre}`;
         
         // Generar HTML de los jugadores con nuevo diseño
         const jugadoresHTML = jugadores.map(jugador => `

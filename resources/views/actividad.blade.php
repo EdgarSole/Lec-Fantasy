@@ -8,10 +8,10 @@
         <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
             <h1 class="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-2">
                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600">
-                    Actividad de la Liga
+                    @lang('messages.actividad_liga')
                 </span>
             </h1>
-            <p class="text-gray-600 dark:text-gray-300">Historial completo de movimientos</p>
+            <p class="text-gray-600 dark:text-gray-300"> @lang('messages.historial_completo')</p>
         </div>
     </div>
 
@@ -25,7 +25,7 @@
             
             <a href="{{ route('actividad', ['liga' => $liga->id]) }}" 
                class="px-3 py-1 rounded-full text-sm font-medium transition-all   {{ !$currentFilter ? 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 scale-105' : 'bg-gray-100 dark:bg-gray-600 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-500 hover:scale-105' }}">
-               Todos
+               @lang('messages.todos')
             </a>
             
             <a href="{{ route('actividad', ['liga' => $liga->id, 'tipo' => 'compra']) }}" 
@@ -34,7 +34,7 @@
                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                    </svg>
-                   Compras
+                   @lang('messages.compras')
                </span>
             </a>
             
@@ -44,7 +44,7 @@
                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
                    </svg>
-                   Ventas
+                   @lang('messages.ventas')
                </span>
             </a>
             
@@ -54,7 +54,7 @@
                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2h-1V9z" clip-rule="evenodd" />
                    </svg>
-                   Eventos
+                   @lang('messages.eventos')
                </span>
             </a>
         </div>
@@ -97,17 +97,21 @@
                                 <p class="font-semibold text-gray-800 dark:text-gray-200 truncate">
                                     @switch($actividad->tipo)
                                         @case('compra')
-                                            <span class="text-green-600 dark:text-green-400">💰 Compra:</span>
-                                            {{ $actividad->equipo?->usuario?->nombre ?? 'Usuario desconocido' }} compró a <span class="font-bold">{{ $actividad->jugador->nombre ?? 'un jugador' }}</span>
+                                            <span class="text-green-600 dark:text-green-400">💰 @lang('messages.compra'):</span>
+                                                {{ $actividad->equipo?->usuario?->nombre ?? __('messages.usuario_desconocido') }}
+                                                @lang('messages.compro_a')
+                                            <span class="font-bold">{{ $actividad->jugador->nombre ?? __('messages.un_jugador') }}</span>
                                         @break
                                         
                                         @case('venta')
-                                            <span class="text-red-600 dark:text-red-400">💸 Venta:</span>
-                                            {{ $actividad->equipo?->usuario?->nombre ?? 'Usuario desconocido' }} vendió a <span class="font-bold">{{ $actividad->jugador->nombre ?? 'un jugador' }}</span>
-                                        @break
-                                        
+                                            <span class="text-red-600 dark:text-red-400">💸 @lang('messages.venta'):</span>
+                                            {{ $actividad->equipo?->usuario?->nombre ?? __('messages.usuario_desconocido') }}
+                                            @lang('messages.vendio_a')
+                                            <span class="font-bold">{{ $actividad->jugador->nombre ?? __('messages.un_jugador') }}</span>
+                                            @break
+
                                         @default
-                                            <span class="text-blue-600 dark:text-blue-400">📢</span> {{ $actividad->descripcion }}
+                                            <span class="text-blue-600 dark:text-blue-400">📢 @lang('messages.evento'):</span> {{ $actividad->descripcion }}
                                     @endswitch
                                 </p>
                             </div>
@@ -150,14 +154,14 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                 </div>
-                <h3 class="text-lg font-medium text-gray-700 dark:text-gray-300 mb-1">No hay actividad aún</h3>
-                <p class="text-gray-500 dark:text-gray-400 max-w-md mx-auto">Cuando ocurran eventos en la liga, aparecerán aquí.</p>
+                <h3 class="text-lg font-medium text-gray-700 dark:text-gray-300 mb-1"> @lang('messages.no_actividad')</h3>
+                <p class="text-gray-500 dark:text-gray-400 max-w-md mx-auto"> @lang('messages.cuando_ocurra')</p>
                 <div class="mt-4">
                     <a href="{{ route('mercado', ['liga' => $liga->id]) }}" class="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors  ">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586L7.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 10.586V7z" clip-rule="evenodd" />
                         </svg>
-                        Ir al Mercado
+                         @lang('messages.ir_mercado')
                     </a>
                 </div>
             </div>

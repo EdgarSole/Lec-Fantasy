@@ -84,7 +84,9 @@ Route::get('/jugadores', [JugadorController::class, 'index'])->name('jugadores')
 Route::get('/top-global', [TopGlobalController::class, 'index'])->name('top-global');
 
 // Ruta para cambiar el idioma
-Route::get('locale/{lang}', [LocaleController::class, 'setLocale']);
+Route::get('locale/{lang}', [LocaleController::class, 'setLocale'])->name('locale');
+
+
 
 
 

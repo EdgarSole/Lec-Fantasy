@@ -78,8 +78,11 @@
             </div>
             <div class="flex-1">
                 <h1 class="text-3xl font-bold text-blue-800 dark:text-blue-300 tracking-wide">{{ $liga->nombre }}</h1>
-                <p class="text-blue-600 dark:text-blue-400 mt-1">Creada el {{ $liga->created_at->format('d/m/Y') }}</p>
-                <p class="text-blue-700 dark:text-blue-300 mt-2">{{ $liga->descripcion ?? 'No hay descripción disponible' }}</p>
+                <p class="text-blue-600 dark:text-blue-400 mt-1">@lang('messages.creada_el') {{ $liga->created_at->format('d/m/Y') }}</p>
+                <p class="text-blue-700 dark:text-blue-300 mt-2">
+                    {{ $liga->descripcion ?: __('messages.no_desc') }}
+                </p>
+
             </div>
         </div>
 
@@ -92,40 +95,40 @@
                 <div class="space-y-6">
                     <!-- Nombre -->
                     <div>
-                        <label for="nombre" class="block text-sm font-medium text-blue-700 dark:text-blue-300 mb-1">Nombre de la Liga *</label>
+                        <label for="nombre" class="block text-sm font-medium text-blue-700 dark:text-blue-300 mb-1"> @lang('messages.nombre-liga') *</label>
                         <input type="text" name="nombre" id="nombre" value="{{ old('nombre', $liga->nombre) }}" required
                                class="w-full px-4 py-2 border-2 border-blue-200 dark:border-blue-700 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 transition duration-300 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200">
                     </div>
 
                     <!-- Descripción -->
                     <div>
-                        <label for="descripcion" class="block text-sm font-medium text-blue-700 dark:text-blue-300 mb-1">Descripción</label>
+                        <label for="descripcion" class="block text-sm font-medium text-blue-700 dark:text-blue-300 mb-1">@lang('messages.descripcion')</label>
                         <textarea name="descripcion" id="descripcion" rows="3"
                                   class="w-full px-4 py-2 border-2 border-blue-200 dark:border-blue-700 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 transition duration-300 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200">{{ old('descripcion', $liga->descripcion) }}</textarea>
                     </div>
 
                     <!-- Tipo de Liga -->
                     <div>
-                        <label for="tipo" class="block text-sm font-medium text-blue-700 dark:text-blue-300 mb-1">Tipo de Liga *</label>
+                        <label for="tipo" class="block text-sm font-medium text-blue-700 dark:text-blue-300 mb-1">@lang('messages.tipo_liga') *</label>
                         <select name="tipo" id="tipo" x-model="ligaTipo"
                                 class="w-full px-4 py-2 border-2 border-blue-200 dark:border-blue-700 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 transition duration-300 appearance-none bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 bg-[url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233b82f6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")] dark:bg-[url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2360a5fa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")] bg-no-repeat bg-[length:1.5rem] bg-[right_0.5rem_center]">
-                            <option value="publica">Pública</option>
-                            <option value="privada">Privada</option>
+                            <option value="publica">@lang('messages.publica')</option>
+                            <option value="privada">@lang('messages.privada')</option>
                         </select>
                     </div>
 
                     <!-- Contraseña (solo si es privada) -->
                     <div x-show="ligaTipo === 'privada'" x-transition class="mt-4">
-                        <label for="password" class="block text-sm font-medium text-blue-700 dark:text-blue-300 mb-1">Contraseña *</label>
+                        <label for="password" class="block text-sm font-medium text-blue-700 dark:text-blue-300 mb-1">@lang('messages.contraseña') *</label>
                         <input type="password" name="contrasena" id="password" x-ref="passwordInput"
                             class="w-full px-4 py-2 border-2 border-blue-200 dark:border-blue-700 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 transition duration-300 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200"
                             placeholder="Contraseña para unirse a la liga">
-                        <p class="mt-1 text-sm text-blue-500 dark:text-blue-400">Obligatorio para las Ligas Privadas</p>
+                        <p class="mt-1 text-sm text-blue-500 dark:text-blue-400">@lang('messages.obligatorio_para')</p>
                     </div>
 
                     <!-- Logo -->
                     <div>
-                        <label for="logo_url" class="block text-sm font-medium text-blue-700 dark:text-blue-300 mb-1">Logo de la Liga</label>
+                        <label for="logo_url" class="block text-sm font-medium text-blue-700 dark:text-blue-300 mb-1">@lang('messages.logo_liga')</label>
                         <div class="flex items-center space-x-4">
                             <div class="shrink-0">
                                 <div class="relative h-16 w-16 rounded-full p-1 bg-gradient-to-br from-blue-300 dark:from-blue-600 to-blue-500 dark:to-blue-700">
@@ -135,7 +138,7 @@
                                 </div>
                             </div>
                             <label class="block">
-                                <span class="sr-only">Elegir logo</span>
+                                <span class="sr-only">@lang('messages.elegir_logo')</span>
                                 <input type="file" name="logo_url" id="logo_url" accept="image/*" 
                                        class="block w-full text-sm text-blue-700 dark:text-blue-300
                                               file:mr-4 file:py-2 file:px-4
@@ -151,11 +154,11 @@
                     <div class="flex justify-end space-x-4 pt-4">
                         <button type="button" @click="editMode = false"
                                 class="px-6 py-2 border-2 border-blue-200 dark:border-blue-700 rounded-lg text-blue-700 dark:text-blue-300 bg-white dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 transition duration-300 hover:shadow-md">
-                            Cancelar
+                            @lang('messages.cancelar')
                         </button>
                         <button type="submit"
                                 class="px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 dark:hover:from-blue-700 dark:hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition duration-300 shadow-md hover:shadow-lg">
-                            Guardar cambios
+                            @lang('messages.guardar_cambios')
                         </button>
                     </div>
                 </div>
@@ -167,19 +170,19 @@
             <!-- Estadísticas - Estilo cartas gaming -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
                 <div class="bg-white dark:bg-gray-700 p-5 rounded-lg border-2 border-blue-200 dark:border-blue-600 shadow-md hover:shadow-lg dark:hover:shadow-gray-900/50 transition-all transform hover:-translate-y-1">
-                    <h3 class="text-xs text-center font-bold text-blue-500 dark:text-blue-400 uppercase tracking-wider">TIPO DE LIGA</h3>
+                    <h3 class="text-xs text-center font-bold text-blue-500 dark:text-blue-400 uppercase tracking-wider">  @lang('messages.tipo_liga_may')</h3>
                     <p class="text-xl text-center font-bold text-blue-800 dark:text-blue-300 mt-2 uppercase">
                         {{ ucfirst($liga->tipo) }}
                     </p>
                 </div>
                 <div class="bg-white dark:bg-gray-700 p-5 rounded-lg border-2 border-green-200 dark:border-green-600 shadow-md hover:shadow-lg dark:hover:shadow-gray-900/50 transition-all transform hover:-translate-y-1">
-                    <h3 class="text-xs font-bold text-green-500 dark:text-green-400 uppercase text-center tracking-wider">MIEMBROS</h3>
+                    <h3 class="text-xs font-bold text-green-500 dark:text-green-400 uppercase text-center tracking-wider">  @lang('messages.miembros_may')</h3>
                     <p class="text-2xl text-center font-bold text-green-800 dark:text-green-300 mt-2">
                         {{ $liga->usuarios->count() }}
                     </p>
                 </div>
                 <div class="bg-white dark:bg-gray-700 p-5 rounded-lg border-2 border-yellow-200 dark:border-yellow-600 shadow-md hover:shadow-lg dark:hover:shadow-gray-900/50 transition-all transform hover:-translate-y-1">
-                    <h3 class="text-xs font-bold text-yellow-500 dark:text-yellow-400 text-center uppercase tracking-wider">ADMINISTRADOR</h3>
+                    <h3 class="text-xs font-bold text-yellow-500 dark:text-yellow-400 text-center uppercase tracking-wider">  @lang('messages.admin_may')</h3>
                     <p class="text-xl text-center font-bold text-yellow-800 dark:text-yellow-300 mt-2">
                         {{ $admin }}
                     </p>
@@ -193,7 +196,7 @@
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                     </svg>
-                    EDITAR LIGA
+                      @lang('messages.editar_liga')
                 </button>
                 
                 @if(auth()->id() == $liga->usuario_id)
@@ -204,7 +207,7 @@
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                             </svg>
-                            ELIMINAR LIGA
+                             @lang('messages.eliminar_liga')
                         </button>
 
                         <!-- Modal de confirmación estilo gaming -->
@@ -213,19 +216,19 @@
                                 <div class="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-red-400 dark:border-red-500 rounded-tl-xl"></div>
                                 <div class="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-red-400 dark:border-red-500 rounded-br-xl"></div>
                                 
-                                <h2 class="text-lg font-bold text-red-600 dark:text-red-400 mb-4">¿Estás seguro de eliminar esta liga?</h2>
-                                <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">*No podrás recuperar los datos de la liga.</p>
+                                <h2 class="text-lg font-bold text-red-600 dark:text-red-400 mb-4">  @lang('messages.seguro_liga')</h2>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">  @lang('messages.no_recuperar')</p>
                                 <div class="flex justify-end space-x-4">
                                     <button @click="openModal = false"
                                             class="px-4 py-2 text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 border-2 border-gray-200 dark:border-gray-600">
-                                        Cancelar
+                                          @lang('messages.cancelar')
                                     </button>
                                     <form action="{{ route('eliminar-liga', $liga) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
                                                 class="px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 dark:from-red-600 dark:to-red-700 text-white rounded-lg hover:from-red-600 hover:to-red-700 dark:hover:from-red-700 dark:hover:to-red-800 border-2 border-red-200 dark:border-red-700">
-                                            Sí, eliminar
+                                              @lang('messages.si_eliminar')
                                         </button>
                                     </form>
                                 </div>
@@ -245,7 +248,7 @@
         
         <div class="px-8 py-6 border-b border-blue-100 dark:border-blue-700">
             <h2 class="text-2xl font-bold text-blue-800 dark:text-blue-300 tracking-wide">
-                <span class="text-blue-500 dark:text-blue-400">[</span> PARTICIPANTES <span class="text-blue-500 dark:text-blue-400">]</span>
+                <span class="text-blue-500 dark:text-blue-400">[</span>   @lang('messages.participates_may')<span class="text-blue-500 dark:text-blue-400">]</span>
             </h2>
         </div>
         
@@ -263,7 +266,7 @@
                             
                             @if($usuario->id == $liga->usuario_id)
                                 <div class="absolute -top-2 -right-2 bg-yellow-400 dark:bg-yellow-500 text-gray-900 text-xs font-bold px-2 py-1 rounded-full shadow-md border-2 border-yellow-300 dark:border-yellow-400">
-                                    ADMIN
+                                      @lang('messages.admin1_may')
                                 </div>
                             @endif
                         </div>

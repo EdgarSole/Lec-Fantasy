@@ -5,11 +5,11 @@
             <div class="text-center mb-12">
                 <h1 class="text-4xl font-extrabold text-gray-900 dark:text-gray-100 sm:text-5xl mb-4">
                     <span class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">
-                        Top Global
+                        @lang('messages.top_global')
                     </span>
                 </h1>
                 <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                    Clasificación general de todos los equipos ordenados por puntuación
+                    @lang('messages.clasificacion_general')
                 </p>
             </div>
 
@@ -19,7 +19,7 @@
                     <input 
                         type="text" 
                         id="busqueda-global" 
-                        placeholder="Buscar por usuario o liga..." 
+                        placeholder="{{ __('messages.buscar_usuario_ligas') }}" 
                         class="w-full pl-10 pr-4 py-3 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
                     >
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -35,9 +35,9 @@
                 <!-- Cabecera de la tabla -->
                 <div class="bg-gradient-to-r from-indigo-500 to-purple-600 px-6 py-4">
                     <div class="flex items-center justify-between">
-                        <h3 class="text-xl font-bold text-white">Clasificación Global</h3>
+                        <h3 class="text-xl font-bold text-white">@lang('messages.clasificacion_global')</h3>
                         <span class="text-white/90 text-sm">
-                            Total equipos: {{ $equipos->total() }}
+                            @lang('messages.total_equipos'): {{ $equipos->total() }}
                         </span>
                     </div>
                 </div>
@@ -80,7 +80,7 @@
                                         <p class="text-lg font-bold truncate nombre-usuario text-gray-900 dark:text-gray-100">
                                             {{ $equipo->usuario->nombre }}
                                             @if($equipo->usuario_id == auth()->id())
-                                                <span class="ml-2 px-2 py-0.5 rounded-full text-xs font-medium bg-indigo-100 dark:bg-indigo-800 text-indigo-800 dark:text-indigo-100">Tú</span>
+                                                <span class="ml-2 px-2 py-0.5 rounded-full text-xs font-medium bg-indigo-100 dark:bg-indigo-800 text-indigo-800 dark:text-indigo-100">@lang('messages.tu')</span>
                                             @endif
                                         </p>
                                     </div>
@@ -96,7 +96,7 @@
                             <div class="ml-4 flex-shrink-0">
                                 <div class="text-right">
                                     <p class="text-2xl font-bold text-gray-900 dark:text-gray-100">{{ number_format($equipo->puntos, 0, ',', '.') }}</p>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Puntos</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">@lang('messages.puntos')</p>
                                 </div>
                             </div>
                         </div>

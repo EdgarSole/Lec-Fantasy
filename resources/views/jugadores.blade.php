@@ -15,7 +15,7 @@
 
             <!-- Texto cargando con efecto -->
             <div class="text-xl font-semibold text-white">
-                <span class="animate-pulse">CARGANDO</span>
+                <span class="animate-pulse">@lang('messages.cargando')</span>
                 <span class="animate-pulse animation-delay-100">.</span>
                 <span class="animate-pulse animation-delay-200">.</span>
                 <span class="animate-pulse animation-delay-300">.</span>
@@ -33,7 +33,7 @@
     <x-slot name="header">
         <div class="flex flex-col md:flex-row justify-between items-center gap-4">
             <h2 class="text-2xl font-bold text-gray-800 bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-500 dark:to-purple-500 bg-clip-text text-transparent">
-                BUSCADOR DE JUGADORES LEC
+                 @lang('messages.buscador')
             </h2>
             <div class="relative w-full md:w-1/3">
                 <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -41,7 +41,7 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                     </svg>
                 </div>
-                <input type="text" id="nombreFilter" class="block w-full p-3 pl-10 text-base text-gray-800 dark:text-gray-200 border-2 border-blue-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 focus:border-blue-500 dark:focus:border-blue-500 shadow-sm transition-all duration-300" placeholder="Buscar jugador por nombre..." autocomplete="off">
+                <input type="text" id="nombreFilter" class="block w-full p-3 pl-10 text-base text-gray-800 dark:text-gray-200 border-2 border-blue-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 focus:border-blue-500 dark:focus:border-blue-500 shadow-sm transition-all duration-300" placeholder="{{ __('messages.buscar_jugador_nombre') }}" autocomplete="off">
             </div>
         </div>
     </x-slot>
@@ -52,9 +52,9 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <!-- Filtro por posición -->
                 <div>
-                    <label for="posicionFilter" class="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase">Posición</label>
+                    <label for="posicionFilter" class="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase">@lang('messages.posicion')</label>
                     <select id="posicionFilter" class="bg-white dark:bg-gray-700 border-2 border-blue-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 text-base rounded-xl focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 focus:border-blue-500 dark:focus:border-blue-500 block w-full p-3 shadow-sm transition-all duration-300">
-                        <option value="">Todas las posiciones</option>
+                        <option value="">@lang('messages.todas_posiciones')</option>
                         <option value="Top">Top</option>
                         <option value="Jungla">Jungla</option>
                         <option value="Mid">Mid</option>
@@ -65,9 +65,9 @@
 
                 <!-- Filtro por equipo -->
                 <div>
-                    <label for="equipoFilter" class="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase">Equipo</label>
-                    <select id="equipoFilter" data-placeholder="Todos los equipos" class="bg-white dark:bg-gray-700 border-2 border-blue-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 text-base rounded-xl focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 focus:border-blue-500 dark:focus:border-blue-500 block w-full p-3 shadow-sm transition-all duration-300">
-                        <option value="">Todos los equipos</option>
+                    <label for="equipoFilter" class="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase">@lang('messages.equipo')</label>
+                    <select id="equipoFilter" data-placeholder="{{ __('messages.todos_equipos') }}"  class="bg-white dark:bg-gray-700 border-2 border-blue-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 text-base rounded-xl focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 focus:border-blue-500 dark:focus:border-blue-500 block w-full p-3 shadow-sm transition-all duration-300">
+                        <option value="">@lang('messages.todos_equipos')</option>
                         @foreach($equipos as $equipo)
                             <option value="{{ $equipo }}" data-logo="{{ $logosEquipos[$equipo] ?? '' }}">
                                 {{ $equipo }}
@@ -78,12 +78,12 @@
 
                 <!-- Ordenar por -->
                 <div>
-                    <label for="ordenFilter" class="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase">Ordenar por</label>
+                    <label for="ordenFilter" class="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase">@lang('messages.ordenador_por')</label>
                     <select id="ordenFilter" class="bg-white dark:bg-gray-700 border-2 border-blue-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 text-base rounded-xl focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 focus:border-blue-500 dark:focus:border-blue-500 block w-full p-3 shadow-sm transition-all duration-300">
-                        <option value="puntos_desc">Puntos (mayor a menor)</option>
-                        <option value="puntos_asc">Puntos (menor a mayor)</option>                            
-                        <option value="nombre_asc">Nombre (A-Z)</option>
-                        <option value="nombre_desc">Nombre (Z-A)</option>
+                        <option value="puntos_desc">@lang('messages.mayor_menor')</option>
+                        <option value="puntos_asc">@lang('messages.menor_mayor')</option>                            
+                        <option value="nombre_asc">@lang('messages.nombre_az')</option>
+                        <option value="nombre_desc">@lang('messages.nombre_za')</option>
                     </select>
                 </div>
             </div>
@@ -167,7 +167,7 @@
                         <!-- Efecto hover sobre la imagen -->
                         <div class="absolute inset-0 rounded-full bg-gradient-to-t from-gray-900/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4">
                             <span class="text-white font-bold text-sm bg-black/50 px-2 py-1 rounded-full cursor-pointer" onclick="mostrarEstadisticasJugador({{ $jugador->id }})">
-                                Ver detalles
+                                 @lang('messages.ver_detalles')
                             </span>
                         </div>
                     </div>
@@ -189,13 +189,13 @@
                             {{ $kda }}
 
                             @if($kda > 5)
-                                <span class="ml-1 text-xs bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200 px-1.5 py-0.5 rounded-full">TOP</span>
+                                <span class="ml-1 text-xs bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200 px-1.5 py-0.5 rounded-full">@lang('messages.top')</span>
                             @elseif($kda >= 3 && $kda <= 5)
-                                <span class="ml-1 text-xs bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200 px-1.5 py-0.5 rounded-full">BUENO</span>
+                                <span class="ml-1 text-xs bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200 px-1.5 py-0.5 rounded-full">@lang('messages.bueno')</span>
                             @elseif($kda >= 2 && $kda < 3)
-                                <span class="ml-1 text-xs bg-orange-100 dark:bg-orange-900/50 text-orange-800 dark:text-orange-200 px-1.5 py-0.5 rounded-full">NORMAL</span>
+                                <span class="ml-1 text-xs bg-orange-100 dark:bg-orange-900/50 text-orange-800 dark:text-orange-200 px-1.5 py-0.5 rounded-full">@lang('messages.normal')</span>
                             @else
-                                <span class="ml-1 text-xs bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-200 px-1.5 py-0.5 rounded-full">MALO</span>
+                                <span class="ml-1 text-xs bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-200 px-1.5 py-0.5 rounded-full">@lang('messages.malo')</span>
                             @endif
 
                         </p>
@@ -204,14 +204,14 @@
                     
                     <!-- Puntos -->
                     <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 dark:from-yellow-900/30 dark:to-yellow-800/40 rounded-xl p-3 text-center border border-yellow-200 dark:border-yellow-800 shadow-sm group-hover:shadow-md dark:group-hover:shadow-yellow-900/50 transition-shadow duration-300">
-                        <p class="text-xs font-semibold text-yellow-600 dark:text-yellow-400 uppercase tracking-wider">PUNTOS</p>
+                        <p class="text-xs font-semibold text-yellow-600 dark:text-yellow-400 uppercase tracking-wider">@lang('messages.puntos')</p>
                         <p class="text-xl font-bold text-yellow-700 dark:text-yellow-300 mt-1 flex items-center justify-center">
                             {{ $jugador->puntos }}
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1 text-yellow-500 dark:text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
                                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                             </svg>
                         </p>
-                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Total Fantasy</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1"> @lang('messages.total_fantasy')</p>
                     </div>
                 </div>
                 
@@ -221,7 +221,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        <span>VER ESTADÍSTICAS</span>
+                        <span> @lang('messages.ver_estadisticas')</span>
                     </button>
                 </div>
             </div>
@@ -269,7 +269,7 @@
                             <div class="bg-blue-50 dark:bg-blue-900/30 rounded-xl p-4 border-2 border-blue-100 dark:border-blue-800">
                                 <div class="flex items-center justify-between">
                                     <div>
-                                        <p class="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase">Puntos totales</p>
+                                        <p class="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase"> @lang('messages.puntos_totales')</p>
                                         <p id="modalJugadorPuntos" class="text-2xl font-bold text-gray-800 dark:text-gray-200 mt-1">0</p>
                                     </div>
                                     <div class="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center">
@@ -301,13 +301,13 @@
                             <div class="border-b border-gray-200 dark:border-gray-700">
                                 <nav class="-mb-px flex space-x-8">
                                     <button onclick="cambiarTab('combate')" id="tabCombate" class="tab-activo whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm border-blue-500 dark:border-blue-400 text-blue-600 dark:text-blue-400">
-                                        Combate
+                                         @lang('messages.combate')
                                     </button>
                                     <button onclick="cambiarTab('objetivos')" id="tabObjetivos" class="tab-inactivo whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600">
-                                        Objetivos
+                                         @lang('messages.objectivos')
                                     </button>
                                     <button onclick="cambiarTab('economia')" id="tabEconomia" class="tab-inactivo whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600">
-                                        Economía
+                                         @lang('messages.economia')
                                     </button>
                                 </nav>
                             </div>
@@ -321,19 +321,19 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                                     </svg>
-                                    Estadísticas de Combate
+                                     @lang('messages.estadisticas_combate')
                                 </h4>
                                 <div class="space-y-3">
                                     <div class="flex justify-between">
-                                        <span class="text-sm text-gray-600 dark:text-gray-400">Daño a campeones</span>
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">@lang('messages.dano_a_campeones')</span>
                                         <span id="estadDanioCampeones" class="text-sm font-medium text-gray-800 dark:text-gray-200">0</span>
                                     </div>
                                     <div class="flex justify-between">
-                                        <span class="text-sm text-gray-600 dark:text-gray-400">Daño recibido</span>
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">@lang('messages.dano_recibido')</span>
                                         <span id="estadDanioRecibido" class="text-sm font-medium text-gray-800 dark:text-gray-200">0</span>
                                     </div>
                                     <div class="flex justify-between">
-                                        <span class="text-sm text-gray-600 dark:text-gray-400">Tiempo muerto /s</span>
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">@lang('messages.tiempo_muerto') /s</span>
                                         <span id="estadTiempoMuerto" class="text-sm font-medium text-gray-800 dark:text-gray-200">0</span>
                                     </div>
                                 </div>
@@ -378,27 +378,27 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
                                     </svg>
-                                    Objetivos
+                                    @lang('messages.objectivos')
                                 </h4>
                                 <div class="space-y-3">
                                     <div class="flex justify-between">
-                                        <span class="text-sm text-gray-600 dark:text-gray-400">Puntos de visión</span>
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">@lang('messages.puntos_de_vision')</span>
                                         <span id="estadPuntosVision" class="text-sm font-medium text-gray-800 dark:text-gray-200">0</span>
                                     </div>
                                     <div class="flex justify-between">
-                                        <span class="text-sm text-gray-600 dark:text-gray-400">Objetivos robados</span>
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">@lang('messages.objectivos_robados')</span>
                                         <span id="estadObjetivoRobado" class="text-sm font-medium text-gray-800 dark:text-gray-200">0</span>
                                     </div>
                                     <div class="flex justify-between">
-                                        <span class="text-sm text-gray-600 dark:text-gray-400">Daño a torres</span>
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">@lang('messages.dano_a_torres')</span>
                                         <span id="estadDanioTorres" class="text-sm font-medium text-gray-800 dark:text-gray-200">0</span>
                                     </div>
                                     <div class="flex justify-between">
-                                        <span class="text-sm text-gray-600 dark:text-gray-400">Primera sangre</span>
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">@lang('messages.primera_sangre')</span>
                                         <span id="estadPrimeraSangre" class="text-sm font-medium text-gray-800 dark:text-gray-200">No</span>
                                     </div>
                                     <div class="flex justify-between">
-                                        <span class="text-sm text-gray-600 dark:text-gray-400">Primera torre</span>
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">@lang('messages.primera_torre')</span>
                                         <span id="estadPrimeraTorre" class="text-sm font-medium text-gray-800 dark:text-gray-200">No</span>
                                     </div>
                                 </div>
@@ -412,19 +412,19 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
-                                    Economía
+                                    @lang('messages.economia')
                                 </h4>
                                 <div class="space-y-3">
                                     <div class="flex justify-between">
-                                        <span class="text-sm text-gray-600 dark:text-gray-400">Oro total</span>
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">@lang('messages.oro_total')</span>
                                         <span id="estadOro" class="text-sm font-medium text-gray-800 dark:text-gray-200">0</span>
                                     </div>
                                     <div class="flex justify-between">
-                                        <span class="text-sm text-gray-600 dark:text-gray-400">Botín conseguido</span>
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">@lang('messages.botin_conseguido')</span>
                                         <span id="estadBotinConseguido" class="text-sm font-medium text-gray-800 dark:text-gray-200">0</span>
                                     </div>
                                     <div class="flex justify-between">
-                                        <span class="text-sm text-gray-600 dark:text-gray-400">Botín perdido</span>
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">@lang('messages.botin_perdido')</span>
                                         <span id="estadBotinPerdido" class="text-sm font-medium text-gray-800 dark:text-gray-200">0</span>
                                     </div>
                                 </div>

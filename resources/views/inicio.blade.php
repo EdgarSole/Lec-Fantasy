@@ -1,13 +1,23 @@
 <x-app-layout>
     <x-slot name="header">
-    <div class="text-center mb-10 px-4 sm:px-0">
-        <h2 class="text-3xl font-extrabold text-gray-800 dark:text-gray-200 inline-flex items-center">
-            <span class="inline-block animate-bounce mr-3 text-amber-600 dark:text-amber-400">🏆</span>
-            @lang('messages.mis-ligas')
-            <span class="inline-block animate-bounce ml-3 text-gray-700 dark:text-gray-300 delay-100">⚔️</span>
-        </h2>
-        <div class="mt-3 h-1 bg-gradient-to-r from-transparent via-cyan-400 dark:via-cyan-500 to-transparent rounded-full opacity-70 max-w-md mx-auto"></div>
+   <div class="text-center mb-12 px-4 sm:px-0">
+    <!-- Título con contraste adaptable (oscuro/claro) -->
+    <h2 class="text-4xl font-bold tracking-tight dark:text-gray-100 text-gray-800 mb-4">
+        @lang('messages.mis-ligas')
+    </h2>
+    
+    <!-- Barra divisora con animación RGB -->
+    <div class="relative max-w-md mx-auto h-1.5 rounded-full overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-amber-500 via-cyan-400 to-purple-600 dark:from-amber-400 dark:via-cyan-300 dark:to-purple-500 animate-[rgbFlow_3s_linear_infinite]"></div>
     </div>
+    
+    <!-- Efecto de partículas RGB (opcional) -->
+    <div class="mt-3 flex justify-center space-x-2">
+        <span class="inline-block w-2 h-2 rounded-full bg-cyan-400 dark:bg-cyan-300 animate-pulse"></span>
+        <span class="inline-block w-2 h-2 rounded-full bg-purple-600 dark:bg-purple-400 animate-pulse delay-100"></span>
+        <span class="inline-block w-2 h-2 rounded-full bg-amber-500 dark:bg-amber-400 animate-pulse delay-200"></span>
+    </div>
+</div>
     @if(session('success'))
         <div class="mt-4 mb-6 p-4 rounded-lg border-2 border-green-400 dark:border-green-600 bg-gradient-to-br from-green-900/80 dark:from-green-800 to-green-800/90 dark:to-green-900/90 text-green-100 dark:text-green-50 shadow-lg shadow-green-500/20 dark:shadow-green-600/20 relative overflow-hidden">
             <!-- Efecto de borde gaming -->
@@ -796,6 +806,7 @@
 
     </script>
     <style>
+        
         .custom-scrollbar-light::-webkit-scrollbar {
             width: 6px;
         }

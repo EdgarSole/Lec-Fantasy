@@ -149,11 +149,11 @@
                         x-transition:leave="transition ease-in duration-150" 
                         x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
                         class="absolute right-0 mt-2 w-20 bg-white dark:bg-gray-800 rounded-md shadow-lg z-50 border border-gray-200 dark:border-gray-700 overflow-hidden transition-colors duration-300">
-                        <a href="locale/es" class="block px-4 py-2 text-gray-800 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 flex items-center space-x-2 transition-colors duration-300">
+                        <a href="{{ route('locale', ['lang' => 'es', 'liga' => $liga->id ?? null]) }}" class="block px-4 py-2 text-gray-800 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 flex items-center space-x-2 transition-colors duration-300">
                             <img src="{{ asset('Imagenes/banderaEspana.jpg') }}" width="20" class="rounded-sm"> 
                             <span>ES</span>
                         </a>
-                        <a href="locale/en" class="block px-4 py-2 text-gray-800 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 flex items-center space-x-2 transition-colors duration-300">
+                        <a href="{{ route('locale', ['lang' => 'en', 'liga' => $liga->id ?? null]) }}" class="block px-4 py-2 text-gray-800 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 flex items-center space-x-2 transition-colors duration-300">
                             <img src="{{ asset('Imagenes/banderaEEUU.jpg') }}" width="20" class="rounded-sm">
                             <span>EN</span>
                         </a>
@@ -174,18 +174,18 @@
                          x-transition:leave="transition ease-in duration-150" 
                          x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
                          class="absolute right-0 mt-2 w-32 bg-white dark:bg-gray-800 rounded-md shadow-lg z-50 border border-gray-200 dark:border-gray-700 overflow-hidden transition-colors duration-300">
-                        <a href="/locale/es" class="block px-4 py-2 text-gray-800 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 flex items-center space-x-2 transition-colors duration-300">
+                        <a href="{{ route('locale', ['lang' => 'es', 'liga' => $liga->id ?? null]) }}" class="block px-4 py-2 text-gray-800 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 flex items-center space-x-2 transition-colors duration-300">
                             <img src="{{ asset('Imagenes/banderaEspana.jpg') }}" width="20" class="rounded-sm"> 
                             <span>ES</span>
                         </a>
-                        <a href="/locale/en" class="block px-4 py-2 text-gray-800 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 flex items-center space-x-2 transition-colors duration-300">
+                        <a href="{{ route('locale', ['lang' => 'en', 'liga' => $liga->id ?? null]) }}" class="block px-4 py-2 text-gray-800 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 flex items-center space-x-2 transition-colors duration-300">
                             <img src="{{ asset('Imagenes/banderaEEUU.jpg') }}" width="20" class="rounded-sm">
                             <span>EN</span>
                         </a>
                     </div>
                 </div>
 
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-xl text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-cyan-400 hover:bg-blue-50 dark:hover:bg-gray-700 focus:outline-none transition duration-300 ease-in-out transform hover:scale-110">
+                <button @click.stop="open = !open" class="inline-flex items-center justify-center p-2 rounded-xl text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-cyan-400 hover:bg-blue-50 dark:hover:bg-gray-700 focus:outline-none transition duration-300 ease-in-out transform hover:scale-110" x-bind:aria-expanded="open">
                     <svg class="h-7 w-7" :class="{ 'hidden': open, 'block': !open }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                     </svg>
@@ -202,17 +202,17 @@
         class="sm:hidden absolute w-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm shadow-xl z-50 border-t border-gray-200 dark:border-gray-800 rounded-b-2xl overflow-hidden transition-colors duration-300">
 
         <div class="pt-2 pb-3 space-y-2 px-4">
-            <x-responsive-nav-link :href="route('inicio')" :active="request()->routeIs('inicio')" class="block px-4 py-3 text-gray-800 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 rounded-xl my-1 transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 transform flex items-center">
+            <x-responsive-nav-link :href="route('inicio')" @click="open = false" :active="request()->routeIs('inicio')" class="block px-4 py-3 text-gray-800 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 rounded-xl my-1 transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 transform flex items-center">
                 <span class="mr-3"><i class="fa-solid fa-house"></i></span>
                 @lang('messages.inicio')
             </x-responsive-nav-link>
 
-            <x-responsive-nav-link :href="route('jugadores')" :active="request()->routeIs('jugadores')" class="block px-4 py-3 text-gray-800 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 rounded-xl my-1 transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 transform flex items-center">
+            <x-responsive-nav-link :href="route('jugadores')" @click="open = false" :active="request()->routeIs('jugadores')" class="block px-4 py-3 text-gray-800 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 rounded-xl my-1 transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 transform flex items-center">
                 <span class="mr-3">👾</span>
                 @lang('messages.jugadores')
             </x-responsive-nav-link>
 
-            <x-responsive-nav-link :href="route('top-global')" :active="request()->routeIs('top-global')" class="block px-4 py-3 text-gray-800 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 rounded-xl my-1 transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 transform flex items-center">
+            <x-responsive-nav-link :href="route('top-global')" @click="open = false" :active="request()->routeIs('top-global')" class="block px-4 py-3 text-gray-800 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 rounded-xl my-1 transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 transform flex items-center">
                 <span class="mr-3"><i class="fa-solid fa-earth-americas"></i></span>
                 @lang('messages.top-global')
             </x-responsive-nav-link>
@@ -248,8 +248,9 @@
 </nav>
 <style>
     .rounded-md.bg-white {
-  background-color: transparent !important;
+        background-color: transparent !important;
   
-}
-
+    }
+    [x-cloak] { display: none !important; }
+    
 </style>

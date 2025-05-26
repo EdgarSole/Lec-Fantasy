@@ -12,19 +12,19 @@
     </div>
 
     <!-- Menú desplegable para configuración -->
-    <div id="config-menu" class="fixed right-4 top-20 bg-gray-800 border-2 border-indigo-500 rounded-lg shadow-2xl z-40 hidden w-64">
+    <div id="config-menu" class="absolute right-0 top-full mt-1 bg-gray-800 border-2 border-indigo-500 rounded-lg shadow-2xl z-40 hidden w-64">
         <div class="p-4">
-            <h3 class="text-indigo-400 font-bold mb-3 border-b border-indigo-500 pb-2">Opciones del Chat</h3>
+            <h3 class="text-indigo-400 font-bold mb-3 border-b border-indigo-500 pb-2">@lang('messages.opciones_chat')</h3>
             <button onclick="abrirModalConfirmacion()" class="w-full text-left py-2 px-3 hover:bg-gray-700 rounded-lg text-red-400 hover:text-red-300 transition-all">
-                <i class="fas fa-trash mr-2"></i> Borrar todo el chat
+                <i class="fas fa-trash mr-2"></i> @lang('messages.borrar_chat')
             </button>
         </div>
     </div>
     <!-- Modal -->
     <div id="modalConfirmacion" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-50">
         <div class="bg-gray-900 rounded-xl shadow-2xl p-6 max-w-sm w-full text-center border-2 border-red-600">
-            <h2 class="text-xl font-mono font-extrabold mb-4 text-red-500 tracking-wide">Confirmar acción</h2>
-            <p class="mb-6 text-gray-300 text-sm">¿Estás seguro de que quieres borrar todo el historial del chat? Esta acción no se puede deshacer.</p>
+            <h2 class="text-xl font-mono font-extrabold mb-4 text-red-500 tracking-wide">@lang('messages.confirmar_accion')</h2>
+            <p class="mb-6 text-gray-300 text-sm">@lang('messages.estas_seguro_chat')</p>
             <div class="flex justify-center gap-5">
             <button onclick="confirmarBorrado()" class="bg-red-700 hover:bg-red-800 text-white font-semibold px-5 py-2 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-0.5">
                 Sí, borrar
@@ -39,9 +39,9 @@
 
 
     <!-- Menú desplegable para usuarios -->
-    <div id="users-menu" class="fixed right-4 top-20 bg-gray-800 border-2 border-indigo-500 rounded-lg shadow-2xl z-40 hidden w-64 max-h-[60vh] overflow-y-auto">
+    <div id="users-menu" class="absolute right-0 top-full mt-1 bg-gray-800 border-2 border-indigo-500 rounded-lg shadow-2xl z-40 hidden w-64 max-h-[60vh] overflow-y-auto">
         <div class="p-4">
-            <h3 class="text-indigo-400 font-bold mb-3 border-b border-indigo-500 pb-2">Participantes activos</h3>
+            <h3 class="text-indigo-400 font-bold mb-3 border-b border-indigo-500 pb-2">@lang('messages.participantes_activos')</h3>
             <div id="users-list">
                 <!-- Los usuarios se cargarán aquí dinámicamente -->
                 @foreach($participantes as $participante)
@@ -60,7 +60,7 @@
     </div>
 
     <!-- Contenedor principal del chat -->
-    <div class="flex flex-col h-[80vh] bg-gray-900 rounded-xl shadow-2xl overflow-hidden border-2 border-indigo-500/20">
+    <div class="flex flex-col h-[80vh] bg-gray-900 rounded-xl shadow-2xl overflow-hidden border-2 border-indigo-500/20 relative">
         <!-- Encabezado del chat -->
         <div class="bg-gradient-to-r from-indigo-900 to-purple-900 text-white p-4 flex items-center border-b-2 border-indigo-500/30">
             <div class="flex-shrink-0 relative">
@@ -73,7 +73,7 @@
                 <h2 class="text-xl font-bold text-white  tracking-wide">CHAT: {{ strtoupper($liga->nombre) }}</h2>
                 <p class="text-indigo-300 text-xs font-exo">{{ $liga->descripcion }}</p>
             </div>
-            <div class="ml-auto flex space-x-2">
+           <div class="ml-auto flex space-x-2 relative">
                 <!-- Botón de configuración -->
                 <button id="config-btn" class="p-2 text-indigo-300 hover:text-white hover:bg-indigo-700/50 rounded-lg transition-all relative group">
                     <i class="fas fa-cog"></i>
@@ -84,7 +84,7 @@
                 <button id="users-btn" class="p-2 text-indigo-300 hover:text-white hover:bg-indigo-700/50 rounded-lg transition-all relative group">
                     <i class="fas fa-users"></i>
                     <span class="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                        Participantes
+                        @lang('messages.participantes')
                     </span>
                 </button>
             </div>
@@ -97,9 +97,9 @@
         <div class="flex justify-center my-4">
             <div class="bg-gray-800/80 text-gray-400 text-xs px-3 py-1 rounded-full border border-gray-700">
                 @if($fecha == now()->format('Y-m-d'))
-                    Hoy
+                    @lang('messages.hoy')
                 @elseif($fecha == now()->subDay()->format('Y-m-d'))
-                    Ayer
+                    @lang('messages.ayer')
                 @else
                     {{ \Carbon\Carbon::parse($fecha)->isoFormat('D MMMM YYYY') }}
                 @endif
@@ -175,7 +175,7 @@
                 <!-- Botón de enviar -->
                 <button type="submit" class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white px-5 py-3 rounded-lg border-2 border-indigo-400/30 hover:border-indigo-300/50 shadow-lg hover:shadow-indigo-500/20 transition-all transform hover:scale-105 active:scale-95">
                     <i class="fas fa-paper-plane"></i>
-                    <span class="ml-1 font-exo text-sm">ENVIAR</span>
+                    <span class="ml-1 font-exo text-sm">@lang('messages.enviar')</span>
                 </button>
             </form>
             
@@ -215,30 +215,23 @@
     });
 
     // Mostrar/ocultar menú de configuración
-    document.getElementById('config-btn').addEventListener('click', function(e) {
-        e.stopPropagation();
-        const configMenu = document.getElementById('config-menu');
-        const usersMenu = document.getElementById('users-menu');
-        
-        usersMenu.classList.add('hidden');
-        configMenu.classList.toggle('hidden');
-    });
+   document.getElementById('config-btn').addEventListener('click', function(e) {
+    e.stopPropagation();
+    document.getElementById('users-menu').classList.add('hidden');
+    document.getElementById('config-menu').classList.toggle('hidden');
+});
 
-    // Mostrar/ocultar menú de usuarios
-    document.getElementById('users-btn').addEventListener('click', function(e) {
-        e.stopPropagation();
-        const configMenu = document.getElementById('config-menu');
-        const usersMenu = document.getElementById('users-menu');
-        
-        configMenu.classList.add('hidden');
-        usersMenu.classList.toggle('hidden');
-    });
+document.getElementById('users-btn').addEventListener('click', function(e) {
+    e.stopPropagation();
+    document.getElementById('config-menu').classList.add('hidden');
+    document.getElementById('users-menu').classList.toggle('hidden');
+});
 
-    // Ocultar menús al hacer clic fuera
-    document.addEventListener('click', function() {
-        document.getElementById('config-menu').classList.add('hidden');
-        document.getElementById('users-menu').classList.add('hidden');
-    });
+// Cerrar menús al hacer clic fuera
+document.addEventListener('click', function() {
+    document.getElementById('config-menu').classList.add('hidden');
+    document.getElementById('users-menu').classList.add('hidden');
+});
 
     // Evitar que los clics dentro de los menús los cierren
     document.getElementById('config-menu').addEventListener('click', function(e) {
@@ -310,8 +303,10 @@
     mensajesContainer.scrollTop = mensajesContainer.scrollHeight;
 </script>
 
+
 <!-- Estilos adicionales -->
 <style>
+    
     .font-orbitron {
         font-family: 'Orbitron', sans-serif;
     }
@@ -377,6 +372,7 @@
         visibility: visible;
         opacity: 1;
     }
+
 </style>
 
 <!-- JavaScript para el chat en tiempo real -->

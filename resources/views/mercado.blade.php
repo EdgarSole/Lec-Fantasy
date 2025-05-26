@@ -6,7 +6,7 @@
         <!-- Header con presupuesto y contador - Modo oscuro -->
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-lg dark:shadow-gray-700/50 p-4 mb-6 gap-4">
             <div class="flex items-center flex-wrap gap-2">
-                <span class="font-bold text-lg text-gray-800 dark:text-gray-200">Presupuesto:</span>
+                <span class="font-bold text-lg text-gray-800 dark:text-gray-200">@lang('messages.presupuesto'):</span>
                 <span class="text-green-600 dark:text-green-400 font-bold text-lg">{{ number_format($equipo->presupuesto, 0, ',', '.') }} €</span>
                 @if($pujasUsuario->sum('cantidad') > 0)
                     <span class="text-red-500 dark:text-red-400 font-medium">-{{ number_format($pujasUsuario->sum('cantidad'), 0, ',', '.') }} €</span>
@@ -14,7 +14,7 @@
             </div>
             <div class="flex items-center gap-4">                
                 <div class="bg-white/60 dark:bg-gray-700/80 backdrop-blur-sm border border-blue-200 dark:border-blue-600 px-5 py-2 rounded-full font-bold text-blue-700 dark:text-blue-300 shadow-inner">
-                    ⏳ Próxima actualización en: 
+                    ⏳ @lang('messages.proxima_actualizacion'): 
                     <span id="contador" class="font-mono text-pink-600 dark:text-pink-400">
                         {{ str_pad(intval($tiempoRestante['horas']), 2, '0', STR_PAD_LEFT) }}h
                         {{ str_pad(intval($tiempoRestante['minutos']), 2, '0', STR_PAD_LEFT) }}m
@@ -50,11 +50,11 @@
                 <!-- Estadísticas rápidas -->
                 <div class="flex justify-between mb-3">
                     <div class="text-center">
-                        <span class="block text-xs text-gray-500 dark:text-gray-400">Puntos</span>
+                        <span class="block text-xs text-gray-500 dark:text-gray-400">@lang('messages.puntos_min')</span>
                         <span class="text-blue-500 dark:text-blue-400 font-bold">{{ $item->jugador->puntos }} pts</span>
                     </div>
                     <div class="text-center">
-                        <span class="block text-xs text-gray-500 dark:text-gray-400">Valor</span>
+                        <span class="block text-xs text-gray-500 dark:text-gray-400">@lang('messages.valor')</span>
                         <span class="text-green-600 dark:text-green-400 font-bold">{{ number_format($item->jugador->valor, 0, ',', '.') }} €</span>
                     </div>
                     <div class="text-center">
@@ -65,14 +65,14 @@
                 
                 <!-- Tabla de pujas mejorada -->
                 <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
-                    <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Historial de pujas</h4>
+                    <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">@lang('messages.historial_pujas')</h4>
                     <div class="overflow-auto max-h-40 scrollbar-thin">
                         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                             <thead class="bg-gray-50 dark:bg-gray-700">
                                 <tr>
                                     <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">#</th>
-                                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Equipo</th>
-                                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Puja</th>
+                                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">@lang('messages.equipo_min')</th>
+                                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">@lang('messages.puja_min')</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700" id="pujas-body-{{ $item->id }}">
@@ -89,7 +89,7 @@
                 </div>
             </div>
             
-            <!-- Botón de puja mejorado -->
+            <!-- Botón de puja  -->
             <button class="mt-auto w-full py-3 bg-gradient-to-r from-blue-500 to-purple-600 dark:from-blue-600 dark:to-purple-700 text-white font-bold hover:from-blue-600 hover:to-purple-700 dark:hover:from-blue-700 dark:hover:to-purple-800 transition-all duration-300 flex items-center justify-center gap-2"
                 onclick="abrirModalPuja(
                     '{{ $item->id }}',
@@ -101,7 +101,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
                 </svg>
-                {{ isset($pujasUsuario[$item->id]) ? 'Modificar Puja' : 'Pujar' }}
+                {{ isset($pujasUsuario[$item->id]) ? __('messages.modificar-puja') : __('messages.pujar') }}
             </button>
         </div>
         @endforeach
@@ -111,7 +111,7 @@
     <div class="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center z-50 hidden" id="pujaModal">
         <div class="bg-white dark:bg-gray-800 rounded-lg w-full max-w-md mx-4 shadow-xl">
             <div class="p-4 border-b border-gray-200 dark:border-gray-700">
-                <h3 class="text-xl font-bold text-gray-800 dark:text-white">Pujar por <span id="jugadorNombreModal" class="text-blue-600 dark:text-blue-400"></span></h3>
+                <h3 class="text-xl font-bold text-gray-800 dark:text-white"> @lang('messages.pujar_por') <span id="jugadorNombreModal" class="text-blue-600 dark:text-blue-400"></span></h3>
             </div>
             
             <form id="pujaForm" method="POST" action="{{ route('mercado.pujar', $liga) }}" class="p-4">
@@ -119,7 +119,7 @@
                 <input type="hidden" name="mercado_id" id="mercadoIdModal">
                 
                 <div class="mb-4">
-                    <label for="cantidadModal" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Cantidad (€)</label>
+                    <label for="cantidadModal" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"> @lang('messages.cantidad') (€)</label>
                     <div class="relative rounded-md shadow-sm">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <span class="text-gray-500 dark:text-gray-400">€</span>
@@ -138,19 +138,19 @@
                         </div>
                     </div>
                     
-                    <p id="errorPresupuestoModal" class="mt-2 text-sm text-red-600 dark:text-red-400 hidden">No puedes superar tu presupuesto disponible</p>
+                    <p id="errorPresupuestoModal" class="mt-2 text-sm text-red-600 dark:text-red-400 hidden">No puedes superar tu presupuesto disponible </p>
                     <p id="errorMinimoModal" class="mt-2 text-sm text-red-600 dark:text-red-400 hidden">La puja mínima es <span id="valorMinimo"></span> €</p>
                 </div>
                 
                 <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
                     <button type="button" onclick="cerrarModal()" class="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-white rounded-md hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors">
-                        Cancelar
+                         @lang('messages.cancelar')
                     </button>
                     <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
                         </svg>
-                        {{ isset($pujasUsuario[$item->id]) ? 'Modificar' : 'Pujar' }}
+                        {{ isset($pujasUsuario[$item->id]) ? __('messages.modificar-puja') : __('messages.pujar') }}
                     </button>
                 </div>
             </form>

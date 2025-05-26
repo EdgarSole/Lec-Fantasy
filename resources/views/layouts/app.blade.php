@@ -7,7 +7,7 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
-         <!-- Incluir Font Awesome -->
+         <!-- Font Awesome -->
          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         <!-- Fonts -->
          <script defer src="https://unpkg.com/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
@@ -16,15 +16,14 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
         <script src="//unpkg.com/alpinejs" defer></script>
-        <!-- Asegúrate de tener esto en tu layout principal o en esta vista -->
+        
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-        <script src="//unpkg.com/alpinejs" defer></script>
-
+        
 
         <!-- Scripts -->
          @stack('styles')
@@ -45,7 +44,7 @@
             @endisset
 
             <!-- Page Content -->
-            <main class="bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
+            <main class="bg-gray-100 dark:bg-gray-900 transition-colors duration-300 overflow-auto">
                 @stack('scripts')
                 {{ $slot }}
             </main>

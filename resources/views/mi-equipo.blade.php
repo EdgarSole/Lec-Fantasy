@@ -7,7 +7,7 @@
         <div class="min-h-screen bg-white/80 dark:bg-gray-900/50 py-8 rounded-xl shadow-lg transition-colors duration-300">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 
-                <div id="flash-notification" class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-xl px-4 hidden">
+                <div id="flash-notification" class="fixed top-6 left-1/2 transform -translate-x-1/2 z-1000 w-full max-w-xl px-4 hidden">
                     <div class="relative bg-white dark:bg-gray-800 rounded-xl border-2 border-purple-500 p-5 shadow-2xl overflow-hidden gaming-notification">
                         <div class="absolute inset-0 rounded-lg border-2 border-purple-500 border-opacity-20 pointer-events-none flash-border"></div>
                         
@@ -69,10 +69,10 @@
                 <!-- Encabezado -->
                 <div class="text-center mb-12">
                     <h1 class="text-4xl font-extrabold text-gray-900 dark:text-white sm:text-5xl sm:tracking-tight lg:text-6xl gaming-title">
-                        Mi Equipo
+                        @lang('messages.mi_equipo')
                     </h1>
                     <h2 class="mt-3 text-2xl font-semibold text-purple-600 dark:text-purple-400 neon-text">
-                        Liga: {{ $liga->nombre }}
+                        @lang('messages.liga'): {{ $liga->nombre }}
                     </h2>
                 </div>
 
@@ -80,8 +80,8 @@
                 <div class="bg-gradient-to-r from-indigo-100 to-purple-100 dark:from-indigo-900 dark:to-purple-900 rounded-xl shadow-2xl p-6 mb-12 transform transition hover:scale-[1.02] duration-300 border border-indigo-300 dark:border-indigo-500/30 gaming-card">
                     <div class="flex justify-between items-center">
                         <div>
-                            <h3 class="text-xl font-semibold text-indigo-800 dark:text-indigo-200 opacity-90">Valor total del equipo</h3>
-                            <p class="text-indigo-600 dark:text-indigo-300 mt-1">Actualizado en tiempo real</p>
+                            <h3 class="text-xl font-semibold text-indigo-800 dark:text-indigo-200 opacity-90">@lang('messages.valor_total')</h3>
+                            <p class="text-indigo-600 dark:text-indigo-300 mt-1">@lang('messages.actualizar_timepo')</p>
                         </div>
                         <span class="text-3xl font-bold text-indigo-900 dark:text-white bg-indigo-200/50 dark:bg-indigo-900/50 px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-500/50">
                             {{ isset($valorTotal) ? number_format($valorTotal, 0, ',', '.') : '0' }} €
@@ -92,8 +92,8 @@
                 <div class="bg-gradient-to-r from-indigo-100 to-purple-100 dark:from-indigo-900 dark:to-purple-900 rounded-xl shadow-2xl p-6 mb-12 transform transition hover:scale-[1.02] duration-300 border border-indigo-300 dark:border-indigo-500/30 gaming-card">
                     <div class="flex justify-between items-center">
                         <div>
-                            <h3 class="text-xl font-semibold text-indigo-800 dark:text-indigo-200 opacity-90">Presupuesto del equipo</h3>
-                            <p class="text-indigo-600 dark:text-indigo-300 mt-1">Actualizado en tiempo real</p>
+                            <h3 class="text-xl font-semibold text-indigo-800 dark:text-indigo-200 opacity-90">@lang('messages.presupuesto_equipo')</h3>
+                            <p class="text-indigo-600 dark:text-indigo-300 mt-1">@lang('messages.actualizar_timepo')</p>
                         </div>
                         <span class="text-3xl font-bold text-indigo-900 dark:text-white bg-indigo-200/50 dark:bg-indigo-900/50 px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-500/50">
                            {{ $equipo->presupuesto ? number_format($equipo->presupuesto, 0, ',', '.') : '0' }} €
@@ -174,7 +174,7 @@
                 <div class="mb-12 flex justify-end">
                     <div class="bg-gradient-to-r from-indigo-100 to-purple-100 dark:from-indigo-900 dark:to-purple-900 rounded-xl shadow-lg p-3 transform transition hover:scale-[1.05] duration-300 inline-flex justify-center items-center animate-pulse max-w-xs border border-indigo-300 dark:border-indigo-500/50">
                         <span class="text-indigo-900 dark:text-white text-lg font-semibold">
-                            Titulares {{ $titulares->count() }} / 5
+                            @lang('messages.titulares') {{ $titulares->count() }} / 5
                         </span>
                     </div>
                 </div>
@@ -182,9 +182,9 @@
                 <!-- Jugadores del equipo -->
                 <div class="mb-12">
                     <div class="flex justify-between items-center mb-8">
-                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Tus Jugadores</h3>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white">@lang('messages.tus-jugadores')</h3>
                         <span class="px-4 py-2 bg-indigo-200/50 dark:bg-indigo-900/50 text-indigo-800 dark:text-indigo-200 rounded-full text-sm font-medium border border-indigo-300 dark:border-indigo-500/30">
-                            {{ count($jugadoresEquipo ?? []) }} jugadores
+                            {{ count($jugadoresEquipo ?? []) }} @lang('messages.jugadores')
                         </span>
                     </div>
                     
@@ -289,7 +289,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                                             @endif
                                         </svg>
-                                        <span class="font-bold tracking-wide">{{ $esTitular ? 'BANQUILLO' : 'TITULAR' }}</span>
+                                        <span class="font-bold tracking-wide">{{ $esTitular ? __('messages.banquillo') : __('messages.titular') }}</span>
                                     </button>
 
                                     <!-- Botón de Venta -->
@@ -298,7 +298,7 @@
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                                         </svg>
-                                        <span class="font-bold tracking-wide">VENDER </span>
+                                        <span class="font-bold tracking-wide">@lang('messages.vender') </span>
                                     </button>
                                 </div>
                             </div>
@@ -309,17 +309,17 @@
                             <div class="bg-white dark:bg-gray-900 border-2 border-amber-400 dark:border-amber-500 rounded-xl p-6 max-w-md w-full mx-4 gaming-modal">
                                 <div class="text-center">
                                     <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2" id="venta-jugador-nombre"></h3>
-                                    <p class="text-amber-500 dark:text-amber-400 text-lg mb-4">Ganarás: <span id="venta-jugador-precio" class="font-bold"></span> €</p>
-                                    <p class="text-gray-600 dark:text-gray-300 mb-6">¿Estás seguro de que quieres vender a este jugador?</p>
+                                    <p class="text-amber-500 dark:text-amber-400 text-lg mb-4">@lang('messages.ganaras'): <span id="venta-jugador-precio" class="font-bold"></span> €</p>
+                                    <p class="text-gray-600 dark:text-gray-300 mb-6">@lang('messages.vender_jugador')</p>
                                     
                                     <div class="flex justify-center space-x-4">
                                         <button onclick="document.getElementById('venta-modal').classList.add('hidden')" 
                                                 class="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white px-6 py-2 rounded-lg border border-gray-300 dark:border-gray-600 transition gaming-button">
-                                            Cancelar
+                                            @lang('messages.cancelar')
                                         </button>
                                         <button id="confirmar-venta-btn" 
                                                 class="bg-amber-500 hover:bg-amber-400 dark:bg-amber-600 dark:hover:bg-amber-500 text-white px-6 py-2 rounded-lg border border-amber-400 dark:border-amber-500 transition gaming-button">
-                                            Confirmar Venta
+                                            @lang('messages.confirmar_venta')
                                         </button>
                                     </div>
                                 </div>
@@ -464,7 +464,7 @@
                 box-shadow: 0 0 30px rgba(245, 158, 11, 0.3);
                 border-radius: 1rem; 
                 overflow: hidden; 
-                z-index: 1; 
+                z-index: 1000; 
             }
 
             .gaming-modal::before {
@@ -627,7 +627,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const border = notification.querySelector('.flash-border');
         
         // Resetear clases
-        notification.className = 'fixed top-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-xl px-4';
+        notification.className = 'fixed top-6 left-1/2 transform -translate-x-1/2 z-1000 w-full max-w-xl px-4';
         border.className = 'absolute inset-0 rounded-lg border-2 border-opacity-20 pointer-events-none flash-border';
         
         // Configurar según el tipo
