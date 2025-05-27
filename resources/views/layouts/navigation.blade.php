@@ -166,6 +166,18 @@
 
             <!-- Botón menú hamburguesa -->
             <div class="sm:hidden flex items-center space-x-3">
+                <!-- Botón de modo claro/oscuro -->
+                <div class="relative" x-data="{ darkMode: false }" @click="darkMode = !darkMode; document.documentElement.classList.toggle('dark'); localStorage.setItem('darkMode', darkMode);"
+                    x-init="darkMode = localStorage.getItem('darkMode') === 'true'; document.documentElement.classList.toggle('dark', darkMode)">
+                    <button class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300 group">
+                        <svg x-show="!darkMode" class="w-5 h-5 text-gray-600 dark:text-gray-300 group-hover:text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                        <svg x-show="darkMode" class="w-5 h-5 text-gray-600 dark:text-gray-300 group-hover:text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                    </button>
+                </div>
                 <!-- Menú de idiomas móvil -->
                 <div class="relative" x-data="{ open: false }" @click.away="open = false">
                     <button @click="open = !open" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300">
@@ -211,7 +223,7 @@
             </x-responsive-nav-link>
 
             <x-responsive-nav-link :href="route('jugadores')" @click="open = false" :active="request()->routeIs('jugadores')" class="block px-4 py-3 text-gray-800 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 rounded-xl my-1 transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 transform flex items-center">
-                <span class="mr-3">👾</span>
+                <span class="mr-3"><i class="fa-solid fa-gamepad"></i></span>
                 @lang('messages.jugadores')
             </x-responsive-nav-link>
 

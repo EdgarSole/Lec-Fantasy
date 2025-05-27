@@ -1,74 +1,73 @@
 <x-app-layout>
     <x-slot name="header">
-   <div class="text-center mb-12 px-4 sm:px-0">
-    <!-- Título con contraste adaptable (oscuro/claro) -->
-    <h2 class="text-4xl font-bold tracking-tight dark:text-gray-100 text-gray-800 mb-4">
-        @lang('messages.mis-ligas')
-    </h2>
-    
-    <!-- Barra divisora con animación RGB -->
-    <div class="relative max-w-md mx-auto h-1.5 rounded-full overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-r from-amber-500 via-cyan-400 to-purple-600 dark:from-amber-400 dark:via-cyan-300 dark:to-purple-500 animate-[rgbFlow_3s_linear_infinite]"></div>
-    </div>
-    
-    <!-- Efecto de partículas RGB (opcional) -->
-    <div class="mt-3 flex justify-center space-x-2">
-        <span class="inline-block w-2 h-2 rounded-full bg-cyan-400 dark:bg-cyan-300 animate-pulse"></span>
-        <span class="inline-block w-2 h-2 rounded-full bg-purple-600 dark:bg-purple-400 animate-pulse delay-100"></span>
-        <span class="inline-block w-2 h-2 rounded-full bg-amber-500 dark:bg-amber-400 animate-pulse delay-200"></span>
-    </div>
-</div>
-    @if(session('success'))
-        <div class="mt-4 mb-6 p-4 rounded-lg border-2 border-green-400 dark:border-green-600 bg-gradient-to-br from-green-900/80 dark:from-green-800 to-green-800/90 dark:to-green-900/90 text-green-100 dark:text-green-50 shadow-lg shadow-green-500/20 dark:shadow-green-600/20 relative overflow-hidden">
-            <!-- Efecto de borde gaming -->
-            <div class="absolute inset-0 border-2 border-green-300/30 dark:border-green-400/20 rounded-lg pointer-events-none"></div>
-            
-            <!-- Icono y contenido -->
-            <div class="flex items-start">
-                <div class="mr-3 text-green-400 dark:text-green-300 animate-pulse">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
+        <div class="text-center mb-12 px-4 sm:px-0">
+                <!-- Título -->
+                <h2 class="text-4xl font-bold tracking-tight dark:text-gray-100 text-gray-800 mb-4">
+                    @lang('messages.mis-ligas')
+                </h2>
+                
+                <!-- Barra divisora con animación RGB -->
+                <div class="relative max-w-md mx-auto h-1.5 rounded-full overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-r from-amber-500 via-cyan-400 to-purple-600 dark:from-amber-400 dark:via-cyan-300 dark:to-purple-500 animate-[rgbFlow_3s_linear_infinite]"></div>
                 </div>
-                <div>
-                    <h4 class="font-bold text-green-300 dark:text-green-200 text-xl mb-1 font-mono tracking-wider"> @lang('messages.enhorabuena')</h4>
-                    <p class="text-green-100 dark:text-green-50 text-shadow font-medium">{{ session('success') }}</p>
+                
+                <div class="mt-3 flex justify-center space-x-2">
+                    <span class="inline-block w-2 h-2 rounded-full bg-cyan-400 dark:bg-cyan-300 animate-pulse"></span>
+                    <span class="inline-block w-2 h-2 rounded-full bg-purple-600 dark:bg-purple-400 animate-pulse delay-100"></span>
+                    <span class="inline-block w-2 h-2 rounded-full bg-amber-500 dark:bg-amber-400 animate-pulse delay-200"></span>
                 </div>
             </div>
-        </div>
-    @endif
+            @if(session('success'))
+                <div id="successAlert" class="mt-4 mb-6 p-4 rounded-lg border-2 border-green-400 dark:border-green-600 bg-gradient-to-br from-green-900/80 dark:from-green-800 to-green-800/90 dark:to-green-900/90 text-green-100 dark:text-green-50 shadow-lg shadow-green-500/20 dark:shadow-green-600/20 relative overflow-hidden">
+                    <!-- Efecto de borde gaming -->
+                    <div class="absolute inset-0 border-2 border-green-300/30 dark:border-green-400/20 rounded-lg pointer-events-none"></div>
+                    
+                    <!-- Icono y contenido -->
+                    <div class="flex items-start">
+                        <div class="mr-3 text-green-400 dark:text-green-300 animate-pulse">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-green-300 dark:text-green-200 text-xl mb-1 font-mono tracking-wider"> @lang('messages.enhorabuena')</h4>
+                            <p class="text-green-100 dark:text-green-50 text-shadow font-medium">{{ session('success') }}</p>
+                        </div>
+                    </div>
+                </div>
+            @endif
 
-    @if($errors->any())
-        <div class="mt-4 mb-6 p-4 rounded-lg border-2 border-red-400 dark:border-red-600 bg-gradient-to-br from-red-900/80 dark:from-red-900 to-red-800/90 dark:to-red-900/90 text-red-100 dark:text-red-50 shadow-lg shadow-red-500/20 dark:shadow-red-600/20 relative overflow-hidden">
-            <div class="absolute inset-0 border-2 border-red-300/30 dark:border-red-400/20 rounded-lg pointer-events-none"></div>
-            
-            <!-- Icono y contenido -->
-            <div class="flex items-start">
-                <div class="mr-3 text-red-400 dark:text-red-300 animate-pulse">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
+            @if($errors->any())
+                <div id="errorAlert" class="mt-4 mb-6 p-4 rounded-lg border-2 border-red-400 dark:border-red-600 bg-gradient-to-br from-red-900/80 dark:from-red-900 to-red-800/90 dark:to-red-900/90 text-red-100 dark:text-red-50 shadow-lg shadow-red-500/20 dark:shadow-red-600/20 relative overflow-hidden">
+                    <div class="absolute inset-0 border-2 border-red-300/30 dark:border-red-400/20 rounded-lg pointer-events-none"></div>
+                    
+                    <!-- Icono y contenido -->
+                    <div class="flex items-start">
+                        <div class="mr-3 text-red-400 dark:text-red-300 animate-pulse">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-red-300 dark:text-red-200 text-xl mb-1 font-mono tracking-wider">@lang('messages.errordetectado')</h4>
+                            <ul class="text-red-100 dark:text-red-50 text-shadow space-y-1">
+                                @foreach($errors->all() as $error)
+                                    <li class="flex items-start">
+                                        <span class="text-red-400 dark:text-red-300 mr-2">■</span>
+                                        <span>{{ $error }}</span>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-red-400 dark:border-red-300"></div>
+                    <div class="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-red-400 dark:border-red-300"></div>
+                    <div class="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-red-400 dark:border-red-300"></div>
+                    <div class="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-red-400 dark:border-red-300"></div>
                 </div>
-                <div>
-                    <h4 class="font-bold text-red-300 dark:text-red-200 text-xl mb-1 font-mono tracking-wider">@lang('messages.errordetectado')</h4>
-                    <ul class="text-red-100 dark:text-red-50 text-shadow space-y-1">
-                        @foreach($errors->all() as $error)
-                            <li class="flex items-start">
-                                <span class="text-red-400 dark:text-red-300 mr-2">■</span>
-                                <span>{{ $error }}</span>
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-red-400 dark:border-red-300"></div>
-            <div class="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-red-400 dark:border-red-300"></div>
-            <div class="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-red-400 dark:border-red-300"></div>
-            <div class="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-red-400 dark:border-red-300"></div>
-        </div>
-    @endif
-</x-slot>
+            @endif
+        </x-slot>
 
 <div class="py-8 bg-gray-50 dark:bg-gray-900 min-h-screen border-t border-[#3b82f6] shadow-[0_0_10px_#3b82f6] dark:border-t-1 dark:border-[#39ff14] dark:shadow-[0_0_10px_#39ff14]">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 px-4">
@@ -91,7 +90,7 @@
                     <h3 class="text-xl font-bold text-center"> @lang('messages.crear-nueva-liga-may')</h3>
                 </div>
                 
-                <form class="p-6" method="POST"  action="{{ route('ligas.store') }}" enctype="multipart/form-data">
+                <form id="crearLigaForm" class="p-6" method="POST"  action="{{ route('ligas.store') }}" enctype="multipart/form-data">
                     @csrf
                     
                     <!-- Nombre -->
@@ -133,7 +132,7 @@
                         <button type="button" onclick="document.getElementById('create-league-modal').classList.add('hidden')" class="px-5 py-2.5 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition">
                              @lang('messages.cancelar')
                         </button>
-                        <button type="submit" class="px-5 py-2.5 bg-blue-500 dark:bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-600 dark:hover:bg-blue-700 transition">
+                        <button  id="crearLigaBtn" type="submit" class="px-5 py-2.5 bg-blue-500 dark:bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-600 dark:hover:bg-blue-700 transition">
                              @lang('messages.crear_liga')
                         </button>
                     </div>
@@ -480,179 +479,185 @@
                 </div>
             @endisset
         </div>
-            <br><br>
-            <!-- Sección de reglas estilo terminal -->
-            <div class="bg-white dark:bg-gray-900 p-6 rounded-2xl border-2 border-gray-200 dark:border-gray-700 shadow-lg shadow-blue-100/30 dark:shadow-blue-900/40 mb-8 animate-fade-in-up transition-all ">
-                <div class="flex items-center mb-5">
-                    <div class="flex space-x-2 mr-4">
-                        <div class="w-3 h-3 rounded-full bg-red-400 animate-pulse"></div>
-                        <div class="w-3 h-3 rounded-full bg-yellow-400 animate-pulse delay-100"></div>
-                        <div class="w-3 h-3 rounded-full bg-green-400 animate-pulse delay-200"></div>
-                    </div>
-                    <h3 class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500 animate-gradient dark:from-cyan-400 dark:to-blue-300">
-                        @lang('messages.sistema_puntuacion')
-                    </h3>
+        <br><br>
+        <!-- Sección de reglas estilo terminal -->
+        <div class="bg-white dark:bg-gray-900 p-6 rounded-2xl border-2 border-gray-200 dark:border-gray-700 shadow-lg shadow-blue-100/30 dark:shadow-blue-900/40 mb-8 animate-fade-in-up transition-all ">
+            <div class="flex items-center mb-5">
+                <div class="flex space-x-2 mr-4">
+                    <div class="w-3 h-3 rounded-full bg-red-400 animate-pulse"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-400 animate-pulse delay-100"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-400 animate-pulse delay-200"></div>
                 </div>
-
-                <div class="bg-gray-50/80 dark:bg-gray-800 p-5 rounded-xl border border-gray-200 dark:border-gray-600 font-mono text-green-600 dark:text-green-400 space-y-3">
-                    <!-- Repite para cada regla -->
-                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
-                        <span class="text-purple-500">>></span>
-                        <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
-                            @lang('messages.por_cada_kill') <i class="fa-solid fa-skull ml-1 group-hover:animate-spin-slow"></i>:
-                        </span>
-                        <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_kill')</span>
-                    </p>
-
-                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
-                        <span class="text-purple-500">>></span>
-                        <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
-                            @lang('messages.por_cada_asistencia') <i class="fa-solid fa-handshake-angle ml-1 group-hover:animate-spin-slow"></i>:
-                        </span>
-                        <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_asistencia')</span>
-                    </p>
-                                
-                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
-                        <span class="text-purple-500">>></span>
-                        <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
-                            @lang('messages.por_cada_muerte') <i class="fa-solid fa-skull-crossbones ml-1 group-hover:animate-spin-slow"></i>:
-                        </span>
-                        <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_muerte')</span>
-                    </p>
-
-                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
-                        <span class="text-purple-500">>></span>
-                        <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
-                            @lang('messages.por_puntos_vision') <i class="fa-solid fa-eye ml-1 group-hover:animate-spin-slow"></i>:
-                        </span>
-                        <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_vision')</span>
-                    </p>
-
-                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
-                        <span class="text-purple-500">>></span>
-                        <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
-                            @lang('messages.por_objetivos_robados') <i class="fa-solid fa-hand-rock ml-1 group-hover:animate-spin-slow"></i>:
-                        </span>
-                        <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_objetivos_robados')</span>
-                    </p>
-
-                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
-                        <span class="text-purple-500">>></span>
-                        <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
-                            @lang('messages.por_dano_torres') <i class="fa-solid fa-gopuram ml-1 group-hover:animate-spin-slow"></i>:
-                        </span>
-                        <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_dano_torres')</span>
-                    </p>
-
-                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
-                        <span class="text-purple-500">>></span>
-                        <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
-                            @lang('messages.por_oro_conseguido') <i class="fa-solid fa-coins ml-1 group-hover:animate-spin-slow"></i>:
-                        </span>
-                        <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_oro')</span>
-                    </p>
-
-                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
-                        <span class="text-purple-500">>></span>
-                        <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
-                            @lang('messages.por_double_kill') <i class="fa-solid fa-2 ml-1 group-hover:animate-spin-slow"></i>:
-                        </span>
-                        <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_double_kill')</span>
-                    </p>
-
-                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
-                        <span class="text-purple-500">>></span>
-                        <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
-                            @lang('messages.por_triple_kill') <i class="fa-solid fa-3 ml-1 group-hover:animate-spin-slow"></i>:
-                        </span>
-                        <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_triple_kill')</span>
-                    </p>
-
-                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
-                        <span class="text-purple-500">>></span>
-                        <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
-                            @lang('messages.por_quadra_kill') <i class="fa-solid fa-4 ml-1 group-hover:animate-spin-slow"></i>:
-                        </span>
-                        <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_quadra_kill')</span>
-                    </p>
-
-                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
-                        <span class="text-purple-500">>></span>
-                        <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
-                            @lang('messages.por_penta_kill') <i class="fa-solid fa-5 ml-1 group-hover:animate-spin-slow"></i>:
-                        </span>
-                        <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_penta_kill')</span>
-                    </p>
-
-                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
-                        <span class="text-purple-500">>></span>
-                        <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
-                            @lang('messages.por_dano_campeones') <i class="fa-solid fa-bolt ml-1 group-hover:animate-spin-slow"></i>:
-                        </span>
-                        <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_dano_campeones')</span>
-                    </p>
-
-                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
-                        <span class="text-purple-500">>></span>
-                        <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
-                            @lang('messages.por_dano_recibido') <i class="fa-solid fa-shield-halved ml-1 group-hover:animate-spin-slow"></i>:
-                        </span>
-                        <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_dano_recibido')</span>
-                    </p>
-
-                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
-                        <span class="text-purple-500">>></span>
-                        <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
-                            @lang('messages.por_tiempo_muerto') <i class="fa-solid fa-hourglass-end ml-1 group-hover:animate-spin-slow"></i>:
-                        </span>
-                        <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_tiempo_muerto')</span>
-                    </p>
-
-                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
-                        <span class="text-purple-500">>></span>
-                        <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
-                            @lang('messages.por_botin_conseguido') <i class="fa-solid fa-gift ml-1 group-hover:animate-spin-slow"></i>:
-                        </span>
-                        <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_botin_conseguido')</span>
-                    </p>
-
-                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
-                        <span class="text-purple-500">>></span>
-                        <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
-                            @lang('messages.por_botin_perdido') <i class="fa-solid fa-box-open ml-1 group-hover:animate-spin-slow"></i>:
-                        </span>
-                        <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_botin_perdido')</span>
-                    </p>
-
-                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
-                        <span class="text-purple-500">>></span>
-                        <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
-                            @lang('messages.por_primera_sangre') <i class="fa-solid fa-droplet ml-1 group-hover:animate-spin-slow"></i>:
-                        </span>
-                        <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_primera_sangre')</span>
-                    </p>
-
-                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
-                        <span class="text-purple-500">>></span>
-                        <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
-                            @lang('messages.por_primera_torre') <i class="fa-solid fa-tower-broadcast ml-1 group-hover:animate-spin-slow"></i>:
-                        </span>
-                        <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_primera_torre')</span>
-                    </p>
-
-                    <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
-                        <span class="text-purple-500">>></span>
-                        <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
-                            @lang('messages.actualizacion') <i class="fa-solid fa-rotate-right ml-1 group-hover:animate-spin-slow"></i>:
-                        </span>
-                        <span class="text-gray-800 dark:text-gray-200">@lang('messages.automatica_tras_jornada')</span>
-                    </p>
-                </div>
-
+                <h3 class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500 animate-gradient dark:from-cyan-400 dark:to-blue-300">
+                    @lang('messages.sistema_puntuacion')
+                </h3>
             </div>
 
-    <!-- Pequeño script para mostrar/ocultar campo de contraseña -->
+            <div class="bg-gray-50/80 dark:bg-gray-800 p-5 rounded-xl border border-gray-200 dark:border-gray-600 font-mono text-green-600 dark:text-green-400 space-y-3">
+                <!-- Repite para cada regla -->
+                <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <span class="text-purple-500">>></span>
+                    <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
+                        @lang('messages.por_cada_kill') <i class="fa-solid fa-skull ml-1 group-hover:animate-spin-slow"></i>:
+                    </span>
+                    <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_kill')</span>
+                </p>
+
+                <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <span class="text-purple-500">>></span>
+                    <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
+                        @lang('messages.por_cada_asistencia') <i class="fa-solid fa-handshake-angle ml-1 group-hover:animate-spin-slow"></i>:
+                    </span>
+                    <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_asistencia')</span>
+                </p>
+                            
+                <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <span class="text-purple-500">>></span>
+                    <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
+                        @lang('messages.por_cada_muerte') <i class="fa-solid fa-skull-crossbones ml-1 group-hover:animate-spin-slow"></i>:
+                    </span>
+                    <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_muerte')</span>
+                </p>
+
+                <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <span class="text-purple-500">>></span>
+                    <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
+                        @lang('messages.por_puntos_vision') <i class="fa-solid fa-eye ml-1 group-hover:animate-spin-slow"></i>:
+                    </span>
+                    <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_vision')</span>
+                </p>
+
+                <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <span class="text-purple-500">>></span>
+                    <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
+                        @lang('messages.por_objetivos_robados') <i class="fa-solid fa-hand-rock ml-1 group-hover:animate-spin-slow"></i>:
+                    </span>
+                    <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_objetivos_robados')</span>
+                </p>
+
+                <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <span class="text-purple-500">>></span>
+                    <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
+                        @lang('messages.por_dano_torres') <i class="fa-solid fa-gopuram ml-1 group-hover:animate-spin-slow"></i>:
+                    </span>
+                    <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_dano_torres')</span>
+                </p>
+
+                <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <span class="text-purple-500">>></span>
+                    <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
+                        @lang('messages.por_oro_conseguido') <i class="fa-solid fa-coins ml-1 group-hover:animate-spin-slow"></i>:
+                    </span>
+                    <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_oro')</span>
+                </p>
+
+                <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <span class="text-purple-500">>></span>
+                    <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
+                        @lang('messages.por_double_kill') <i class="fa-solid fa-2 ml-1 group-hover:animate-spin-slow"></i>:
+                    </span>
+                    <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_double_kill')</span>
+                </p>
+
+                <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <span class="text-purple-500">>></span>
+                    <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
+                        @lang('messages.por_triple_kill') <i class="fa-solid fa-3 ml-1 group-hover:animate-spin-slow"></i>:
+                    </span>
+                    <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_triple_kill')</span>
+                </p>
+
+                <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <span class="text-purple-500">>></span>
+                    <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
+                        @lang('messages.por_quadra_kill') <i class="fa-solid fa-4 ml-1 group-hover:animate-spin-slow"></i>:
+                    </span>
+                    <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_quadra_kill')</span>
+                </p>
+
+                <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <span class="text-purple-500">>></span>
+                    <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
+                        @lang('messages.por_penta_kill') <i class="fa-solid fa-5 ml-1 group-hover:animate-spin-slow"></i>:
+                    </span>
+                    <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_penta_kill')</span>
+                </p>
+
+                <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <span class="text-purple-500">>></span>
+                    <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
+                        @lang('messages.por_dano_campeones') <i class="fa-solid fa-bolt ml-1 group-hover:animate-spin-slow"></i>:
+                    </span>
+                    <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_dano_campeones')</span>
+                </p>
+
+                <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <span class="text-purple-500">>></span>
+                    <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
+                        @lang('messages.por_dano_recibido') <i class="fa-solid fa-shield-halved ml-1 group-hover:animate-spin-slow"></i>:
+                    </span>
+                    <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_dano_recibido')</span>
+                </p>
+
+                <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <span class="text-purple-500">>></span>
+                    <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
+                        @lang('messages.por_tiempo_muerto') <i class="fa-solid fa-hourglass-end ml-1 group-hover:animate-spin-slow"></i>:
+                    </span>
+                    <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_tiempo_muerto')</span>
+                </p>
+
+                <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <span class="text-purple-500">>></span>
+                    <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
+                        @lang('messages.por_botin_conseguido') <i class="fa-solid fa-gift ml-1 group-hover:animate-spin-slow"></i>:
+                    </span>
+                    <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_botin_conseguido')</span>
+                </p>
+
+                <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <span class="text-purple-500">>></span>
+                    <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
+                        @lang('messages.por_botin_perdido') <i class="fa-solid fa-box-open ml-1 group-hover:animate-spin-slow"></i>:
+                    </span>
+                    <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_botin_perdido')</span>
+                </p>
+
+                <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <span class="text-purple-500">>></span>
+                    <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
+                        @lang('messages.por_primera_sangre') <i class="fa-solid fa-droplet ml-1 group-hover:animate-spin-slow"></i>:
+                    </span>
+                    <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_primera_sangre')</span>
+                </p>
+
+                <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <span class="text-purple-500">>></span>
+                    <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
+                        @lang('messages.por_primera_torre') <i class="fa-solid fa-tower-broadcast ml-1 group-hover:animate-spin-slow"></i>:
+                    </span>
+                    <span class="text-gray-800 dark:text-gray-200">@lang('messages.puntos_primera_torre')</span>
+                </p>
+
+                <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
+                    <span class="text-purple-500">>></span>
+                    <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">
+                        @lang('messages.actualizacion') <i class="fa-solid fa-rotate-right ml-1 group-hover:animate-spin-slow"></i>:
+                    </span>
+                    <span class="text-gray-800 dark:text-gray-200">@lang('messages.automatica_tras_jornada')</span>
+                </p>
+            </div>
+
+        </div>
     <script>
+        // Solo un click en el boton de crear liga para evitar errores
+        document.getElementById('crearLigaForm').addEventListener('submit', function () {
+            const boton = document.getElementById('crearLigaBtn');
+            boton.disabled = true;
+            boton.classList.add('opacity-50', 'cursor-not-allowed');
+            boton.textContent = 'Creando...'; 
+        });
+
         
         function passwordPrivada(select) {
             const passwordField = document.getElementById('password-field');
@@ -687,122 +692,143 @@
     }
     
     function joinLeagueModal() {
-    return {
-        showJoinModal: false,
-        showConfirmModal: false,
-        searchTerm: '',
-        leagues: [],
-        selectedLeague: null,
-        password: '',
-        error: '',
-        isLoading: false,
-        
-        async searchLeagues() {
-            this.isLoading = true;
-            try {
-                const url = this.searchTerm 
-                    ? `/ligas/buscar?search=${encodeURIComponent(this.searchTerm)}`
-                    : '/ligas/buscar';
-                
-                const response = await fetch(url);
-                const data = await response.json();
-                
-                // Ordenar por número de miembros (descendente)
-                this.leagues = data.sort((a, b) => b.usuarios_count - a.usuarios_count);
-                
-                // Auto-scroll al principio
-                if (this.$refs.resultsContainer) {
-                    this.$refs.resultsContainer.scrollTop = 0;
-                }
-            } catch (e) {
-                console.error('Error buscando ligas:', e);
-                this.error = 'Error al buscar ligas';
-                this.leagues = [];
-            } finally {
-                this.isLoading = false;
-            }
-        },
-        
-        selectLeague(league) {
-            this.selectedLeague = league;
-            this.showConfirmModal = true;
-            this.password = '';
-        },
-        
-        async joinLeague() {
-            this.error = '';
+        return {
+            showJoinModal: false,
+            showConfirmModal: false,
+            searchTerm: '',
+            leagues: [],
+            selectedLeague: null,
+            password: '',
+            error: '',
+            isLoading: false,
             
-            try {
-                const response = await fetch('/ligas/unirse', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    },
-                    body: JSON.stringify({
-                        liga_id: this.selectedLeague.id,
-                        password: this.password
-                    })
-                });
-                
-                const data = await response.json();
-                
-                if (!response.ok) {
-                    throw new Error(data.message || 'Error al unirse a la liga');
+            async searchLeagues() {
+                this.isLoading = true;
+                try {
+                    const url = this.searchTerm 
+                        ? `/ligas/buscar?search=${encodeURIComponent(this.searchTerm)}`
+                        : '/ligas/buscar';
+                    
+                    const response = await fetch(url);
+                    const data = await response.json();
+                    
+                    // Ordenar por número de miembros (descendente)
+                    this.leagues = data.sort((a, b) => b.usuarios_count - a.usuarios_count);
+                    
+                    // Auto-scroll al principio
+                    if (this.$refs.resultsContainer) {
+                        this.$refs.resultsContainer.scrollTop = 0;
+                    }
+                } catch (e) {
+                    console.error('Error buscando ligas:', e);
+                    this.error = 'Error al buscar ligas';
+                    this.leagues = [];
+                } finally {
+                    this.isLoading = false;
                 }
+            },
+            
+            selectLeague(league) {
+                this.selectedLeague = league;
+                this.showConfirmModal = true;
+                this.password = '';
+            },
+            
+            async joinLeague() {
+                this.error = '';
                 
-                if (data.success) {
-                    window.location.reload();
-                } else {
-                    this.error = data.message;
+                try {
+                    const response = await fetch('/ligas/unirse', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        },
+                        body: JSON.stringify({
+                            liga_id: this.selectedLeague.id,
+                            password: this.password
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (!response.ok) {
+                        throw new Error(data.message || 'Error al unirse a la liga');
+                    }
+                    
+                    if (data.success) {
+                        window.location.reload();
+                    } else {
+                        this.error = data.message;
+                    }
+                } catch (error) {
+                    this.error = error.message;
                 }
-            } catch (error) {
-                this.error = error.message;
             }
         }
     }
-}
-    function confirmarSalida(ligaId, miembrosCount) {
-        console.log('Intentando abandonar liga:', ligaId);
 
-        Swal.fire({
-        title: '@lang("messages.abandonar_liga")',
-        html: `
-            <div style="text-align:center;">
-                <div style="width:100%;height:0;padding-bottom:100%;position:relative;margin-bottom:10px;">
-                <img src="{{ asset('imagenes/abejaGift.gif') }}" alt="Abeja GIF" width="100%" height="100%" style="position:absolute;">
-                </div>
-                <p style="color:#f3f4f6; font-family:'Press Start 2P', monospace; font-size:12px;">
-                    @lang("messages.confirmar_abandonar")
-                </p>
-            </div>`,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: '@lang("messages.abandonar_min")',
-        cancelButtonText: '@lang("messages.cancelar")',
-        confirmButtonColor: '#ef4444',
-        cancelButtonColor: '#6b7280',
-        background: '#111827',
-        allowOutsideClick: false,
-        customClass: {
-            popup: 'border-4 border-indigo-600 rounded-xl shadow-xl',
-            confirmButton: 'text-white font-bold rounded-lg px-4 py-2 shadow-md',
-            cancelButton: 'text-white font-bold rounded-lg px-4 py-2 shadow-md ml-2'
-        }
-    })
-    .then((result) => {
-        if (result.isConfirmed) {
-            const form = document.getElementById(`abandonarLigaForm-${ligaId}`);
-            if (form) {
-                console.log('Enviando formulario para liga:', ligaId);
-                form.submit();
-            } else {
-                console.error('No se encontró el formulario');
-                Swal.fire('Error', 'No se pudo procesar la solicitud', 'error');
+    function confirmarSalida(ligaId, miembrosCount) {
+            console.log('Intentando abandonar liga:', ligaId);
+
+            Swal.fire({
+            title: '@lang("messages.abandonar_liga")',
+            html: `
+                <div style="text-align:center;">
+                    <div style="width:100%;height:0;padding-bottom:100%;position:relative;margin-bottom:10px;">
+                    <img src="{{ asset('imagenes/abejaGift.gif') }}" alt="Abeja GIF" width="100%" height="100%" style="position:absolute;">
+                    </div>
+                    <p style="color:#f3f4f6; font-family:'Press Start 2P', monospace; font-size:12px;">
+                        @lang("messages.confirmar_abandonar")
+                    </p>
+                </div>`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: '@lang("messages.abandonar_min")',
+            cancelButtonText: '@lang("messages.cancelar")',
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#6b7280',
+            background: '#111827',
+            allowOutsideClick: false,
+            customClass: {
+                popup: 'border-4 border-indigo-600 rounded-xl shadow-xl',
+                confirmButton: 'text-white font-bold rounded-lg px-4 py-2 shadow-md',
+                cancelButton: 'text-white font-bold rounded-lg px-4 py-2 shadow-md ml-2'
             }
+        })
+        .then((result) => {
+            if (result.isConfirmed) {
+                const form = document.getElementById(`abandonarLigaForm-${ligaId}`);
+                if (form) {
+                    console.log('Enviando formulario para liga:', ligaId);
+                    form.submit();
+                } else {
+                    console.error('No se encontró el formulario');
+                    Swal.fire('Error', 'No se pudo procesar la solicitud', 'error');
+                }
+            }
+        });
+    }
+    
+    //Cuando hay un "success" o "error" desaparece a los 5 segundos el mensaje
+    document.addEventListener('DOMContentLoaded', function () {
+        const successAlert = document.getElementById('successAlert');
+        const errorAlert = document.getElementById('errorAlert');
+
+        if (successAlert) {
+            setTimeout(() => {
+                successAlert.classList.add('opacity-0', 'transition-opacity', 'duration-500');
+                setTimeout(() => successAlert.remove(), 500); 
+            }, 5000);
+        }
+
+        if (errorAlert) {
+            setTimeout(() => {
+                errorAlert.classList.add('opacity-0', 'transition-opacity', 'duration-500');
+                setTimeout(() => errorAlert.remove(), 500); 
+            });
         }
     });
-}
 
     </script>
     <style>

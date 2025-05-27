@@ -2,7 +2,7 @@
     
         <div class="w-full max-w-md px-6 py-6 bg-white rounded-2xl shadow-xl">
             <div class="text-center mb-8">
-                <h2 class="text-3xl font-bold text-gray-800"> @lang('messages.bienvenido_a')<span class="text-blue-600">LEC Fantasy</span></h2>
+                <h2 class="text-3xl font-bold text-gray-800"> @lang('messages.bienvenido_a')<span class="text-blue-600"> LEC Fantasy</span></h2>
                 <p class="mt-2 text-gray-600">@lang('messages.incia_sesion_gestiona')</p>
             </div>
 
