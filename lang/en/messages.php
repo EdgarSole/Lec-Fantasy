@@ -48,7 +48,7 @@ return [
     'proxima-jornada' => 'The next LEC matchday starts soon. Don’t miss out.',
     'seleccionar-jugadores' => 'Select players',
     'perfil' => 'Profile',
-    
+    'nombre_liga' => 'League Name',
     // View Home
     'mis-ligas' => 'MY LEAGUES',
     'enhorabuena' => 'CONGRATULATIONS!',

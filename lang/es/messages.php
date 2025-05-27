@@ -263,7 +263,7 @@ return [
     'todas_posiciones' => 'Todas las posiciones',
     'posicion' => 'Posición',
     'equipo' => 'EQUIPO',
-    'tu' => 'Tú',
+    'nombre_liga' => 'Nombre Liga',
     'tu' => 'Tú',
     'tu' => 'Tú',
     'tu' => 'Tú',
