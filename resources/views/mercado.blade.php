@@ -403,7 +403,9 @@
                     if(data.success) {
                         mostrarNotificacion('success', data.message);
                         if (data.shouldReload) {
-                            setTimeout(() => location.reload(), 1500);
+                           setTimeout(() => {
+                                window.location.reload();
+                            }, 1500);
                         }
                     } else {
                         throw new Error(data.message);
