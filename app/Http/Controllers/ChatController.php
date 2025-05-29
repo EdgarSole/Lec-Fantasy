@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Http\Controllers;
+
 use App\Events\NuevoMensajeLiga;
 use App\Models\MensajeLiga;
 use Illuminate\Http\Request;

@@ -123,7 +123,7 @@
                 </div>
 
                  <!-- Botón de modo claro/oscuro -->
-                <div class="relative right-[-140px]" x-data="{ darkMode: false }" @click="darkMode = !darkMode; document.documentElement.classList.toggle('dark'); localStorage.setItem('darkMode', darkMode);"
+                <div class="relative " x-data="{ darkMode: false }" @click="darkMode = !darkMode; document.documentElement.classList.toggle('dark'); localStorage.setItem('darkMode', darkMode);"
                     x-init="darkMode = localStorage.getItem('darkMode') === 'true'; document.documentElement.classList.toggle('dark', darkMode)">
                     <button class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300 group">
                         <svg x-show="!darkMode" class="w-5 h-5 text-gray-600 dark:text-gray-300 group-hover:text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -136,7 +136,7 @@
                 </div>
 
                 <!-- Menú de idiomas -->
-                <div class="absolute right-[-220px]" x-data="{ open: false }" @click.away="open = false">
+                <div class="relative" x-data="{ open: false }" @click.away="open = false">
                     <button @click="open = !open" class="flex items-center space-x-1 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300">
                         <i class="fa-solid fa-language text-gray-600 dark:text-gray-400"></i>
                         <span 
