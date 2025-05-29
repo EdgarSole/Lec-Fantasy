@@ -19,7 +19,6 @@
             </div>
             @if(session('success'))
                 <div id="successAlert" class="mt-4 mb-6 p-4 rounded-lg border-2 border-green-400 dark:border-green-600 bg-gradient-to-br from-green-900/80 dark:from-green-800 to-green-800/90 dark:to-green-900/90 text-green-100 dark:text-green-50 shadow-lg shadow-green-500/20 dark:shadow-green-600/20 relative overflow-hidden">
-                    <!-- Efecto de borde gaming -->
                     <div class="absolute inset-0 border-2 border-green-300/30 dark:border-green-400/20 rounded-lg pointer-events-none"></div>
                     
                     <!-- Icono y contenido -->
@@ -383,7 +382,7 @@
                     
                     <!-- Parte inferior: Puntuación y acciones -->
                     <div class="p-6 relative z-10">
-                        <!-- Sección de Puntuación - Estilo Gaming Claro/Oscuro -->
+                        <!-- Sección de Puntuación -->
                         <div class="bg-[#fffaf5] dark:bg-gray-700/80 p-4 rounded-lg mb-4 border border-gray-200 dark:border-gray-600 shadow-inner">
                             <h4 class="text-xs font-mono text-cyan-600 dark:text-cyan-400 mb-3 tracking-wider"> @lang('messages.estadisticas')</h4>
                             
@@ -494,7 +493,6 @@
             </div>
 
             <div class="bg-gray-50/80 dark:bg-gray-800 p-5 rounded-xl border border-gray-200 dark:border-gray-600 font-mono text-green-600 dark:text-green-400 space-y-3">
-                <!-- Repite para cada regla -->
                 <p class="transition-all  hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-[1.02] hover:shadow-md rounded-lg p-1">
                     <span class="text-purple-500">>></span>
                     <span class="text-yellow-600 dark:text-yellow-400 group inline-flex items-center">

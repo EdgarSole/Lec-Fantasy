@@ -530,40 +530,42 @@
             alert(error.message || 'Ocurrió un error');
         });
     }
-    function gestionarTitularidad(jugadorId, equipoId, ligaId, esTitular) {
-    const url = `/liga/${ligaId}/equipo/${equipoId}/jugador/${jugadorId}/asignar`;
 
-    fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-            'Accept': 'application/json'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            sessionStorage.setItem('flashMessage', JSON.stringify({
-                success: data.message || (esTitular ? 'Jugador movido al banquillo' : 'Jugador asignado como titular')
-            }));
-            location.reload();
-        } else {
+    function gestionarTitularidad(jugadorId, equipoId, ligaId, esTitular) {
+        const url = `/liga/${ligaId}/equipo/${equipoId}/jugador/${jugadorId}/asignar`;
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                sessionStorage.setItem('flashMessage', JSON.stringify({
+                    success: data.message || (esTitular ? 'Jugador movido al banquillo' : 'Jugador asignado como titular')
+                }));
+                location.reload();
+            } else {
+                sessionStorage.setItem('flashError', JSON.stringify({
+                    error: data.error || 'Error al actualizar titularidad'
+                }));
+                location.reload();
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
             sessionStorage.setItem('flashError', JSON.stringify({
-                error: data.error || 'Error al actualizar titularidad'
+                error: 'Error al conectar con el servidor'
             }));
             location.reload();
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        sessionStorage.setItem('flashError', JSON.stringify({
-            error: 'Error al conectar con el servidor'
-        }));
-        location.reload();
-    });
-}
-function venderJugador(jugadorId, equipoId, ligaId, valorVenta, nombreJugador) {
+        });
+    }
+
+    function venderJugador(jugadorId, equipoId, ligaId, valorVenta, nombreJugador) {
         document.getElementById('venta-jugador-nombre').textContent = nombreJugador;
         document.getElementById('venta-jugador-precio').textContent = valorVenta.toLocaleString('es-ES');
         
@@ -572,139 +574,153 @@ function venderJugador(jugadorId, equipoId, ligaId, valorVenta, nombreJugador) {
         
         // Configurar el botón de confirmación
         const confirmarBtn = document.getElementById('confirmar-venta-btn');
-        confirmarBtn.onclick = function() {
-            realizarVenta(jugadorId, equipoId, ligaId, valorVenta);
+        confirmarBtn.onclick = async function() {
+            try {
+                // Obtener puntos del jugador desde el servidor
+                const response = await fetch(`/liga/${ligaId}/equipo/${equipoId}/jugador/${jugadorId}/puntos`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    realizarVenta(jugadorId, equipoId, ligaId, valorVenta, data.puntos);
+                } else {
+                    throw new Error(data.error || 'Error al obtener puntos del jugador');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                sessionStorage.setItem('flashError', JSON.stringify({
+                    error: error.message
+                }));
+                location.reload();
+            }
             modal.classList.add('hidden');
         };
     }
-    
-    // Función para realizar la venta via AJAX
-    function realizarVenta(jugadorId, equipoId, ligaId, valorVenta) {
-    fetch(`/liga/${ligaId}/equipo/${equipoId}/jugador/${jugadorId}/vender`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-        },
-        body: JSON.stringify({
-            jugador_id: jugadorId,
-            valor_venta: valorVenta
+
+    function realizarVenta(jugadorId, equipoId, ligaId, valorVenta, puntosJugador) {
+        fetch(`/liga/${ligaId}/equipo/${equipoId}/jugador/${jugadorId}/vender`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({
+                jugador_id: jugadorId,
+                valor_venta: valorVenta,
+                puntos_jugador: puntosJugador
+            })
         })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Guardar mensaje en sessionStorage para mostrarlo después del recarga
-            sessionStorage.setItem('flashMessage', JSON.stringify({
-                success: data.message
-            }));
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                sessionStorage.setItem('flashMessage', JSON.stringify({
+                    success: data.message
+                }));
+            } else {
+                sessionStorage.setItem('flashError', JSON.stringify({
+                    error: data.error || 'Error al vender el jugador'
+                }));
+            }
             location.reload();
-        } else {
-            // Guardar mensaje de error
+        })
+        .catch(error => {
+            console.error('Error:', error);
             sessionStorage.setItem('flashError', JSON.stringify({
-                error: data.error || 'Error al vender el jugador'
+                error: 'Error al conectar con el servidor'
             }));
             location.reload();
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        sessionStorage.setItem('flashError', JSON.stringify({
-            error: 'Error al conectar con el servidor'
-        }));
-        location.reload();
-    });
-}
-// Mostrar mensajes flash al cargar la página
-document.addEventListener('DOMContentLoaded', function() {
-    const showFlashNotification = (type, title, message) => {
-        const notification = document.getElementById('flash-notification');
-        const icon = notification.querySelector('.flash-icon');
-        const notificationTitle = notification.querySelector('.flash-title');
-        const notificationMessage = notification.querySelector('.flash-message');
-        const closeBtn = notification.querySelector('.flash-close');
-        const timerBar = notification.querySelector('.flash-timer');
-        const border = notification.querySelector('.flash-border');
-        
-        // Resetear clases
-        notification.className = 'fixed top-6 left-1/2 transform -translate-x-1/2 z-1000 w-full max-w-xl px-4';
-        border.className = 'absolute inset-0 rounded-lg border-2 border-opacity-20 pointer-events-none flash-border';
-        
-        // Configurar según el tipo
-        if (type === 'success') {
-            // Estilo éxito
-            notification.classList.add('text-green-100');
-            border.classList.add('border-green-500', 'animate-pulse');
-            icon.innerHTML = '🎯';
-            icon.classList.add('text-green-400', 'animate-bounce');
-            timerBar.classList.add('bg-gradient-to-r', 'from-green-500', 'to-cyan-500');
-            title = '¡OPERACIÓN EXITOSA!';
-        } else {
-            // Estilo error
-            notification.classList.add('text-red-100');
-            border.classList.add('border-red-500', 'animate-pulse');
-            icon.innerHTML = '⚡';
-            icon.classList.add('text-red-400', 'animate-pulse');
-            timerBar.classList.add('bg-gradient-to-r', 'from-red-500', 'to-amber-500');
-            title = '¡ALERTA!';
-        }
-        
-        // Configurar contenido
-        notificationTitle.textContent = title;
-        notificationMessage.textContent = message;
-        notification.classList.remove('hidden');
-        
-        // Animación de la barra de tiempo
-        timerBar.style.transition = 'none';
-        timerBar.style.width = '100%';
-        setTimeout(() => {
-            timerBar.style.transition = 'width 5s linear';
-            timerBar.style.width = '0%';
-        }, 50);
-        
-        // Efecto de aparición
-        notification.style.opacity = '0';
-        notification.style.transform = 'translate(-50%, -20px)';
-        notification.style.transition = 'all 0.3s ease-out';
-        
-        setTimeout(() => {
-            notification.style.opacity = '1';
-            notification.style.transform = 'translate(-50%, 0)';
-        }, 10);
-        
-        // Cerrar manualmente
-        closeBtn.addEventListener('click', hideNotification);
-        
-        // Cerrar automáticamente después de 5 segundos
-        const autoClose = setTimeout(hideNotification, 5000);
-        
-        function hideNotification() {
-            clearTimeout(autoClose);
+        });
+    }
+
+    // Mostrar mensajes flash al cargar la página
+    document.addEventListener('DOMContentLoaded', function() {
+        const showFlashNotification = (type, title, message) => {
+            const notification = document.getElementById('flash-notification');
+            const icon = notification.querySelector('.flash-icon');
+            const notificationTitle = notification.querySelector('.flash-title');
+            const notificationMessage = notification.querySelector('.flash-message');
+            const closeBtn = notification.querySelector('.flash-close');
+            const timerBar = notification.querySelector('.flash-timer');
+            const border = notification.querySelector('.flash-border');
+            
+            // Resetear clases
+            notification.className = 'fixed top-6 left-1/2 transform -translate-x-1/2 z-1000 w-full max-w-xl px-4';
+            border.className = 'absolute inset-0 rounded-lg border-2 border-opacity-20 pointer-events-none flash-border';
+            
+            // Configurar según el tipo
+            if (type === 'success') {
+                // Estilo éxito
+                notification.classList.add('text-green-100');
+                border.classList.add('border-green-500', 'animate-pulse');
+                icon.innerHTML = '🎯';
+                icon.classList.add('text-green-400', 'animate-bounce');
+                timerBar.classList.add('bg-gradient-to-r', 'from-green-500', 'to-cyan-500');
+                title = '¡OPERACIÓN EXITOSA!';
+            } else {
+                // Estilo error
+                notification.classList.add('text-red-100');
+                border.classList.add('border-red-500', 'animate-pulse');
+                icon.innerHTML = '⚡';
+                icon.classList.add('text-red-400', 'animate-pulse');
+                timerBar.classList.add('bg-gradient-to-r', 'from-red-500', 'to-amber-500');
+                title = '¡ALERTA!';
+            }
+            
+            // Configurar contenido
+            notificationTitle.textContent = title;
+            notificationMessage.textContent = message;
+            notification.classList.remove('hidden');
+            
+            // Animación de la barra de tiempo
+            timerBar.style.transition = 'none';
+            timerBar.style.width = '100%';
+            setTimeout(() => {
+                timerBar.style.transition = 'width 5s linear';
+                timerBar.style.width = '0%';
+            }, 50);
+            
+            // Efecto de aparición
             notification.style.opacity = '0';
             notification.style.transform = 'translate(-50%, -20px)';
+            notification.style.transition = 'all 0.3s ease-out';
             
             setTimeout(() => {
-                notification.classList.add('hidden');
-            }, 300);
+                notification.style.opacity = '1';
+                notification.style.transform = 'translate(-50%, 0)';
+            }, 10);
+            
+            // Cerrar manualmente
+            closeBtn.addEventListener('click', hideNotification);
+            
+            // Cerrar automáticamente después de 5 segundos
+            const autoClose = setTimeout(hideNotification, 5000);
+            
+            function hideNotification() {
+                clearTimeout(autoClose);
+                notification.style.opacity = '0';
+                notification.style.transform = 'translate(-50%, -20px)';
+                
+                setTimeout(() => {
+                    notification.classList.add('hidden');
+                }, 300);
+            }
+        };
+        
+        // Comprobar mensajes flash almacenados
+        const flashMessage = sessionStorage.getItem('flashMessage');
+        const flashError = sessionStorage.getItem('flashError');
+        
+        if (flashMessage) {
+            const data = JSON.parse(flashMessage);
+            showFlashNotification('success', '', data.success);
+            sessionStorage.removeItem('flashMessage');
         }
-    };
-    
-    // Comprobar mensajes flash almacenados
-    const flashMessage = sessionStorage.getItem('flashMessage');
-    const flashError = sessionStorage.getItem('flashError');
-    
-    if (flashMessage) {
-        const data = JSON.parse(flashMessage);
-        showFlashNotification('success', '', data.success);
-        sessionStorage.removeItem('flashMessage');
-    }
-    
-    if (flashError) {
-        const data = JSON.parse(flashError);
-        showFlashNotification('error', '', data.error);
-        sessionStorage.removeItem('flashError');
-    }
-});
+        
+        if (flashError) {
+            const data = JSON.parse(flashError);
+            showFlashNotification('error', '', data.error);
+            sessionStorage.removeItem('flashError');
+        }
+    });
 
 </script>
 @endsection

@@ -98,54 +98,74 @@ class MiLigaController extends Controller
     }
 
     
-    public function venderJugador(Request $request, Liga $liga, Equipo $equipo)
-{
-    $request->validate([
-        'jugador_id' => 'required|exists:jugadores,id',
-        'valor_venta' => 'required|numeric'
-    ]);
-    
-    // Verificar que el jugador pertenece al equipo
-    if (!$equipo->jugadores()->where('jugador_id', $request->jugador_id)->exists()) {
-        return response()->json([
-            'success' => false, 
-            'error' => 'El jugador no pertenece a este equipo'
-        ]);
-    }
-    
-    try {
-        DB::transaction(function () use ($equipo, $request) {
-            // Eliminar al jugador del equipo
-            $equipo->jugadores()->detach($request->jugador_id);
-            
-            // Aumentar el presupuesto del equipo
-            $equipo->increment('presupuesto', $request->valor_venta);
-            
-            // Registrar en historial de transacciones
-            DB::table('historial_transacciones')->insert([
-                'liga_id' => $equipo->liga_id,
-                'equipo_id' => $equipo->id,
-                'jugador_id' => $request->jugador_id,
-                'tipo' => 'venta',
-                'precio' => $request->valor_venta,
-                'descripcion' => 'Venta de jugador',
-                'created_at' => now(),
-                'updated_at' => now()
+    public function obtenerPuntosJugador(Liga $liga, Equipo $equipo, Jugador $jugador)
+    {
+        // Verificar que el jugador pertenece al equipo
+        if (!$equipo->jugadores()->where('jugador_id', $jugador->id)->exists()) {
+            return response()->json([
+                'success' => false,
+                'error' => 'El jugador no pertenece a este equipo'
             ]);
-        });
-        
+        }
+
         return response()->json([
             'success' => true,
-            'message' => "El jugador fue vendido con éxito!"
-        ]);
-        
-    } catch (\Exception $e) {
-        return response()->json([
-            'success' => false,
-            'error' => 'Error al vender el jugador: ' . $e->getMessage()
+            'puntos' => $jugador->puntos
         ]);
     }
-}
+
+    public function venderJugador(Request $request, Liga $liga, Equipo $equipo, Jugador $jugador)
+    {
+        $request->validate([
+            'jugador_id' => 'required|exists:jugadores,id',
+            'valor_venta' => 'required|numeric',
+            'puntos_jugador' => 'required|numeric'
+        ]);
+
+        // Verificar que el jugador pertenece al equipo
+        if (!$equipo->jugadores()->where('jugador_id', $request->jugador_id)->exists()) {
+            return response()->json([
+                'success' => false, 
+                'error' => 'El jugador no pertenece a este equipo'
+            ]);
+        }
+
+        try {
+            DB::transaction(function () use ($equipo, $request) {
+                // Eliminar al jugador del equipo
+                $equipo->jugadores()->detach($request->jugador_id);
+                
+                // Aumentar el presupuesto del equipo
+                $equipo->increment('presupuesto', $request->valor_venta);
+                
+                // Restar los puntos del jugador al equipo
+                $equipo->decrement('puntos', $request->puntos_jugador);
+                
+                // Registrar en historial de transacciones
+                DB::table('historial_transacciones')->insert([
+                    'liga_id' => $equipo->liga_id,
+                    'equipo_id' => $equipo->id,
+                    'jugador_id' => $request->jugador_id,
+                    'tipo' => 'venta',
+                    'precio' => $request->valor_venta,
+                    'descripcion' => 'Venta de jugador',
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+            });
+
+            return response()->json([
+                'success' => true,
+                'message' => "El jugador fue vendido con éxito!"
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Error al vender el jugador: ' . $e->getMessage()
+            ]);
+        }
+    }
 
     public function mercado(Liga $liga)
     {
@@ -249,153 +269,158 @@ class MiLigaController extends Controller
     }
 
   public function pujar(Request $request, Liga $liga)
-{
-    $request->validate([
-        'mercado_id' => 'required|exists:mercado,id',
-        'cantidad' => 'required|numeric|min:0',
-    ]);
-    
-    $user = auth()->user();
-    $mercado = Mercado::with('jugador')->findOrFail($request->mercado_id);
+    {
+        $request->validate([
+            'mercado_id' => 'required|exists:mercado,id',
+            'cantidad' => 'required|numeric|min:0',
+        ]);
+        
+        $user = auth()->user();
+        $mercado = Mercado::with('jugador')->findOrFail($request->mercado_id);
 
-    $equipo = $user->equipos()->where('liga_id', $liga->id)->first();
+        $equipo = $user->equipos()->where('liga_id', $liga->id)->first();
 
-    if (!$equipo) {
+        if (!$equipo) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No se encontró el equipo del usuario en esta liga.'
+            ], 404);
+        }
+
+        // Crear o actualizar puja
+        $puja = Puja::updateOrCreate(
+            ['equipo_id' => $equipo->id, 'mercado_id' => $request->mercado_id],
+            ['cantidad' => $request->cantidad]
+        );
+
+        // Obtener todas las pujas actualizadas para este mercado (ordenadas)
+        $pujasMercado = Puja::with('equipo')
+            ->where('mercado_id', $request->mercado_id)
+            ->orderBy('cantidad', 'desc')
+            ->get();
+
+        // Calcular nuevo presupuesto disponible
+        $pujasTotales = Puja::where('equipo_id', $equipo->id)
+            ->whereHas('mercado', function($q) use ($liga) {
+                $q->where('liga_id', $liga->id)
+                ->where('fecha_fin', '>', now());
+            })
+            ->sum('cantidad');
+
         return response()->json([
-            'success' => false,
-            'message' => 'No se encontró el equipo del usuario en esta liga.'
-        ], 404);
+        'success' => true, // Indica que la operación fue exitosa
+        'presupuesto' => $equipo->presupuesto, // Presupuesto total del equipo
+        'pujas_totales' => $pujasTotales, // Suma total de las pujas realizadas
+        'pujas_mercado' => $pujasMercado->map(function($puja) {
+            return [
+                'equipo_nombre' => $puja->equipo->usuario->nombre, // Nombre del equipo que realizó la puja
+                'cantidad' => $puja->cantidad, // Cantidad pujada
+                'fecha' => $puja->created_at->format('H:i:s') // Hora en que se hizo la puja
+            ];
+        }),
+        'mercado_id' => $request->mercado_id, // ID del mercado consultado
+        'jugador_nombre' => $mercado->jugador->nombre, // Nombre del jugador subastado
+        'jugador_valor' => $mercado->jugador->valor, // Valor base o actual del jugador
+        'cantidad_pujada' => $request->cantidad, // Cantidad que se intenta pujar
+        'presupuesto_restante' => $equipo->presupuesto - $pujasTotales // Presupuesto que queda después de las pujas
+    ]);
+
     }
 
-    // Crear o actualizar puja
-    $puja = Puja::updateOrCreate(
-        ['equipo_id' => $equipo->id, 'mercado_id' => $request->mercado_id],
-        ['cantidad' => $request->cantidad]
-    );
+    private function procesarMercado(Mercado $mercado)
+    {
+        $mercado->load(['pujas.equipo', 'jugador']);
 
-    // Obtener todas las pujas actualizadas para este mercado (ordenadas)
-    $pujasMercado = Puja::with('equipo')
-        ->where('mercado_id', $request->mercado_id)
-        ->orderBy('cantidad', 'desc')
-        ->get();
+        \DB::transaction(function () use ($mercado) {
+            if ($mercado->pujas->isEmpty()) {
+                $mercado->update(['procesado' => true]);
+                return;
+            }
 
-    // Calcular nuevo presupuesto disponible
-    $pujasTotales = Puja::where('equipo_id', $equipo->id)
-        ->whereHas('mercado', function($q) use ($liga) {
-            $q->where('liga_id', $liga->id)
-              ->where('fecha_fin', '>', now());
-        })
-        ->sum('cantidad');
+            $pujaGanadora = $mercado->pujas->sortByDesc('cantidad')->first();
+            $equipoGanador = $pujaGanadora->equipo;
 
-    return response()->json([
-    'success' => true, // Indica que la operación fue exitosa
-    'presupuesto' => $equipo->presupuesto, // Presupuesto total del equipo
-    'pujas_totales' => $pujasTotales, // Suma total de las pujas realizadas
-    'pujas_mercado' => $pujasMercado->map(function($puja) {
-        return [
-            'equipo_nombre' => $puja->equipo->usuario->nombre, // Nombre del equipo que realizó la puja
-            'cantidad' => $puja->cantidad, // Cantidad pujada
-            'fecha' => $puja->created_at->format('H:i:s') // Hora en que se hizo la puja
-        ];
-    }),
-    'mercado_id' => $request->mercado_id, // ID del mercado consultado
-    'jugador_nombre' => $mercado->jugador->nombre, // Nombre del jugador subastado
-    'jugador_valor' => $mercado->jugador->valor, // Valor base o actual del jugador
-    'cantidad_pujada' => $request->cantidad, // Cantidad que se intenta pujar
-    'presupuesto_restante' => $equipo->presupuesto - $pujasTotales // Presupuesto que queda después de las pujas
-]);
+            if ($equipoGanador) {
+                // 1. Verificar y agregar jugador al equipo
+                JugadoresEquipo::firstOrCreate([
+                    'jugador_id' => $mercado->jugador_id,
+                    'equipo_id' => $equipoGanador->id
+                ], ['es_titular' => false]);
 
-}
+                // 2. Sumar los puntos del jugador al TOTAL DEL EQUIPO
+                $puntosJugador = $mercado->jugador->puntos;
+                $equipoGanador->puntos += $puntosJugador;
+                $equipoGanador->save();
 
-   private function procesarMercado(Mercado $mercado)
-{
-    $mercado->load(['pujas.equipo', 'jugador']);
+                // 3. Registrar transacción (con los puntos si es necesario)
+                DB::table('historial_transacciones')->insert([
+                    'liga_id' => $mercado->liga_id,
+                    'equipo_id' => $equipoGanador->id,
+                    'jugador_id' => $mercado->jugador_id,
+                    'tipo' => 'compra',
+                    'precio' => $pujaGanadora->cantidad,
+                    'descripcion' => 'Compra de ' . $mercado->jugador->nombre,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
 
-    \DB::transaction(function () use ($mercado) {
-        if ($mercado->pujas->isEmpty()) {
+                // 4. Actualizar presupuesto (restar el precio de compra)
+                $equipoGanador->decrement('presupuesto', $pujaGanadora->cantidad);
+                
+            }
+
             $mercado->update(['procesado' => true]);
-            return;
-        }
-
-        $pujaGanadora = $mercado->pujas->sortByDesc('cantidad')->first();
-        $equipoGanador = $pujaGanadora->equipo;
-
-        if ($equipoGanador) {
-            // Verificar y agregar jugador al equipo
-            JugadoresEquipo::firstOrCreate([
-                'jugador_id' => $mercado->jugador_id,
-                'equipo_id' => $equipoGanador->id
-            ], ['es_titular' => false]);
-
-            // Registrar transacción
-            DB::table('historial_transacciones')->insert([
-                'liga_id' => $mercado->liga_id,
-                'equipo_id' => $equipoGanador->id,
-                'jugador_id' => $mercado->jugador_id,
-                'tipo' => 'compra',
-                'precio' => $pujaGanadora->cantidad,
-                'descripcion' => 'Puja por ' . $mercado->jugador->nombre,
-                'created_at' => now(),
-                'updated_at' => now()
-            ]);
-
-            // Actualizar presupuesto
-            $equipoGanador->decrement('presupuesto', $pujaGanadora->cantidad);
-            $equipoGanador->refresh();
-        }
-
-        $mercado->update(['procesado' => true]);
-    });
-}
+        });
+    }
 
 
 
-public function eliminarPuja(Request $request, Liga $liga)
-{
-    $request->validate([
-        'mercado_id' => 'required|exists:mercado,id',
-    ]);
-    
-    $user = auth()->user();
+    public function eliminarPuja(Request $request, Liga $liga)
+    {
+        $request->validate([
+            'mercado_id' => 'required|exists:mercado,id',
+        ]);
+        
+        $user = auth()->user();
 
-    $equipo = Equipo::where('usuario_id', $user->id)
-        ->where('liga_id', $liga->id)
-        ->firstOrFail();
+        $equipo = Equipo::where('usuario_id', $user->id)
+            ->where('liga_id', $liga->id)
+            ->firstOrFail();
 
-    $puja = Puja::where('equipo_id', $equipo->id)
-        ->where('mercado_id', $request->mercado_id)
-        ->firstOrFail();
-    
-    $puja->delete();
-    
-    return response()->json(['success' => true]);
-}
+        $puja = Puja::where('equipo_id', $equipo->id)
+            ->where('mercado_id', $request->mercado_id)
+            ->firstOrFail();
+        
+        $puja->delete();
+        
+        return response()->json(['success' => true]);
+    }
 
     public function procesarPujas(Liga $liga)
-{
-    try {
-        // Procesar inmediatamente en lugar de solo despachar el job
-        $mercados = Mercado::where('liga_id', $liga->id)
-            ->where('fecha_fin', '<=', now())
-            ->where('procesado', false)
-            ->get();
-        
-        foreach ($mercados as $mercado) {
-            $this->procesarMercado($mercado);
+    {
+        try {
+            // Procesar inmediatamente en lugar de solo despachar el job
+            $mercados = Mercado::where('liga_id', $liga->id)
+                ->where('fecha_fin', '<=', now())
+                ->where('procesado', false)
+                ->get();
+            
+            foreach ($mercados as $mercado) {
+                $this->procesarMercado($mercado);
+            }
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Mercado procesado correctamente',
+                'shouldReload' => true 
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
         }
-        
-        return response()->json([
-            'success' => true,
-            'message' => 'Mercado procesado correctamente',
-            'shouldReload' => true 
-        ]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'success' => false,
-            'message' => $e->getMessage()
-        ], 500);
     }
-}
 
     public function clasificacion(Liga $liga)
     {

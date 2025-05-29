@@ -59,6 +59,8 @@ Route::prefix('liga/{liga}')->middleware(['auth'])->group(function() {
             ->name('equipo.asignar-jugador');
         Route::post('jugador/{jugador}/vender', [MiLigaController::class, 'venderJugador'])
             ->name('equipo.vender-jugador');
+        Route::get('jugador/{jugador}/puntos', [MiLigaController::class, 'obtenerPuntosJugador'])
+            ->name('equipo.obtener-puntos');
     });
 
     // Rutas de mercado
