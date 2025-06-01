@@ -11,11 +11,11 @@
     <div x-data="{
             currentSlide: 0,
             slides: [
-                '{{ asset('imagenes/fondo5_2.jpg') }}',
-                '{{ asset('imagenes/foto_fondo3.avif') }}',
-                '{{ asset('imagenes/fondo3-estadio.jpg') }}',
-                '{{ asset('imagenes/fondo2-arena.jpg') }}',
-                '{{ asset('imagenes/fondo4.jpg') }}'
+                '{{ asset('Imagenes/fondo5_2.jpg') }}',
+                '{{ asset('Imagenes/foto_fondo3.avif') }}',
+                '{{ asset('Imagenes/fondo3-estadio.jpg') }}',
+                '{{ asset('Imagenes/fondo2-arena.jpg') }}',
+                '{{ asset('Imagenes/fondo4.jpg') }}'
             ],
             interval: null,
             init() {
@@ -382,11 +382,11 @@ function carousel() {
     return {
         currentSlide: 0,
         slides: [
-            '{{ asset('imagenes/fondo.jpg') }}',
-            '{{ asset('imagenes/fondo2-estadio.jpg') }}',
-            '{{ asset('imagenes/fondo3-estadio.jpg') }}',
-            '{{ asset('imagenes/fondo2-arena.jpg') }}',
-            '{{ asset('imagenes/fondo5-estadio.jpg') }}'
+            '{{ asset('Imagenes/fondo.jpg') }}',
+            '{{ asset('Imagenes/fondo2-estadio.jpg') }}',
+            '{{ asset('Imagenes/fondo3-estadio.jpg') }}',
+            '{{ asset('Imagenes/fondo2-arena.jpg') }}',
+            '{{ asset('Imagenes/fondo5-estadio.jpg') }}'
         ],
         interval: null,
 

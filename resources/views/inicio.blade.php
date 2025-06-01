@@ -774,7 +774,7 @@
             html: `
                 <div style="text-align:center;">
                     <div style="width:100%;height:0;padding-bottom:100%;position:relative;margin-bottom:10px;">
-                    <img src="{{ asset('imagenes/abejaGift.gif') }}" alt="Abeja GIF" width="100%" height="100%" style="position:absolute;">
+                    <img src="{{ asset('Imagenes/abejaGift.gif') }}" alt="Abeja GIF" width="100%" height="100%" style="position:absolute;">
                     </div>
                     <p style="color:#f3f4f6; font-family:'Press Start 2P', monospace; font-size:12px;">
                         @lang("messages.confirmar_abandonar")
