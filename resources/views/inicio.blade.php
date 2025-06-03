@@ -70,15 +70,16 @@
 
 <div class="py-8 bg-gray-50 dark:bg-gray-900 min-h-screen border-t border-[#3b82f6] shadow-[0_0_10px_#3b82f6] dark:border-t-1 dark:border-[#39ff14] dark:shadow-[0_0_10px_#39ff14]">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 px-4">
-        <div class="flex flex-wrap gap-5 mb-12 justify-center">
-            <button type="button" onclick="document.getElementById('create-league-modal').classList.remove('hidden')" class="px-8 py-3.5 bg-gradient-to-r from-blue-500 to-cyan-500 dark:from-blue-600 dark:to-cyan-600 rounded-xl font-bold text-white hover:from-blue-600 hover:to-cyan-600 dark:hover:from-blue-700 dark:hover:to-cyan-700 transition-all  transform hover:scale-[1.03] shadow-lg shadow-cyan-300/40 dark:shadow-cyan-500/30 border-b-2 border-cyan-600/70 dark:border-cyan-700/70 active:scale-95">
-                🏆  @lang('messages.crear-liga-may')
+        <div class="flex flex-col sm:flex-row gap-5 mb-12 justify-center items-center sm:items-stretch">
+            <button type="button"
+                onclick="document.getElementById('create-league-modal').classList.remove('hidden')"
+                class="w-full sm:w-[260px] px-8 py-3.5 bg-gradient-to-r from-blue-500 to-cyan-500 dark:from-blue-600 dark:to-cyan-600 rounded-xl font-bold text-white hover:from-blue-600 hover:to-cyan-600 dark:hover:from-blue-700 dark:hover:to-cyan-700 transition-all transform hover:scale-[1.03] shadow-lg shadow-cyan-300/40 dark:shadow-cyan-500/30 border-b-2 border-cyan-600/70 dark:border-cyan-700/70 active:scale-95 text-center">
+                🏆 @lang('messages.crear-liga-may')
             </button>
-            <button 
-                x-data
-                @click="$dispatch('open-join-modal')" 
-                class="px-8 py-3.5 bg-gradient-to-r from-green-400 to-emerald-500 dark:from-green-500 dark:to-emerald-600 rounded-xl font-bold text-white hover:from-green-500 hover:to-emerald-600 dark:hover:from-green-600 dark:hover:to-emerald-700 transition-all  transform hover:scale-[1.03] shadow-lg shadow-emerald-300/40 dark:shadow-emerald-500/30 border-b-2 border-emerald-600/70 dark:border-emerald-700/70 active:scale-95">
-                🎮  @lang('messages.unirse-liga')
+
+            <button x-data @click="$dispatch('open-join-modal')"
+                class="w-full sm:w-[260px] px-8 py-3.5 bg-gradient-to-r from-green-400 to-emerald-500 dark:from-green-500 dark:to-emerald-600 rounded-xl font-bold text-white hover:from-green-500 hover:to-emerald-600 dark:hover:from-green-600 dark:hover:to-emerald-700 transition-all transform hover:scale-[1.03] shadow-lg shadow-emerald-300/40 dark:shadow-emerald-500/30 border-b-2 border-emerald-600/70 dark:border-emerald-700/70 active:scale-95 text-center">
+                🎮 @lang('messages.unirse-liga')
             </button>
         </div>
 
