@@ -6,15 +6,16 @@
          >
             <div class="p-5 border-b border-gray-300 dark:border-gray-700 flex items-center bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-700">
                 <img src="{{ $liga->logo_url }}" alt="Logo Liga" class="w-14 h-14 rounded-full border-2 border-cyan-400 dark:border-cyan-500 object-cover shadow-md dark:shadow-cyan-500/20">
-                <div>
-                    <h1 class="text-lg font-bold text-gray-800 dark:text-gray-100">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $liga->nombre }}</h1>
-                    <p class="text-cyan-600 dark:text-cyan-400 flex items-center text-sm mt-1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                
+                <div class="ml-4 overflow-hidden">
+                    <h1 class="text-lg font-bold text-gray-800 dark:text-gray-100 truncate">{{ $liga->nombre }}</h1>
+                    <p class="text-cyan-600 dark:text-cyan-400 flex items-center text-sm mt-1">
                         <span class="inline-block w-2 h-2 bg-green-400 dark:bg-green-500 rounded-full mr-2 animate-pulse"></span>
                         {{ $liga->usuario_id == auth()->id() ? __('messages.lider') : __('messages.miembro') }}
- 
                     </p>
                 </div>
             </div>
+
 
             <!-- Navegación mejorada -->
             <nav class="flex-1 flex flex-col justify-between py-6 px-3 space-y-2">
