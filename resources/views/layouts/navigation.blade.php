@@ -217,17 +217,32 @@
         class="lg:hidden absolute w-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm shadow-xl z-50 border-t border-gray-200 dark:border-gray-800 rounded-b-2xl overflow-hidden transition-colors duration-300">
 
         <div class="pt-2 pb-3 space-y-2 px-4">
-            <x-responsive-nav-link :href="route('inicio')" @click="open = false" :active="request()->routeIs('inicio')" class="block px-4 py-3 text-gray-800 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 rounded-xl my-1 transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 transform flex items-center">
-                <span class="mr-3"><i class="fa-solid fa-house"></i></span>
-                @lang('messages.inicio')
-            </x-responsive-nav-link>
+            @auth
+                <x-responsive-nav-link 
+                    :href="route('inicio')" 
+                    @click="open = false"                    
+                    class="block px-4 py-3 text-gray-800 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 rounded-xl my-1 transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 transform flex items-center"
+                >
+                    <span class="mr-3"><i class="fa-solid fa-house"></i></span>
+                    @lang('messages.inicio')
+                </x-responsive-nav-link>
+            @else
+                <x-responsive-nav-link 
+                    :href="route('index')" 
+                    @click="open = false" 
+                    class="block px-4 py-3 text-gray-800 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 rounded-xl my-1 transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 transform flex items-center"
+                >
+                    <span class="mr-3"><i class="fa-solid fa-house"></i></span>
+                    @lang('messages.inicio')
+                </x-responsive-nav-link>
+            @endauth
 
-            <x-responsive-nav-link :href="route('jugadores')" @click="open = false" :active="request()->routeIs('jugadores')" class="block px-4 py-3 text-gray-800 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 rounded-xl my-1 transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 transform flex items-center">
+            <x-responsive-nav-link :href="route('jugadores')" @click="open = false"  class="block px-4 py-3 text-gray-800 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 rounded-xl my-1 transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 transform flex items-center">
                 <span class="mr-3"><i class="fa-solid fa-gamepad"></i></span>
                 @lang('messages.jugadores')
             </x-responsive-nav-link>
 
-            <x-responsive-nav-link :href="route('top-global')" @click="open = false" :active="request()->routeIs('top-global')" class="block px-4 py-3 text-gray-800 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 rounded-xl my-1 transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 transform flex items-center">
+            <x-responsive-nav-link :href="route('top-global')" @click="open = false"  class="block px-4 py-3 text-gray-800 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 rounded-xl my-1 transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 transform flex items-center">
                 <span class="mr-3"><i class="fa-solid fa-earth-americas"></i></span>
                 @lang('messages.top-global')
             </x-responsive-nav-link>
