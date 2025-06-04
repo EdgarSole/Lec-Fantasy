@@ -281,10 +281,5 @@
     </div>
 </nav>
 <style>
-    .rounded-md.bg-white {
-        background-color: transparent !important;
-  
-    }
     [x-cloak] { display: none !important; }
-    
 </style>
