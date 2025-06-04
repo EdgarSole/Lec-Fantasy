@@ -28,7 +28,7 @@
             </div>
 
             <div class="p-5 border-b border-gray-300 dark:border-gray-700 flex items-center bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-700">
-                <img src="{{ $liga->logo_url }}" alt="Logo Liga" class="w-14 h-14 rounded-full border-2 border-cyan-400 dark:border-cyan-500 object-cover shadow-md dark:shadow-cyan-500/20">
+                <img src="{{ $liga->logo_url }}" alt="Logo Liga" class="min-w-14 h-14 rounded-full border-2 border-cyan-400 dark:border-cyan-500 object-cover shadow-md dark:shadow-cyan-500/20">
                 
                 <div class="ml-4 overflow-hidden">
                     <h1 class="text-lg font-bold text-gray-800 dark:text-gray-100 truncate">{{ $liga->nombre }}</h1>
