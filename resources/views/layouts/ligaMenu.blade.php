@@ -1,8 +1,8 @@
 <x-app-layout>
     <div class="flex h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300" x-data="{ sidebarOpen: window.innerWidth >= 1000, mobileMenuOpen: false }" x-init="() => {
         window.addEventListener('resize', () => {
-            sidebarOpen = window.innerWidth >= 1000;
-            if (window.innerWidth >= 1000) mobileMenuOpen = false;
+            sidebarOpen = window.innerWidth >= 1200;
+            if (window.innerWidth >= 1200) mobileMenuOpen = false;
         });
     }">
         <!-- Menú lateral -->
@@ -12,14 +12,14 @@
             :class="{
                 'w-64': sidebarOpen || mobileMenuOpen,
                 'fixed inset-0 z-40 translate-x-0': mobileMenuOpen,
-                '-translate-x-full lg:translate-x-0': !mobileMenuOpen,
+                '-translate-x-full xlg:translate-x-0': !mobileMenuOpen,
                 'hidden': !(sidebarOpen || mobileMenuOpen)
             }"
-            class="bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 shadow-lg border-r border-gray-200 dark:border-gray-700 flex flex-col transition-all duration-300 ease-in-out transform lg:relative"
+            class="bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 shadow-lg border-r border-gray-200 dark:border-gray-700 flex flex-col transition-all duration-300 ease-in-out transform xlg:relative"
         >
 
             <!-- Botón de cerrar en móvil -->
-            <div class="lg:hidden flex justify-end p-4">
+            <div class="xlg:hidden flex justify-end p-4">
                 <button @click="mobileMenuOpen = false" class="p-1 rounded-full text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -125,6 +125,14 @@
             </nav>
         </div>
 
+        <div 
+  x-show="mobileMenuOpen"
+  x-transition.opacity
+  class="fixed inset-0 bg-black/30 backdrop-blur-sm z-30 xlg:hidden"
+  @click="mobileMenuOpen = false"
+></div>
+
+
         <!-- Contenido principal -->
         <div class="flex-1 overflow-auto bg-white dark:bg-gray-800 transition-colors duration-300 relative">
             <!-- Botón de menú móvil (hamburguesa) -->
@@ -132,7 +140,7 @@
                 x-show="!mobileMenuOpen"
                 x-transition
                 @click="mobileMenuOpen = true" 
-                class="lg:hidden fixed bottom-6 left-6 z-50 p-3 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition-colors"
+                class="xlg:hidden fixed bottom-6 left-6 z-50 p-3 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition-colors"
             >
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -141,7 +149,7 @@
 
 
             <!-- Contenido de la vista -->
-            <div class="p-8 pb-20 lg:pb-8">
+            <div class="p-8 pb-20 xlg:pb-8">
                 @yield('content')
             </div>
              

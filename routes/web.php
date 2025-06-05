@@ -8,6 +8,8 @@ use App\Http\Controllers\MiLigaController;
 use App\Http\Controllers\JugadorController;
 use App\Http\Controllers\TopGlobalController;
 use App\Http\Controllers\LocaleController;
+use Illuminate\Http\Request;
+use App\Http\Controllers\ContactController;
 
 Route::get('/', function () {
     return view('index');
@@ -18,6 +20,12 @@ Route::get('/login/google', [GoogleController::class, 'redirectToGoogle'])
     ->name('login.google');
 Route::get('/login/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
+Route::view('/privacy', 'privacy-policy')->name('privacy');
+Route::view('/terms', 'terms-conditions')->name('terms');
+Route::view('/cookies', 'cookies-policy')->name('cookies');
+
+Route::get('/contacto', [ContactController::class, 'showForm'])->name('contact');
+Route::post('/contacto', [ContactController::class, 'submit'])->name('contact.submit');
 
 
 Route::middleware('auth')->group(function () {

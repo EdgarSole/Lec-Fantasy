@@ -1,6 +1,6 @@
-<nav x-data="{ open: false, languageOpen: false }" class="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800 shadow-lg shadow-blue-100/30 dark:shadow-blue-900/20 relative z-50 transition-colors duration-300">
+<nav x-data="{ open: false, languageOpen: false }" class="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800 shadow-lg shadow-blue-100/30 dark:shadow-blue-900/20 relative z-1000 transition-colors duration-300">
     <!-- Contenedor principal -->
-    <div class="w-full px-4 lg:px-6 lg:px-8">
+    <div class="w-full px-4 xlg:px-6 xlg:px-8">
         <div class="max-w-screen-xl mx-auto relative flex items-center justify-between py-3">
 
             <!-- Logo -->
@@ -18,7 +18,7 @@
             </div>
 
             <!-- Menú central - Desktop -->
-            <div class="hidden lg:flex absolute left-1/2 -translate-x-1/2">
+            <div class="hidden xlg:flex absolute left-1/2 -translate-x-1/2">
                 <div class="flex space-x-3 mx-auto">
                     <x-nav-link 
                         :href="auth()->check() ? route('inicio') : route('index')" 
@@ -55,7 +55,7 @@
             </div>
 
             <!-- Lado derecho - Desktop -->
-            <div class="hidden lg:flex items-center justify-end w-full space-x-6">
+            <div class="hidden xlg:flex items-center justify-end w-full space-x-6">
                 <!-- Contenedor de elementos de usuario/login -->
                 <div class="flex items-center space-x-4">
                     @auth
@@ -165,7 +165,7 @@
             </div>
 
             <!-- Botón menú hamburguesa -->
-            <div class="lg:hidden flex items-center space-x-3">
+            <div class="xlg:hidden flex items-center space-x-3">
                 <!-- Botón de modo claro/oscuro -->
                 <div class="relative" x-data="{ darkMode: false }" @click="darkMode = !darkMode; document.documentElement.classList.toggle('dark'); localStorage.setItem('darkMode', darkMode);"
                     x-init="darkMode = localStorage.getItem('darkMode') === 'true'; document.documentElement.classList.toggle('dark', darkMode)">
@@ -188,7 +188,7 @@
                          x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
                          x-transition:leave="transition ease-in duration-150" 
                          x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
-                         class="absolute right-0 mt-2 w-32 bg-white dark:bg-gray-800 rounded-md shadow-lg z-50 border border-gray-200 dark:border-gray-700 overflow-hidden transition-colors duration-300">
+                         class="absolute right-0 mt-2 w-32 bg-white dark:bg-gray-800 rounded-md shadow-lg z-1000 border border-gray-200 dark:border-gray-700 overflow-hidden transition-colors duration-300">
                         <a href="{{ route('locale', ['lang' => 'es', 'liga' => $liga->id ?? null]) }}" class="block px-4 py-2 text-gray-800 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 flex items-center space-x-2 transition-colors duration-300">
                             <img src="{{ asset('Imagenes/banderaEspana.jpg') }}" width="20" class="rounded-sm"> 
                             <span>ES</span>
@@ -214,7 +214,7 @@
 
     <!-- Menú móvil desplegable -->
     <div x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
-        class="lg:hidden absolute w-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm shadow-xl z-50 border-t border-gray-200 dark:border-gray-800 rounded-b-2xl overflow-hidden transition-colors duration-300">
+        class="xlg:hidden absolute w-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm shadow-xl z-1000 border-t border-gray-200 dark:border-gray-800 rounded-b-2xl overflow-hidden transition-colors duration-300">
 
         <div class="pt-2 pb-3 space-y-2 px-4">
             @auth

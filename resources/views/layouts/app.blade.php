@@ -49,6 +49,39 @@
                 @stack('scripts')
                 {{ $slot }}
             </main>
+
+            <!-- Footer  -->
+            <footer class="bg-gray-200 dark:bg-gray-800 dark:text-white text:black py-6">
+                <div class="container mx-auto px-4">
+                    <div class="flex flex-col md:flex-row justify-between items-center">
+                        <!-- Enlaces legales -->
+                        <div class="flex flex-wrap gap-4 justify-center md:justify-start mb-4 md:mb-0">
+                            <a href="{{ route('privacy') }}" class="hover:text-blue-300 transition">Política de Privacidad</a>
+                            <a href="{{ route('terms') }}" class="hover:text-blue-300 transition">Términos y Condiciones</a>
+                            <a href="{{ route('cookies') }}" class="hover:text-blue-300 transition">Política de Cookies</a>
+                            <a href="{{ route('contact') }}" class="hover:text-blue-300 transition">Contacto</a>
+                        </div>
+                        
+                        <!-- Redes sociales -->
+                        <div class="flex gap-4">
+                            <a href="https://www.facebook.com/" target="_blank" class="hover:text-blue-300 transition">
+                                <i class="fab fa-facebook"></i> 
+                            </a>
+                            <a href="https://x.com/" target="_blank" class="hover:text-blue-300 transition">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="https://www.instagram.com/" target="_blank" class="hover:text-blue-300 transition">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Copyright -->
+                    <div class="text-center mt-6 pt-4 border-t border-gray-700 dark:border-gray-300">
+                        <p>&copy; {{ date('Y') }} <span class="font-bold">LECFantasy</span>. Todos los derechos reservados.</p>
+                    </div>
+                </div>
+            </footer>
         </div>
     </body>
 </html>

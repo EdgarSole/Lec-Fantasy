@@ -1,4 +1,3 @@
-// tailwind.config.js
 const defaultTheme = require('tailwindcss/defaultTheme');
 const forms = require('@tailwindcss/forms');
 
@@ -12,13 +11,22 @@ module.exports = {
     darkMode: 'class',
 
     theme: {
+        screens: {
+            sm: '640px',
+            md: '768px',
+            lg: '1024px',
+            xlg: '1200px', 
+            xl: '1280px',
+            '2xl': '1536px',
+            'md-custom': '1000px',
+        },
         extend: {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
             zIndex: {
                 250: '250',
-                1000: '1000', // por si necesitas más
+                1000: '1000',
             },
         },
     },

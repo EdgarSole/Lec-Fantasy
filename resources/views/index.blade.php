@@ -371,7 +371,7 @@
         <p class="mt-4 text-lg leading-6 text-red-100 dark:text-cyan-100">
             @lang('messages.proxima-jornada')
         </p>
-        <a href="{{ route('login') }}" class="mt-8 w-full inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-white hover:bg-red-50 dark:hover:bg-cyan-100 sm:w-auto transition-all duration-300 transform hover:scale-105">
+        <a href="{{ route('login') }}" class="mt-8 w-full inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-400  hover:bg-green-500 sm:w-auto transition-all duration-300 transform hover:scale-105">
             @lang('messages.seleccionar-jugadores')
         </a>
     </div>

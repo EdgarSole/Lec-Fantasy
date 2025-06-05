@@ -411,49 +411,52 @@
                             </div>
                             
                             <!-- Mini estadísticas con datos reales -->
-                            <div class="grid grid-cols-3 gap-2 text-center">
+                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-2 text-center">
                                 <div class="bg-[#fffaf5] dark:bg-gray-700 p-2 rounded border border-gray-100 dark:border-gray-600 shadow-sm">
                                     <p class="text-cyan-600 dark:text-cyan-400 text-xs"> @lang('messages.puntos')</p>
-                                    <p class="text-gray-800 dark:text-gray-200 font-bold">{{ $equipoUsuario->puntos ?? '--' }}</p>
+                                    <p class="text-gray-800 dark:text-gray-200 font-bold break-words">{{ $equipoUsuario->puntos ?? '--' }}</p>
                                 </div>
                                 <div class="bg-[#fffaf5] dark:bg-gray-700 p-2 rounded border border-gray-100 dark:border-gray-600 shadow-sm">
                                     <p class="text-cyan-600 dark:text-cyan-400 text-xs"> @lang('messages.saldo')</p>
-                                    <p class="text-gray-800 dark:text-gray-200 font-bold">{{ $equipoUsuario ? number_format($equipoUsuario->presupuesto, 0, ',', '.') . '€' : '--' }}</p>
+                                    <p class="text-gray-800 dark:text-gray-200 font-bold break-words">{{ $equipoUsuario ? number_format($equipoUsuario->presupuesto, 0, ',', '.') . '€' : '--' }}</p>
                                 </div>
                                 <div class="bg-[#fffaf5] dark:bg-gray-700 p-2 rounded border border-gray-100 dark:border-gray-600 shadow-sm">
                                     <p class="text-cyan-600 dark:text-cyan-400 text-xs"> @lang('messages.valor_equipo')</p>
-                                    <p class="text-gray-800 dark:text-gray-200 font-bold">
-                                        {{ number_format($liga->valor_equipo, 0, ',', '.') }} €
-                                    </p>
+                                    <p class="text-gray-800 dark:text-gray-200 font-bold break-words">{{ number_format($liga->valor_equipo, 0, ',', '.') }} €</p>
                                 </div>
                             </div>
+
                         </div>
                         
                         <!-- Botones de Acción -->
-                        <div class="flex space-x-3">
-                            <a href="{{ route('mi-liga', $liga->id) }}" class="flex-[65] bg-gradient-to-r from-cyan-500 to-blue-600 dark:from-cyan-600 dark:to-blue-700 hover:from-cyan-400 hover:to-blue-500 dark:hover:from-cyan-500 dark:hover:to-blue-600 text-white py-3 px-4 rounded-lg text-center font-medium transition-all  hover:scale-[1.02] active:scale-95 shadow-md shadow-cyan-400/30 dark:shadow-cyan-600/30 border-b border-cyan-500/50 dark:border-cyan-600/50 text-sm flex items-center justify-center">
-                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                    </svg>
-                                    @lang('messages.ver_liga_may')
-                                </a>
+                       <div class="flex flex-col md-custom:flex-row space-y-2 md-custom:space-y-0 md-custom:space-x-3">
+                            <a href="{{ route('mi-liga', $liga->id) }}" 
+                                class="flex-1 min-w-[180px] max-w-full md-custom:max-w-[65%] bg-gradient-to-r from-cyan-500 to-blue-600 dark:from-cyan-600 dark:to-blue-700 hover:from-cyan-400 hover:to-blue-500 dark:hover:from-cyan-500 dark:hover:to-blue-600 text-white py-3 px-4 rounded-lg text-center font-medium transition-all hover:scale-[1.02] active:scale-95 shadow-md shadow-cyan-400/30 dark:shadow-cyan-600/30 border-b border-cyan-500/50 dark:border-cyan-600/50 text-sm flex items-center justify-center">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                </svg>
+                                @lang('messages.ver_liga_may')
+                            </a>
 
-                                <form method="POST" action="{{ route('ligas.salir', $liga->id) }}" class="flex-[35]" id="abandonarLigaForm-{{ $liga->id }}">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button 
-                                        type="button" 
-                                        onclick="confirmarSalida({{ $liga->id }}, {{ $liga->miembros_count }})" 
-                                        class="w-full bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-400 hover:to-pink-500 text-white py-3 px-4 rounded-lg font-medium transition-all  hover:scale-[1.02] active:scale-95 shadow-md shadow-pink-400/30 border-b border-pink-500/50 text-sm flex items-center justify-center"
-                                    >
-                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                        </svg>
-                                         @lang('messages.abandonar')
-                                    </button>
-                                </form>
-                            </div>
+                            <form method="POST" action="{{ route('ligas.salir', $liga->id) }}" 
+                                class="flex-1 min-w-[120px] max-w-full md-custom:max-w-[35%]" 
+                                id="abandonarLigaForm-{{ $liga->id }}">
+                                @csrf
+                                @method('DELETE')
+                                <button 
+                                type="button" 
+                                onclick="confirmarSalida({{ $liga->id }}, {{ $liga->miembros_count }})" 
+                                class="w-full bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-400 hover:to-pink-500 text-white py-3 px-4 rounded-lg font-medium transition-all hover:scale-[1.02] active:scale-95 shadow-md shadow-pink-400/30 border-b border-pink-500/50 text-sm flex items-center justify-center"
+                                >
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                </svg>
+                                @lang('messages.abandonar')
+                                </button>
+                            </form>
+                        </div>
+
                         </div>
                     </div>
                 @empty
