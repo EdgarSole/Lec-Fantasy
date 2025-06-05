@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="text-center mb-12 px-4 sm:px-0">
             <h2 class="text-4xl font-bold tracking-tight dark:text-gray-100 text-gray-800 mb-4">
-                @lang('messages.politica-cookies')
+                Política de Cookies
             </h2>
             
             <div class="relative max-w-md mx-auto h-1.5 rounded-full overflow-hidden">

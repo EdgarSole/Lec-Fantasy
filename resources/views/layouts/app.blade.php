@@ -65,13 +65,13 @@
                         <!-- Redes sociales -->
                         <div class="flex gap-4">
                             <a href="https://www.facebook.com/" target="_blank" class="hover:text-blue-300 transition">
-                                <i class="fab fa-facebook"></i> 
+                                <i class="fab fa-facebook text-blue-600 dark:text-blue-400"></i> 
                             </a>
                             <a href="https://x.com/" target="_blank" class="hover:text-blue-300 transition">
-                                <i class="fab fa-twitter"></i>
+                                <i class="fab fa-twitter text-blue-400 dark:text-blue-300"></i>
                             </a>
                             <a href="https://www.instagram.com/" target="_blank" class="hover:text-blue-300 transition">
-                                <i class="fab fa-instagram"></i>
+                                <i class="fab fa-instagram text-pink-600 dark:text-pink-400"></i>
                             </a>
                         </div>
                     </div>
