@@ -45,10 +45,11 @@
             @endisset
 
             <!-- Page Content -->
-            <main class="bg-gray-100 dark:bg-gray-900 transition-colors duration-300 overflow-auto">
+            <main class="min-h-[calc(100vh-200px)] bg-gray-100 dark:bg-gray-900 transition-colors duration-300 overflow-auto">
                 @stack('scripts')
                 {{ $slot }}
             </main>
+
 
             <!-- Footer  -->
             <footer class="min-h-32 bg-gray-200 dark:bg-gray-700 text-black dark:text-white py-6">
