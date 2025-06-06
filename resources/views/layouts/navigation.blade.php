@@ -10,8 +10,8 @@
                 @else
                     <a href="{{ route('index') }}" class="group block transition-all duration-300 hover:scale-[1.03]">
                 @endauth
-                    <img src="{{ asset('Imagenes/LecFantasyLogoV4-TextoNegro.png') }}" alt="Logo claro" class="h-14 block dark:hidden">
-                    <img src="{{ asset('Imagenes/LecFantasyLogoV3-TextoBlanco.PNG') }}" alt="Logo oscuro" class="h-14 hidden dark:block">
+                    <img src="{{ asset('Imagenes/LecFantasyLogoV4-TextoNegro.webp') }}" alt="Logo claro" class="h-14 block dark:hidden">
+                    <img src="{{ asset('Imagenes/LecFantasyLogoV3-TextoBlanco.webp') }}" alt="Logo oscuro" class="h-14 hidden dark:block">
 
 
                 </a>
@@ -153,11 +153,11 @@
                         x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
                         class="absolute right-0 mt-2 w-20 bg-white dark:bg-gray-800 rounded-md shadow-lg z-50 border border-gray-200 dark:border-gray-700 overflow-hidden transition-colors duration-300">
                         <a href="{{ route('locale', ['lang' => 'es', 'liga' => $liga->id ?? null]) }}" class="block px-4 py-2 text-gray-800 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 flex items-center space-x-2 transition-colors duration-300">
-                            <img src="{{ asset('Imagenes/banderaEspana.jpg') }}" width="20" class="rounded-sm"> 
+                            <img src="{{ asset('Imagenes/banderaEspana.webp') }}" width="20" class="rounded-sm"> 
                             <span>ES</span>
                         </a>
                         <a href="{{ route('locale', ['lang' => 'en', 'liga' => $liga->id ?? null]) }}" class="block px-4 py-2 text-gray-800 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 flex items-center space-x-2 transition-colors duration-300">
-                            <img src="{{ asset('Imagenes/banderaEEUU.jpg') }}" width="20" class="rounded-sm">
+                            <img src="{{ asset('Imagenes/banderaEEUU.webp') }}" width="20" class="rounded-sm">
                             <span>EN</span>
                         </a>
                     </div>
@@ -190,11 +190,11 @@
                          x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
                          class="absolute right-0 mt-2 w-32 bg-white dark:bg-gray-800 rounded-md shadow-lg z-1000 border border-gray-200 dark:border-gray-700 overflow-hidden transition-colors duration-300">
                         <a href="{{ route('locale', ['lang' => 'es', 'liga' => $liga->id ?? null]) }}" class="block px-4 py-2 text-gray-800 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 flex items-center space-x-2 transition-colors duration-300">
-                            <img src="{{ asset('Imagenes/banderaEspana.jpg') }}" width="20" class="rounded-sm"> 
+                            <img src="{{ asset('Imagenes/banderaEspana.webp') }}" width="20" class="rounded-sm"> 
                             <span>ES</span>
                         </a>
                         <a href="{{ route('locale', ['lang' => 'en', 'liga' => $liga->id ?? null]) }}" class="block px-4 py-2 text-gray-800 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 flex items-center space-x-2 transition-colors duration-300">
-                            <img src="{{ asset('Imagenes/banderaEEUU.jpg') }}" width="20" class="rounded-sm">
+                            <img src="{{ asset('Imagenes/banderaEEUU.webp') }}" width="20" class="rounded-sm">
                             <span>EN</span>
                         </a>
                     </div>

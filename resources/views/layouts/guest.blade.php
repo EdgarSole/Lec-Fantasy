@@ -19,7 +19,7 @@
             <div>
                 
                 <a href="/">
-                    <img src="{{ asset('Imagenes/LecFantasyLogoV2.jpg') }}" alt="Logo" style="width: 320px;">
+                    <img src="{{ asset('Imagenes/LecFantasyLogoV2.webp') }}" alt="Logo" style="width: 320px;">
                 </a>
             </div>
 
