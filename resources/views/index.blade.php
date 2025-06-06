@@ -62,10 +62,13 @@
                 x-transition:leave-start="opacity-100"
                 x-transition:leave-end="opacity-0"
                 class="absolute inset-0">
-                <img 
-                    :src="slide" 
-                    :alt="'LEC Image ' + (index + 1)" 
-                    class="w-full h-full object-cover object-center">
+                <img
+                    :src="currentSlide === index ? slide : ''"
+                    :data-src="slide"
+                    alt="LEC Image " + (index + 1)
+                    class="w-full h-full object-cover object-center"
+                    loading="lazy"
+                >
                 <div class="absolute inset-0 bg-black bg-opacity-30"></div>
             </div>
         </template>

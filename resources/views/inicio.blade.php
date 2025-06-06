@@ -343,7 +343,7 @@
                     <div class="p-6 relative z-10 border-b border-gray-100 dark:border-gray-700">
                         <div class="flex items-center mb-4">
                             <div class="relative">
-                                <img src="{{ $liga->logo_url }}" alt="Logo Liga" class="w-16 h-16 rounded-full border-2 border-cyan-400 dark:border-cyan-500 object-cover shadow-md">
+                                <img src="{{ $liga->logo_url }}" alt="Logo Liga" class="min-w-16 h-16 rounded-full border-2 border-cyan-400 dark:border-cyan-500 object-cover shadow-md">
                                 
                                 <!-- Mostrar medalla según la posición -->
                                 @if($posicion == 1)
