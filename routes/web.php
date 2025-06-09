@@ -10,8 +10,13 @@ use App\Http\Controllers\TopGlobalController;
 use App\Http\Controllers\LocaleController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ContactController;
+use Illuminate\Support\Facades\Auth;
+
 
 Route::get('/', function () {
+    if (Auth::check()) {
+        return redirect()->route('inicio');
+    }
     return view('index');
 })->name('index');
 
