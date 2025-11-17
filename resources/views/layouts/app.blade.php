@@ -6,12 +6,12 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name', 'Laravel') }}</title>
-        <link rel="shortcut icon" href="{{ asset('Imagenes/LecFantasyLogoV2.jpg') }}" type="image/x-icon">
+        <link rel="shortcut icon" href="{{ asset('Imagenes/LecFantasyLogoV2.webp') }}" type="image/x-icon">
 
          <!-- Font Awesome -->
-         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         <!-- Fonts -->
-         <script defer src="https://unpkg.com/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
+        <script defer src="https://unpkg.com/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
 
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
@@ -45,13 +45,14 @@
             @endisset
 
             <!-- Page Content -->
-            <main class="bg-gray-100 dark:bg-gray-900 transition-colors duration-300 overflow-auto">
+            <main class="min-h-[calc(100vh-200px)] bg-gray-100 dark:bg-gray-900 transition-colors duration-300 overflow-auto">
                 @stack('scripts')
                 {{ $slot }}
             </main>
 
+
             <!-- Footer  -->
-            <footer class="bg-gray-200 dark:bg-gray-800 dark:text-white text:black py-6">
+            <footer class="min-h-32 bg-gray-200 dark:bg-gray-700 text-black dark:text-white py-6">
                 <div class="container mx-auto px-4">
                     <div class="flex flex-col md:flex-row justify-between items-center">
                         <!-- Enlaces legales -->

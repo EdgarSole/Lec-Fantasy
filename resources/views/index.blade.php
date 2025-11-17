@@ -13,11 +13,11 @@
     <div x-data="{
             currentSlide: 0,
             slides: [
-                '{{ asset('Imagenes/fondo5_2.jpg') }}',
-                '{{ asset('Imagenes/foto_fondo3.avif') }}',
-                '{{ asset('Imagenes/fondo3-estadio.jpg') }}',
-                '{{ asset('Imagenes/fondo2-arena.jpg') }}',
-                '{{ asset('Imagenes/fondo4.jpg') }}'
+                '{{ asset('Imagenes/fondo1.webp') }}',
+                '{{ asset('Imagenes/fondo2.avif') }}',
+                '{{ asset('Imagenes/fondo3.webp') }}',
+                '{{ asset('Imagenes/fondo4.webp') }}',
+                '{{ asset('Imagenes/fondo5.webp') }}'
             ],
             interval: null,
             init() {
@@ -64,10 +64,13 @@
                 x-transition:leave-start="opacity-100"
                 x-transition:leave-end="opacity-0"
                 class="absolute inset-0">
-                <img 
-                    :src="slide" 
-                    :alt="'LEC Image ' + (index + 1)" 
-                    class="w-full h-full object-cover object-center">
+                <img
+                    :src="currentSlide === index ? slide : ''"
+                    :data-src="slide"
+                    alt="LEC Image " + (index + 1)
+                    class="w-full h-full object-cover object-center"
+                    loading="lazy"
+                >
                 <div class="absolute inset-0 bg-black bg-opacity-30"></div>
             </div>
         </template>
@@ -117,13 +120,17 @@
                                         >
                                             &times;
                                         </button>
-                                        <div class="relative" style="padding-bottom: 56.25%; height: 0;">
-                                            <iframe 
-                                                class="absolute top-0 left-0 w-full h-full" 
-                                                src="https://www.youtube.com/embed/-GLtM7Ur6qw" 
-                                                frameborder="0" 
-                                                allowfullscreen>
-                                            </iframe>
+                                        <div class="relative" style="padding-bottom: 56.25%; height: 0; cursor: pointer;" onclick="loadYoutube(this)">
+                                            <img 
+                                                src="https://img.youtube.com/vi/-GLtM7Ur6qw/hqdefault.jpg" 
+                                                alt="Miniatura del video"
+                                                class="absolute top-0 left-0 w-full h-full object-cover"
+                                            >
+                                            <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+                                                <svg width="80" height="80" viewBox="0 0 100 100" fill="white">
+                                                    <polygon points="40,30 70,50 40,70" />
+                                                </svg>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -450,50 +457,16 @@
 })();
 </script>
 <script>
-function carousel() {   
-    return {
-        currentSlide: 0,
-        slides: [
-            '{{ asset('Imagenes/fondo.jpg') }}',
-            '{{ asset('Imagenes/fondo2-estadio.jpg') }}',
-            '{{ asset('Imagenes/fondo3-estadio.jpg') }}',
-            '{{ asset('Imagenes/fondo2-arena.jpg') }}',
-            '{{ asset('Imagenes/fondo5-estadio.jpg') }}'
-        ],
-        interval: null,
+    //Funcion para que no cargue el video al entrar en la pagina
+    function loadYoutube(container) {
+    const videoId = "-GLtM7Ur6qw";
+    const iframe = document.createElement('iframe');
+    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+    iframe.frameBorder = "0";
+    iframe.allowFullscreen = true;
+    iframe.className = "absolute top-0 left-0 w-full h-full";
 
-        init() {
-            this.startAutoPlay();
-        },
-
-        startAutoPlay() {
-            this.stopAutoPlay(); // Asegura que no haya múltiples intervalos activos
-            this.interval = setInterval(() => {
-                this.next(false);
-            }, 5000);
-        },
-
-        stopAutoPlay() {
-            if (this.interval) {
-                clearInterval(this.interval);
-                this.interval = null;
-            }
-        },
-
-        next(manual = true) {
-            this.currentSlide = (this.currentSlide + 1) % this.slides.length;
-            if (manual) this.startAutoPlay(); // Reinicia el intervalo si fue una acción manual
-        },
-
-        prev() {
-            this.currentSlide = (this.currentSlide - 1 + this.slides.length) % this.slides.length;
-            this.startAutoPlay(); // También reinicia el temporizador
-        },
-
-        goTo(index) {
-            this.currentSlide = index;
-            this.startAutoPlay(); // Reinicia al seleccionar manualmente
-        }
-    }
+    container.innerHTML = '';
+    container.appendChild(iframe);
 }
 </script>

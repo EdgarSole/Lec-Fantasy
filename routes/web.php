@@ -14,7 +14,11 @@ use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminUserController;
 
+
 Route::get('/', function () {
+    if (Auth::check()) {
+        return redirect()->route('inicio');
+    }
     return view('index');
 })->name('index');
 

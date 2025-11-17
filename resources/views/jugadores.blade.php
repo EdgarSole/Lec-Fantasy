@@ -1,9 +1,8 @@
 
 <x-app-layout>
     @section('content')
-    <div id="loading-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 transition-opacity duration-5000">
+    <div id="loading-screen" class="fixed inset-0 z-1000 flex items-center justify-center bg-gray-900 transition-opacity duration-5000">
         <div class="text-center">
-            <!-- Logo gaming o texto -->
             <div class="mb-6 text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600">
                 LEC FANTASY
             </div>
@@ -41,7 +40,7 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                     </svg>
                 </div>
-                <input type="text" id="nombreFilter" class="block w-full p-3 pl-10 text-base text-gray-800 dark:text-gray-200 border-2 border-blue-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 focus:border-blue-500 dark:focus:border-blue-500 shadow-sm transition-all duration-300" placeholder="{{ __('messages.buscar_jugador_nombre') }}" autocomplete="off">
+                <input type="text" id="nombreFilter" class="block w-full p-3 pl-10 text-base text-gray-800 dark:text-gray-200 border-2 border-blue-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 focus:border-blue-500 dark:focus:border-blue-500 shadow-sm transition-all " placeholder="{{ __('messages.buscar_jugador_nombre') }}" autocomplete="off">
             </div>
         </div>
     </x-slot>
@@ -53,7 +52,7 @@
                 <!-- Filtro por posición -->
                 <div>
                     <label for="posicionFilter" class="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase">@lang('messages.posicion')</label>
-                    <select id="posicionFilter" class="bg-white dark:bg-gray-700 border-2 border-blue-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 text-base rounded-xl focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 focus:border-blue-500 dark:focus:border-blue-500 block w-full p-3 shadow-sm transition-all duration-300">
+                    <select id="posicionFilter" class="bg-white dark:bg-gray-700 border-2 border-blue-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 text-base rounded-xl focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 focus:border-blue-500 dark:focus:border-blue-500 block w-full p-3 shadow-sm transition-all ">
                         <option value="">@lang('messages.todas_posiciones')</option>
                         <option value="Top">Top</option>
                         <option value="Jungla">Jungla</option>
@@ -66,7 +65,7 @@
                 <!-- Filtro por equipo -->
                 <div>
                     <label for="equipoFilter" class="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase">@lang('messages.equipo')</label>
-                    <select id="equipoFilter" data-placeholder="{{ __('messages.todos_equipos') }}"  class="bg-white dark:bg-gray-700 border-2 border-blue-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 text-base rounded-xl focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 focus:border-blue-500 dark:focus:border-blue-500 block w-full p-3 shadow-sm transition-all duration-300">
+                    <select id="equipoFilter" data-placeholder="{{ __('messages.todos_equipos') }}"  class="bg-white dark:bg-gray-700 border-2 border-blue-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 text-base rounded-xl focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 focus:border-blue-500 dark:focus:border-blue-500 block w-full p-3 shadow-sm transition-all ">
                         <option value="">@lang('messages.todos_equipos')</option>
                         @foreach($equipos as $equipo)
                             <option value="{{ $equipo }}" data-logo="{{ $logosEquipos[$equipo] ?? '' }}">
@@ -79,7 +78,7 @@
                 <!-- Ordenar por -->
                 <div>
                     <label for="ordenFilter" class="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase">@lang('messages.ordenador_por')</label>
-                    <select id="ordenFilter" class="bg-white dark:bg-gray-700 border-2 border-blue-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 text-base rounded-xl focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 focus:border-blue-500 dark:focus:border-blue-500 block w-full p-3 shadow-sm transition-all duration-300">
+                    <select id="ordenFilter" class="bg-white dark:bg-gray-700 border-2 border-blue-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 text-base rounded-xl focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 focus:border-blue-500 dark:focus:border-blue-500 block w-full p-3 shadow-sm transition-all ">
                         <option value="puntos_desc">@lang('messages.mayor_menor')</option>
                         <option value="puntos_asc">@lang('messages.menor_mayor')</option>                            
                         <option value="nombre_asc">@lang('messages.nombre_az')</option>
@@ -117,7 +116,7 @@
                 
             @endphp
 
-            <div class="jugador-card group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg dark:shadow-gray-900/50 hover:shadow-xl dark:hover:shadow-gray-900/70 transition-all duration-300 transform hover:-translate-y-2 border border-gray-200 dark:border-gray-700 hover:border-indigo-300 dark:hover:border-indigo-500 relative"
+            <div class="jugador-card group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg dark:shadow-gray-900/50 hover:shadow-xl dark:hover:shadow-gray-900/70 transition-all  transform hover:-translate-y-2 border border-gray-200 dark:border-gray-700 hover:border-indigo-300 dark:hover:border-indigo-500 relative"
                 data-nombre="{{ strtolower($jugador->nombre) }}"
                 data-posicion="{{ $jugador->posicion }}"
                 data-equipo="{{ $jugador->equipo_real }}"
@@ -159,13 +158,13 @@
                 
                 <!-- Imagen del jugador con efecto hover -->
                 <div class="flex justify-center mt-2 px-4 relative">
-                    <div class="relative group-hover:scale-105 transition-transform duration-300">
-                        <div class="absolute inset-0 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 opacity-20 blur-md -z-10 group-hover:opacity-30 transition-opacity duration-300"></div>
+                    <div class="relative group-hover:scale-105 transition-transform ">
+                        <div class="absolute inset-0 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 opacity-20 blur-md -z-10 group-hover:opacity-30 transition-opacity "></div>
                         <img src="{{ $jugador->imagen_url ?? 'https://via.placeholder.com/150' }}" 
                             alt="{{ $jugador->nombre }}" 
                             class="w-32 h-32 rounded-full object-cover border-4 border-white dark:border-gray-800 shadow-md">
                         <!-- Efecto hover sobre la imagen -->
-                        <div class="absolute inset-0 rounded-full bg-gradient-to-t from-gray-900/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4">
+                        <div class="absolute inset-0 rounded-full bg-gradient-to-t from-gray-900/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity  flex items-end justify-center pb-4">
                             <span class="text-white font-bold text-sm bg-black/50 px-2 py-1 rounded-full cursor-pointer" onclick="mostrarEstadisticasJugador({{ $jugador->id }})">
                                  @lang('messages.ver_detalles')
                             </span>
@@ -175,7 +174,7 @@
                 
                 <!-- Nombre del jugador -->
                 <div class="text-center mt-4 px-4">
-                    <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-300">
+                    <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors ">
                         {{ $jugador->nombre }}
                     </h3>
                 </div>
@@ -183,7 +182,7 @@
                 <!-- Estadísticas principales -->
                 <div class="grid grid-cols-2 gap-3 p-4 mt-2">
                     <!-- KDA -->
-                    <div class="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/40 rounded-xl p-3 text-center border border-blue-200 dark:border-blue-800 shadow-sm group-hover:shadow-md dark:group-hover:shadow-blue-900/50 transition-shadow duration-300">
+                    <div class="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/40 rounded-xl p-3 text-center border border-blue-200 dark:border-blue-800 shadow-sm group-hover:shadow-md dark:group-hover:shadow-blue-900/50 transition-shadow ">
                         <p class="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider">KDA RATIO</p>
                         <p class="text-xl font-bold text-gray-800 dark:text-gray-200 mt-1 flex items-center justify-center">
                             {{ $kda }}
@@ -203,7 +202,7 @@
                     </div>
                     
                     <!-- Puntos -->
-                    <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 dark:from-yellow-900/30 dark:to-yellow-800/40 rounded-xl p-3 text-center border border-yellow-200 dark:border-yellow-800 shadow-sm group-hover:shadow-md dark:group-hover:shadow-yellow-900/50 transition-shadow duration-300">
+                    <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 dark:from-yellow-900/30 dark:to-yellow-800/40 rounded-xl p-3 text-center border border-yellow-200 dark:border-yellow-800 shadow-sm group-hover:shadow-md dark:group-hover:shadow-yellow-900/50 transition-shadow ">
                         <p class="text-xs font-semibold text-yellow-600 dark:text-yellow-400 uppercase tracking-wider">@lang('messages.puntos')</p>
                         <p class="text-xl font-bold text-yellow-700 dark:text-yellow-300 mt-1 flex items-center justify-center">
                             {{ $jugador->puntos }}
@@ -217,7 +216,7 @@
                 
                 <!-- Botón de ver estadísticas -->
                 <div class="px-4 pb-4">
-                    <button class="w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-blue-500 to-purple-600 dark:from-blue-600 dark:to-purple-700 hover:from-blue-600 hover:to-purple-700 dark:hover:from-blue-700 dark:hover:to-purple-800 text-white font-medium py-3 px-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform group-hover:scale-[1.02]">
+                    <button class="w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-blue-500 to-purple-600 dark:from-blue-600 dark:to-purple-700 hover:from-blue-600 hover:to-purple-700 dark:hover:from-blue-700 dark:hover:to-purple-800 text-white font-medium py-3 px-4 rounded-xl shadow-md hover:shadow-lg transition-all  transform group-hover:scale-[1.02]">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
@@ -555,7 +554,7 @@
             templateResult: formatOptionWithLogo,
             templateSelection: formatOptionWithLogo,
             width: '100%',
-            placeholder: "Todos los equipos", // Este texto debe coincidir con el <option>
+            placeholder: "Todos los equipos", 
             allowClear: true,
             minimumResultsForSearch: Infinity
         });

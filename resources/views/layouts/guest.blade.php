@@ -19,12 +19,12 @@
             <div>
                 
                 <a href="/">
-                    <img src="{{ asset('Imagenes/LecFantasyLogoV2.jpg') }}" alt="Logo" style="width: 320px;">
+                    <img src="{{ asset('Imagenes/LecFantasyLogoV2.webp') }}" alt="Logo" style="width: 320px;" class="mt-4">
                 </a>
             </div>
 
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg mb-4">
                 {{ $slot }}
             </div>
         </div>
