@@ -24,6 +24,11 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'pandascore' => [
+        'token' => env('PANDASCORE_TOKEN'),
+    ],
+
+
     'resend' => [
         'key' => env('RESEND_KEY'),
     ],

@@ -7,6 +7,7 @@ use App\Models\Equipo;
 use Illuminate\Http\Request;
 use App\Models\HistorialTransacciones;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Cloudinary\Cloudinary;
 
 class LigaController extends Controller
@@ -46,9 +47,28 @@ class LigaController extends Controller
             ->select('id', 'nombre', 'tipo', 'logo_url')
             ->get();
 
+        $lecTeams = [];
+        $pandaToken = config('services.pandascore.token');
+
+        if ($pandaToken) {
+            try {
+                $response = Http::withToken($pandaToken)
+                    ->get('https://api.pandascore.co/lol/series/lec-2024-spring/teams', [
+                        'per_page' => 50,
+                    ]);
+
+                if ($response->successful()) {
+                    $lecTeams = $response->json();
+                }
+            } catch (\Throwable $e) {
+                $lecTeams = [];
+            }
+        }
+
         return view('inicio', [
             'ligas' => $ligas,
             'todasLasLigas' => $todasLasLigas,
+            'lecTeams' => $lecTeams,
         ]);
     }
 

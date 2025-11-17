@@ -8,6 +8,8 @@
 <x-app-layout>
   
 <div class="relative overflow-hidden bg-gray-50 dark:bg-gray-900 transition-colors">
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 bg-aurora -z-10"></div>
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 bg-stars -z-10"></div>
     <div x-data="{
             currentSlide: 0,
             slides: [
@@ -84,14 +86,16 @@
                         </p>
                         <div class="mt-8 sm:mt-10 sm:flex space-y-4 sm:space-y-0 sm:space-x-4">
                             <div class="rounded-md shadow-lg">
-                                <a href="{{ route('login') }}" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 md:py-4 md:text-lg md:px-10 transition-all duration-300 hover:scale-105 transform">
+                                <a href="{{ route('login') }}" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 md:py-4 md:text-lg md:px-10 transition-all duration-300 hover:scale-105 transform btn-shimmer btn-icon">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12l5 5L20 7"/></svg>
                                     @lang('messages.empezar-ahora')
                                 </a>
                             </div>  
                             <div x-data="{ open: false }" class="rounded-md shadow-lg">
                                 <button 
                                     @click="open = true" 
-                                    class="w-full flex items-center justify-center px-8 py-3 border border-gray-300 text-base font-medium rounded-md text-white bg-gray-800 hover:bg-gray-700 md:py-4 md:text-lg md:px-10 transition-all duration-300 hover:scale-105 transform">                                   
+                                    class="w-full flex items-center justify-center px-8 py-3 border border-gray-300 text-base font-medium rounded-md text-white bg-gray-800 hover:bg-gray-700 md:py-4 md:text-lg md:px-10 transition-all duration-300 hover:scale-105 transform btn-shimmer btn-icon">                                   
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-.378a1 1 0 01.894 1.447l-5.447 10.894A2 2 0 0113.118 23H6a2 2 0 01-2-2V4a2 2 0 012-2h5"/></svg>
                                     @lang('messages.ver-tutorial')
                                 </button>
                                 <div 
@@ -179,26 +183,26 @@
             <div class="space-y-10 md:space-y-0 md:grid md:grid-cols-3 md:gap-x-8 md:gap-y-10">
             <!-- Feature 1 - Cómo jugar -->
             <div class="relative bg-[#fff2ec] dark:bg-gray-800 p-6 rounded-lg shadow-md dark:shadow-lg transition-all duration-300 transform hover:scale-105 
-            border-t-2 border-l-2 border-r-4 border-b-4 border-black dark:border-cyan-400">
+            border-t-2 border-l-2 border-r-4 border-b-4 border-black dark:border-cyan-400 reveal">
                 <div class="absolute -top-6 left-6 bg-red-600 dark:bg-red-500 text-white rounded-full p-3 shadow-md dark:shadow-cyan-400/20">
-                    <span class="text-xl">🏆</span>
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M8 21h8v-2H8v2Zm8-14h1a3 3 0 0 0 0-6H7a3 3 0 0 0 0 6h1v3a4 4 0 0 0 4 4 4 4 0 0 0 4-4V7Z"/></svg>
                 </div>
                 <h3 class="mt-8 text-lg font-medium text-gray-900 dark:text-gray-100">@lang('messages.como-jugar')</h3>
                 <ul class="mt-4 space-y-2 text-gray-600 dark:text-gray-300">
                     <li class="flex items-start">
-                        <span class="mr-2">✨</span>
+                        <svg class="w-4 h-4 mr-2 text-amber-500" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l2 6-6-2 6-2-2-2Zm14 4l-2 6 6-2-6-2 2-2Zm-7 3l3 9-9-3 9-3-3-3Z"/></svg>
                         <span>@lang('messages.selecciona-jugadores')</span>
                     </li>
                     <li class="flex items-start">
-                        <span class="mr-2">📊</span>
+                        <svg class="w-4 h-4 mr-2 text-blue-500" viewBox="0 0 24 24" fill="currentColor"><path d="M3 13h4v8H3v-8Zm7-6h4v14h-4V7Zm7 3h4v11h-4V10Z"/></svg>
                         <span>@lang('messages.gana-puntos')</span>
                     </li>
                     <li class="flex items-start">
-                        <span class="mr-2">🎮</span>
+                        <svg class="w-4 h-4 mr-2 text-emerald-500" viewBox="0 0 24 24" fill="currentColor"><path d="M6 8h12a3 3 0 0 1 3 3v1a4 4 0 0 1-4 4 3 3 0 0 1-3-3h-4a3 3 0 0 1-3 3 4 4 0 0 1-4-4v-1a3 3 0 0 1 3-3Zm2 4h2v2H8v-2Zm7-1h1v1h-1v-1Zm2 2h1v1h-1v-1Z"/></svg>
                         <span>@lang('messages.gestiona-transpasos')</span>
                     </li>
                     <li class="flex items-start">
-                        <span class="mr-2">🏅</span>
+                        <svg class="w-4 h-4 mr-2 text-purple-500" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17a5 5 0 1 1 0-10 5 5 0 0 1 0 10Zm-6.5 2.5 3-4.5h7l3 4.5-3.5-1-3.5 1-3.5-1-2.5 1Z"/></svg>
                         <span>@lang('messages.compite-ligas')</span>
                     </li>
                 </ul>
@@ -206,9 +210,9 @@
 
             <!-- Feature 2 - Puntuación -->
             <div class="relative bg-[#fff2ec] dark:bg-gray-800 p-6 rounded-lg shadow-md dark:shadow-lg transition-all duration-300 transform hover:scale-105 
-            border-t-2 border-l-2 border-r-4 border-b-4 border-black dark:border-cyan-400">
+            border-t-2 border-l-2 border-r-4 border-b-4 border-black dark:border-cyan-400 reveal">
                 <div class="absolute -top-6 left-6 bg-blue-600 dark:bg-blue-500 text-white rounded-full p-3 shadow-md dark:shadow-cyan-400/20">
-                    <span class="text-xl">💎</span>
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 2 9l10 13L22 9 12 2Zm0 4 5 3-5 6-5-6 5-3Z"/></svg>
                 </div>
                 <h3 class="mt-8 text-lg font-medium text-gray-900 dark:text-gray-100">@lang('messages.puntuacion')</h3>
                 <ul class="mt-4 space-y-2 text-gray-600 dark:text-gray-300">
@@ -233,26 +237,26 @@
 
             <!-- Feature 3 - Características -->
             <div class="relative bg-[#fff2ec] dark:bg-gray-800 p-6 rounded-lg shadow-md dark:shadow-lg transition-all duration-300 transform hover:scale-105 
-            border-t-2 border-l-2 border-r-4 border-b-4 border-black dark:border-cyan-400">
+            border-t-2 border-l-2 border-r-4 border-b-4 border-black dark:border-cyan-400 reveal">
                 <div class="absolute -top-6 left-6 bg-purple-600 dark:bg-purple-500 text-white rounded-full p-3 shadow-md dark:shadow-cyan-400/20">
-                    <span class="text-xl">🌟</span>
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 9.5 8.5 3 9.5l5 4.2L6.5 20 12 16.8 17.5 20 16 13.7l5-4.2-6.5-1L12 2Z"/></svg>
                 </div>
                 <h3 class="mt-8 text-lg font-medium text-gray-900 dark:text-gray-100">@lang('messages.caracteristicas')</h3>
                 <ul class="mt-4 space-y-2 text-gray-600 dark:text-gray-300">
                     <li class="flex items-start">
-                        <span class="mr-2">📱</span>
+                        <svg class="w-4 h-4 mr-2 text-gray-500" viewBox="0 0 24 24" fill="currentColor"><path d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm5 18a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"/></svg>
                         <span>@lang('messages.aplicacion-movil')</span>
                     </li>
                     <li class="flex items-start">
-                        <span class="mr-2">🤝</span>
+                        <svg class="w-4 h-4 mr-2 text-emerald-500" viewBox="0 0 24 24" fill="currentColor"><path d="M3 12l4-4 5 5 5-5 4 4-9 9-9-9Z"/></svg>
                         <span>@lang('messages.compras-ventas')</span>
                     </li>
                     <li class="flex items-start">
-                        <span class="mr-2">📈</span>
+                        <svg class="w-4 h-4 mr-2 text-blue-500" viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h2v18H3V3Zm4 10h2v8H7v-8Zm4-6h2v14h-2V7Zm4 4h2v10h-2V11Zm4-8h2v18h-2V3Z"/></svg>
                         <span>@lang('messages.estadisticas-jugadores')</span>
                     </li>
                     <li class="flex items-start">
-                        <span class="mr-2">🏆</span>
+                        <svg class="w-4 h-4 mr-2 text-amber-500" viewBox="0 0 24 24" fill="currentColor"><path d="M8 21h8v-2H8v2Zm8-14h1a3 3 0 0 0 0-6H7a3 3 0 0 0 0 6h1v3a4 4 0 0 0 4 4 4 4 0 0 0 4-4V7Z"/></svg>
                         <span>@lang('messages.premios-managers')</span>
                     </li>
                 </ul>
@@ -276,7 +280,7 @@
                 <div class="p-6">
                     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                         <!-- League Card 1 -->
-                        <div class="bg-gray-50 dark:bg-gray-700 rounded-lg shadow dark:shadow-lg overflow-hidden border border-gray-200 dark:border-gray-600 hover:border-red-300 dark:hover:border-cyan-400 transition-colors duration-300">
+                        <div class="bg-gray-50 dark:bg-gray-700 rounded-lg shadow dark:shadow-lg overflow-hidden border border-gray-200 dark:border-gray-600 hover:border-red-300 dark:hover:border-cyan-400 transition-colors duration-300 league-card">
                             <div class="px-4 py-5 sm:p-6">
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0 bg-red-500 dark:bg-red-600 rounded-md p-3">
@@ -308,7 +312,7 @@
                         </div>
                         
                         <!-- League Card 2 -->
-                        <div class="bg-gray-50 dark:bg-gray-700 rounded-lg shadow dark:shadow-lg overflow-hidden border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-cyan-400 transition-colors duration-300">
+                        <div class="bg-gray-50 dark:bg-gray-700 rounded-lg shadow dark:shadow-lg overflow-hidden border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-cyan-400 transition-colors duration-300 league-card">
                             <div class="px-4 py-5 sm:p-6">
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0 bg-blue-500 dark:bg-blue-600 rounded-md p-3">
@@ -371,12 +375,80 @@
         <p class="mt-4 text-lg leading-6 text-red-100 dark:text-cyan-100">
             @lang('messages.proxima-jornada')
         </p>
-        <a href="{{ route('login') }}" class="mt-8 w-full inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-400  hover:bg-green-500 sm:w-auto transition-all duration-300 transform hover:scale-105">
+        <a href="{{ route('login') }}" class="mt-8 w-full inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-400  hover:bg-green-500 sm:w-auto transition-all duration-300 transform hover:scale-105 btn-shimmer btn-icon">
             @lang('messages.seleccionar-jugadores')
         </a>
     </div>
 </div>
 </x-app-layout>
+<style>
+  .btn-icon svg { transition: transform .18s ease; }
+  .btn-icon:hover svg { transform: translateX(2px); }
+  .btn-shimmer { position: relative; overflow: hidden; }
+  .btn-shimmer::after { content:""; position:absolute; inset:0; transform:translateX(-120%); background:linear-gradient(120deg,transparent 0%,rgba(255,255,255,.2) 30%,rgba(255,255,255,.35) 45%,transparent 60%); }
+  .btn-shimmer:hover::after { transform:translateX(120%); transition: transform .6s ease; }
+  .bg-aurora { background: radial-gradient(1200px 600px at 10% -10%, rgba(56,189,248,0.12), transparent 50%), radial-gradient(800px 500px at 110% 110%, rgba(168,85,247,0.12), transparent 50%), radial-gradient(500px 400px at 50% 120%, rgba(251,191,36,0.10), transparent 60%), linear-gradient(180deg, rgba(2,6,23,0.9), rgba(2,6,23,0.7)); animation: auroraShift 16s ease-in-out infinite alternate; }
+  @keyframes auroraShift { 0%{filter:hue-rotate(0deg) saturate(1);} 100%{filter:hue-rotate(30deg) saturate(1.2);} }
+  .bg-stars { background-image: radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.5), transparent 2px), radial-gradient(1px 1px at 60% 70%, rgba(255,255,255,0.35), transparent 2px), radial-gradient(1.5px 1.5px at 80% 20%, rgba(255,255,255,0.45), transparent 3px); background-size: 600px 600px, 800px 800px, 1000px 1000px; animation: starsDrift 60s linear infinite; }
+  @keyframes starsDrift { 0%{background-position:0 0, 0 0, 0 0;} 100%{background-position:600px 600px, -800px 800px, 1000px -1000px;} }
+  .reveal { opacity: 0; transform: translateY(10px); transition: opacity .5s ease, transform .5s ease; }
+  .reveal.is-visible { opacity: 1; transform: translateY(0); }
+  .ripple-spot { position: absolute; border-radius: 9999px; pointer-events: none; transform: translate(-50%, -50%) scale(0); opacity: .35; background: currentColor; }
+  @media (prefers-reduced-motion: reduce) { .btn-icon svg, .btn-shimmer::after, .bg-aurora, .bg-stars { animation:none !important; transition:none !important; } }
+</style>
+<script>
+(function(){
+  const reveals = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window && reveals.length) {
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach((en)=>{ if (en.isIntersecting) en.target.classList.add('is-visible'); });
+    }, { threshold: 0.15 });
+    reveals.forEach(el=> io.observe(el));
+  } else {
+    reveals.forEach(el=> el.classList.add('is-visible'));
+  }
+
+  document.addEventListener('click', (e)=>{
+    const btn = e.target.closest('.btn-shimmer');
+    if(!btn) return;
+    const rect = btn.getBoundingClientRect();
+    const spot = document.createElement('span');
+    spot.className = 'ripple-spot';
+    const size = Math.max(rect.width, rect.height) * 0.9;
+    spot.style.width = spot.style.height = size + 'px';
+    spot.style.left = (e.clientX - rect.left) + 'px';
+    spot.style.top = (e.clientY - rect.top) + 'px';
+    const pos = getComputedStyle(btn).position;
+    if (pos === 'static') btn.style.position = 'relative';
+    btn.appendChild(spot);
+    spot.animate([
+      { transform:'translate(-50%, -50%) scale(0)', opacity:.35 },
+      { transform:'translate(-50%, -50%) scale(1)', opacity:0 }
+    ], { duration: 500, easing:'ease-out', fill:'forwards' });
+    setTimeout(()=> spot.remove(), 520);
+  });
+
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const cards = document.querySelectorAll('.league-card');
+    const max = 6;
+    cards.forEach((card)=>{
+      let raf = null;
+      const onMove = (e)=>{
+        const r = card.getBoundingClientRect();
+        const x = (e.clientX - r.left)/r.width - 0.5;
+        const y = (e.clientY - r.top)/r.height - 0.5;
+        const rx = (-y * max);
+        const ry = (x * max);
+        if (raf) cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(()=>{ card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-2px)`; });
+      };
+      const reset = ()=>{ if (raf) cancelAnimationFrame(raf); card.style.transform = ''; };
+      card.addEventListener('mousemove', onMove);
+      card.addEventListener('mouseleave', reset);
+    });
+  }
+})();
+</script>
 <script>
 function carousel() {   
     return {

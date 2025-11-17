@@ -10,10 +10,45 @@ use App\Http\Controllers\TopGlobalController;
 use App\Http\Controllers\LocaleController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AdminUserController;
 
 Route::get('/', function () {
     return view('index');
 })->name('index');
+
+
+Route::prefix('admin')->group(function () {
+    Route::get('/', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
+    Route::post('/login', [AdminAuthController::class, 'login'])->name('admin.login.submit');
+    Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+});
+
+// Rutas de administración de ligas y usuarios en ligas
+Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function () {
+    Route::post('/ligas/{liga}/usuarios', [AdminDashboardController::class, 'addUserToLiga'])->name('ligas.usuarios.add');
+    Route::delete('/ligas/{liga}/usuarios/{equipo}', [AdminDashboardController::class, 'removeUserFromLiga'])->name('ligas.usuarios.remove');
+    Route::post('/ligas/{liga}/usuarios/agregar', [AdminDashboardController::class, 'agregarUsuarioALiga'])->name('ligas.usuarios.agregar');
+    Route::post('/ligas/{liga}/usuarios/quitar', [AdminDashboardController::class, 'quitarUsuarioDeLiga'])->name('ligas.usuarios.quitar');
+});
+
+Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+
+    // Ligas
+    Route::get('/ligas/crear', [AdminDashboardController::class, 'createLiga'])->name('ligas.create');
+    Route::post('/ligas', [AdminDashboardController::class, 'storeLiga'])->name('ligas.store');
+    Route::get('/ligas/{liga}', [AdminDashboardController::class, 'showLiga'])->name('ligas.show');
+    Route::get('/ligas/{liga}/editar', [AdminDashboardController::class, 'editLiga'])->name('ligas.edit');
+    Route::put('/ligas/{liga}', [AdminDashboardController::class, 'updateLiga'])->name('ligas.update');
+    Route::delete('/ligas/{liga}', [AdminDashboardController::class, 'destroyLiga'])->name('ligas.destroy');
+
+    // Usuarios
+    Route::get('/usuarios', [AdminUserController::class, 'index'])->name('usuarios.index');
+    Route::get('/usuarios/crear', [AdminUserController::class, 'create'])->name('usuarios.create');
+    Route::post('/usuarios', [AdminUserController::class, 'store'])->name('usuarios.store');
+});
 
 
 Route::get('/login/google', [GoogleController::class, 'redirectToGoogle'])

@@ -68,24 +68,35 @@
             @endif
         </x-slot>
 
-<div class="py-8 bg-gray-50 dark:bg-gray-900 min-h-screen border-t border-[#3b82f6] shadow-[0_0_10px_#3b82f6] dark:border-t-1 dark:border-[#39ff14] dark:shadow-[0_0_10px_#39ff14]">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 px-4">
+<div id="home-bg" class="py-8 bg-gray-50 dark:bg-gray-900 min-h-screen border-t border-[#3b82f6] shadow-[0_0_10px_#3b82f6] dark:border-t-1 dark:border-[#39ff14] dark:shadow-[0_0_10px_#39ff14] relative overflow-hidden">
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 bg-aurora"></div>
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 bg-stars"></div>
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 px-4 relative">
+        <div aria-hidden="true" class="orb orb1 pointer-events-none select-none absolute -top-20 -left-10 w-60 h-60 rounded-full bg-gradient-to-br from-cyan-400/20 to-blue-500/10 blur-2xl animate-floatY"></div>
+        <div aria-hidden="true" class="orb orb2 pointer-events-none select-none absolute -bottom-24 -right-10 w-72 h-72 rounded-full bg-gradient-to-br from-amber-400/20 to-purple-500/10 blur-2xl animate-floatY2"></div>
         <div class="flex flex-col sm:flex-row gap-5 mb-12 justify-center items-center sm:items-stretch">
             <button type="button"
                 onclick="document.getElementById('create-league-modal').classList.remove('hidden')"
-                class="w-full sm:w-[260px] px-8 py-3.5 bg-gradient-to-r from-blue-500 to-cyan-500 dark:from-blue-600 dark:to-cyan-600 rounded-xl font-bold text-white hover:from-blue-600 hover:to-cyan-600 dark:hover:from-blue-700 dark:hover:to-cyan-700 transition-all transform hover:scale-[1.03] shadow-lg shadow-cyan-300/40 dark:shadow-cyan-500/30 border-b-2 border-cyan-600/70 dark:border-cyan-700/70 active:scale-95 text-center">
-                🏆 @lang('messages.crear-liga-may')
+                class="w-full sm:w-[260px] px-8 py-3.5 bg-gradient-to-r from-blue-500 to-cyan-500 dark:from-blue-600 dark:to-cyan-600 rounded-xl font-bold text-white hover:from-blue-600 hover:to-cyan-600 dark:hover:from-blue-700 dark:hover:to-cyan-700 transition-all transform hover:scale-[1.03] shadow-lg shadow-cyan-300/40 dark:shadow-cyan-500/30 border-b-2 border-cyan-600/70 dark:border-cyan-700/70 active:scale-95 text-center btn-icon btn-shimmer">
+                <svg class="w-5 h-5 mr-2 inline-block align-[-2px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 21h8m-8-4h8M7 7h10a3 3 0 003-3H4a3 3 0 003 3zm0 0v3a5 5 0 0010 0V7"/>
+                </svg>
+                @lang('messages.crear-liga-may')
             </button>
 
             <button x-data @click="$dispatch('open-join-modal')"
-                class="w-full sm:w-[260px] px-8 py-3.5 bg-gradient-to-r from-green-400 to-emerald-500 dark:from-green-500 dark:to-emerald-600 rounded-xl font-bold text-white hover:from-green-500 hover:to-emerald-600 dark:hover:from-green-600 dark:hover:to-emerald-700 transition-all transform hover:scale-[1.03] shadow-lg shadow-emerald-300/40 dark:shadow-emerald-500/30 border-b-2 border-emerald-600/70 dark:border-emerald-700/70 active:scale-95 text-center">
-                🎮 @lang('messages.unirse-liga')
+                class="w-full sm:w-[260px] px-8 py-3.5 bg-gradient-to-r from-green-400 to-emerald-500 dark:from-green-500 dark:to-emerald-600 rounded-xl font-bold text-white hover:from-green-500 hover:to-emerald-600 dark:hover:from-green-600 dark:hover:to-emerald-700 transition-all transform hover:scale-[1.03] shadow-lg shadow-emerald-300/40 dark:shadow-emerald-500/30 border-b-2 border-emerald-600/70 dark:border-emerald-700/70 active:scale-95 text-center btn-icon btn-shimmer">
+                <svg class="w-5 h-5 mr-2 inline-block align-[-2px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 9h12a3 3 0 013 3v1a4 4 0 01-4 4 3 3 0 01-3-3h-4a3 3 0 01-3 3 4 4 0 01-4-4v-1a3 3 0 013-3z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 13h2M14 12h.01M16 14h.01"/>
+                </svg>
+                @lang('messages.unirse-liga')
             </button>
         </div>
 
         <!-- Modal para crear liga -->
-        <div id="create-league-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
-            <div class="w-full max-w-md bg-white dark:bg-gray-800 rounded-xl shadow-2xl overflow-hidden">
+        <div id="create-league-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm">
+            <div class="w-full max-w-md bg-white dark:bg-gray-800 rounded-xl shadow-2xl overflow-hidden border border-gray-200/60 dark:border-gray-700/60 ring-1 ring-white/10">
                 <div class="bg-gradient-to-r from-blue-500 to-cyan-500 dark:from-blue-600 dark:to-cyan-600 p-5 text-white">
                     <h3 class="text-xl font-bold text-center"> @lang('messages.crear-nueva-liga-may')</h3>
                 </div>
@@ -96,7 +107,12 @@
                     <!-- Nombre -->
                     <div class="mb-4">
                         <label for="nombre" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">@lang('messages.nombre_liga') <b class="text-red-700">*</b></label>
-                        <input type="text" id="nombre" name="nombre" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-600 dark:focus:border-blue-600 outline-none transition bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200">
+                        <div class="relative">
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-blue-500 dark:text-blue-400">
+                                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7l9-4 9 4-9 4-9-4zm0 6l9 4 9-4"/></svg>
+                            </span>
+                            <input type="text" id="nombre" name="nombre" required class="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-600 dark:focus:border-blue-600 outline-none transition bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200">
+                        </div>
                     </div>
                     
                     <!-- Descripción -->
@@ -117,7 +133,12 @@
                     <!-- Contraseña (solo para privada) - inicialmente oculto -->
                     <div id="password-field" class="mb-4 hidden">
                         <label for="contrasena" class="block text-gray-700 dark:text-gray-300 font-medium mb-2"> @lang('messages.contraseña')</label>
-                        <input type="password" id="contrasena" name="contrasena" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-600 dark:focus:border-blue-600 outline-none transition bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200">
+                        <div class="relative">
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-blue-500 dark:text-blue-400">
+                                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                            </span>
+                            <input type="password" id="contrasena" name="contrasena" class="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-600 dark:focus:border-blue-600 outline-none transition bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200">
+                        </div>
                         <p class="text-sm text-gray-500 dark:text-gray-400 mt-1"> @lang('messages.jugadores_con_contraseña')</p>
                     </div>
                     
@@ -129,11 +150,13 @@
                     
                     <!-- Botones -->
                     <div class="flex justify-end space-x-3">
-                        <button type="button" onclick="document.getElementById('create-league-modal').classList.add('hidden')" class="px-5 py-2.5 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition">
-                             @lang('messages.cancelar')
+                        <button type="button" onclick="document.getElementById('create-league-modal').classList.add('hidden')" class="px-5 py-2.5 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition btn-shimmer btn-icon">
+                            <svg class="w-4 h-4 mr-1 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                            @lang('messages.cancelar')
                         </button>
-                        <button  id="crearLigaBtn" type="submit" class="px-5 py-2.5 bg-blue-500 dark:bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-600 dark:hover:bg-blue-700 transition">
-                             @lang('messages.crear_liga')
+                        <button  id="crearLigaBtn" type="submit" class="px-5 py-2.5 bg-blue-500 dark:bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-600 dark:hover:bg-blue-700 transition btn-shimmer btn-icon">
+                            <svg class="w-4 h-4 mr-1 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            @lang('messages.crear_liga')
                         </button>
                     </div>
                 </form>
@@ -143,7 +166,7 @@
         <!-- Modal para unirse a una liga - Buscar Liga -->
         <div x-data="joinLeagueModal()" 
             x-show="showJoinModal" 
-            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm p-4"
             style="display: none;"
             @open-join-modal.window="showJoinModal = true; searchLeagues()"
             @keydown.escape="showJoinModal = false">
@@ -307,14 +330,13 @@
                     <div class="flex justify-end space-x-3 mt-6">
                         <button 
                             @click="showConfirmModal = false" 
-                            class="px-5 py-2.5 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-gray-600 transition-all border border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500"
+                            class="px-5 py-2.5 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-gray-600 transition-all border border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 btn-shimmer btn-icon"
                         >
                              @lang('messages.cancelar')
                         </button>
                         <button 
                             @click="joinLeague()" 
-                            class="px-5 py-2.5 from-green-400 to-emerald-500 dark:from-green-500 dark:to-emerald-600 bg-gradient-to-r rounded-xl font-bold text-white hover:from-green-500 hover:to-emerald-600 dark:hover:from-green-600 dark:hover:to-emerald-700 transition-all  transform hover:scale-[1.03] shadow-lg shadow-emerald-300/40 dark:shadow-emerald-500/30 border-b-2 border-emerald-600/70 dark:border-emerald-700/70 active:scale-95 flex items-center"
-
+                            class="px-5 py-2.5 from-green-400 to-emerald-500 dark:from-green-500 dark:to-emerald-600 bg-gradient-to-r rounded-xl font-bold text-white hover:from-green-500 hover:to-emerald-600 dark:hover:from-green-600 dark:hover:to-emerald-700 transition-all  transform hover:scale-[1.03] shadow-lg shadow-emerald-300/40 dark:shadow-emerald-500/30 border-b-2 border-emerald-600/70 dark:border-emerald-700/70 active:scale-95 flex items-center btn-shimmer btn-icon"
                         >
                             <svg class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
@@ -334,7 +356,7 @@
                 $posicion = $equipoUsuario ? $equipoUsuario->posicion : '--';
             @endphp
             
-            <div class="bg-[#fff7f0] dark:bg-gray-800/90 rounded-2xl overflow-hidden border-2 border-cyan-300 dark:border-cyan-600 hover:border-cyan-400 dark:hover:border-cyan-500 transition-all  shadow-lg shadow-cyan-100/50 dark:shadow-cyan-900/30 relative group">
+            <div class="bg-[#fff7f0] dark:bg-gray-800/90 rounded-2xl overflow-hidden border-2 border-cyan-300 dark:border-cyan-600 hover:border-cyan-400 dark:hover:border-cyan-500 transition-all  shadow-lg shadow-cyan-100/50 dark:shadow-cyan-900/30 relative group tilt-hover league-card reveal">
 
                     <!-- Efecto de brillo sutil al hover -->
                     <div class="absolute inset-0 bg-gradient-to-br from-cyan-100/20 dark:from-cyan-900/10 to-blue-100/10 dark:to-blue-900/10 opacity-0 group-hover:opacity-100 transition-opacity "></div>
@@ -348,15 +370,21 @@
                                 <!-- Mostrar medalla según la posición -->
                                 @if($posicion == 1)
                                     <div class="absolute -bottom-1 -right-1 bg-amber-400 dark:bg-amber-500 text-xs font-bold rounded-full w-7 h-7 flex items-center justify-center shadow-sm border border-amber-300 dark:border-amber-400">
-                                        🥇
+                                        <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M8 21h8v-2H8v2Zm8-14h1a3 3 0 1 0 0-6H7a3 3 0 1 0 0 6h1v3a4 4 0 0 0 4 4 4 4 0 0 0 4-4V7Z"/>
+                                        </svg>
                                     </div>
                                 @elseif($posicion == 2)
                                     <div class="absolute -bottom-1 -right-1 bg-gray-400 dark:bg-gray-500 text-xs font-bold rounded-full w-7 h-7 flex items-center justify-center shadow-sm border border-silver-300 dark:border-gray-400">
-                                        🥈
+                                        <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M8 21h8v-2H8v2Zm1-10h6v1a4 4 0 0 1-4 4H9v-5Zm7-4h1a3 3 0 1 0 0-6H7a3 3 0 1 0 0 6h1v3h8V7Z"/>
+                                        </svg>
                                     </div>
                                 @elseif($posicion == 3)
                                     <div class="absolute -bottom-1 -right-1 bg-orange-400 dark:bg-orange-500 text-xs font-bold rounded-full w-7 h-7 flex items-center justify-center shadow-sm border border-bronze-300 dark:border-orange-400">
-                                        🥉
+                                        <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M8 21h8v-2H8v2Zm1-6h6v2H9v-2Zm7-8h1a3 3 0 1 0 0-6H7a3 3 0 1 0 0 6h1v3h8V7Z"/>
+                                        </svg>
                                     </div>
                                 @endif
                             </div>
@@ -405,7 +433,7 @@
                                 @endphp
 
                                 <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2.5">
-                                    <div class="bg-gradient-to-r from-amber-400 to-amber-500 dark:from-amber-500 dark:to-amber-600 h-2.5 rounded-full"
+                                    <div class="bg-gradient-to-r from-amber-400 to-amber-500 dark:from-amber-500 dark:to-amber-600 h-2.5 rounded-full progress-glow progress-anim"
                                         style="width: {{ $porcentajePosicion }}%"></div>
                                 </div>
                             </div>
@@ -431,7 +459,7 @@
                         <!-- Botones de Acción -->
                        <div class="flex flex-col md-custom:flex-row space-y-2 md-custom:space-y-0 md-custom:space-x-3">
                             <a href="{{ route('mi-liga', $liga->id) }}" 
-                                class="flex-1 min-w-[180px] max-w-full md-custom:max-w-[65%] bg-gradient-to-r from-cyan-500 to-blue-600 dark:from-cyan-600 dark:to-blue-700 hover:from-cyan-400 hover:to-blue-500 dark:hover:from-cyan-500 dark:hover:to-blue-600 text-white py-3 px-4 rounded-lg text-center font-medium transition-all hover:scale-[1.02] active:scale-95 shadow-md shadow-cyan-400/30 dark:shadow-cyan-600/30 border-b border-cyan-500/50 dark:border-cyan-600/50 text-sm flex items-center justify-center">
+                                class="flex-1 min-w-[180px] max-w-full md-custom:max-w-[65%] bg-gradient-to-r from-cyan-500 to-blue-600 dark:from-cyan-600 dark:to-blue-700 hover:from-cyan-400 hover:to-blue-500 dark:hover:from-cyan-500 dark:hover:to-blue-600 text-white py-3 px-4 rounded-lg text-center font-medium transition-all hover:scale-[1.02] active:scale-95 shadow-md shadow-cyan-400/30 dark:shadow-cyan-600/30 border-b border-cyan-500/50 dark:border-cyan-600/50 text-sm flex items-center justify-center btn-shimmer btn-icon">
                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
@@ -447,7 +475,7 @@
                                 <button 
                                 type="button" 
                                 onclick="confirmarSalida({{ $liga->id }}, {{ $liga->miembros_count }})" 
-                                class="w-full bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-400 hover:to-pink-500 text-white py-3 px-4 rounded-lg font-medium transition-all hover:scale-[1.02] active:scale-95 shadow-md shadow-pink-400/30 border-b border-pink-500/50 text-sm flex items-center justify-center"
+                                class="w-full bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-400 hover:to-pink-500 text-white py-3 px-4 rounded-lg font-medium transition-all hover:scale-[1.02] active:scale-95 shadow-md shadow-pink-400/30 border-b border-pink-500/50 text-sm flex items-center justify-center btn-shimmer btn-icon"
                                 >
                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -484,7 +512,7 @@
         </div>
         <br><br>
         <!-- Sección de reglas estilo terminal -->
-        <div class="bg-white dark:bg-gray-900 p-6 rounded-2xl border-2 border-gray-200 dark:border-gray-700 shadow-lg shadow-blue-100/30 dark:shadow-blue-900/40 mb-8 animate-fade-in-up transition-all ">
+        <div class="bg-white dark:bg-gray-900 p-6 rounded-2xl border-2 border-gray-200 dark:border-gray-700 shadow-lg shadow-blue-100/30 dark:shadow-blue-900/40 mb-8 animate-fade-in-up transition-all reveal">
             <div class="flex items-center mb-5">
                 <div class="flex space-x-2 mr-4">
                     <div class="w-3 h-3 rounded-full bg-red-400 animate-pulse"></div>
@@ -869,5 +897,188 @@
         .animate-spin-slow {
             animation: spinSlow 2s linear infinite;
         }
+        .tilt-hover {
+            transform-style: preserve-3d;
+            transition: transform .2s ease, box-shadow .2s ease;
+        }
+        .tilt-hover:hover {
+            transform: perspective(900px) rotateX(2deg) rotateY(-2deg) translateY(-2px);
+            box-shadow: 0 10px 24px rgba(2,132,199,0.18);
+        }
+        .tilt-hover:hover img {
+            transform: translateZ(12px) scale(1.03);
+            transition: transform .25s ease;
+        }
+        .btn-icon svg {
+            transition: transform .18s ease;
+        }
+        .btn-icon:hover svg {
+            transform: translateX(2px);
+        }
+        .bg-aurora {
+            background: radial-gradient(1200px 600px at 10% -10%, rgba(56,189,248,0.12), transparent 50%),
+                        radial-gradient(800px 500px at 110% 110%, rgba(168,85,247,0.12), transparent 50%),
+                        radial-gradient(500px 400px at 50% 120%, rgba(251,191,36,0.10), transparent 60%),
+                        linear-gradient(180deg, rgba(2,6,23,0.9), rgba(2,6,23,0.7));
+            animation: auroraShift 16s ease-in-out infinite alternate;
+        }
+        @keyframes auroraShift {
+            0% { filter: hue-rotate(0deg) saturate(1); }
+            100% { filter: hue-rotate(30deg) saturate(1.2); }
+        }
+        .bg-stars {
+            background-image: radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.5), transparent 2px),
+                              radial-gradient(1px 1px at 60% 70%, rgba(255,255,255,0.35), transparent 2px),
+                              radial-gradient(1.5px 1.5px at 80% 20%, rgba(255,255,255,0.45), transparent 3px);
+            background-size: 600px 600px, 800px 800px, 1000px 1000px;
+            animation: starsDrift 60s linear infinite;
+        }
+        @keyframes starsDrift {
+            0% { background-position: 0px 0px, 0px 0px, 0px 0px; }
+            100% { background-position: 600px 600px, -800px 800px, 1000px -1000px; }
+        }
+        .reveal { opacity: 0; transform: translateY(10px); transition: opacity .5s ease, transform .5s ease; }
+        .reveal.is-visible { opacity: 1; transform: translateY(0); }
+        .ripple-spot { position: absolute; border-radius: 9999px; pointer-events: none; transform: translate(-50%, -50%) scale(0); opacity: .35; background: currentColor; }
+        .progress-anim { animation: rgbFlow 6s linear infinite; }
+        @keyframes floatY {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(12px); }
+        }
+        @keyframes floatY2 {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .animate-floatY { animation: floatY 10s ease-in-out infinite; }
+        .animate-floatY2 { animation: floatY2 12s ease-in-out infinite; }
+        .btn-shimmer { position: relative; overflow: hidden; }
+        .btn-shimmer::after {
+            content: "";
+            position: absolute; inset: 0; transform: translateX(-120%);
+            background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.2) 30%, rgba(255,255,255,0.35) 45%, transparent 60%);
+        }
+        .btn-shimmer:hover::after { transform: translateX(120%); transition: transform .6s ease; }
+        .progress-glow { box-shadow: 0 0 10px rgba(245,158,11,0.35), 0 0 18px rgba(245,158,11,0.25) inset; }
+        @keyframes rgbFlow {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+        .animate-[rgbFlow_3s_linear_infinite] { animation: rgbFlow 3s linear infinite; }
+        @media (prefers-reduced-motion: reduce) {
+            .animate-floatY, .animate-floatY2, .btn-icon svg, .btn-shimmer::after, .bg-aurora, .bg-stars, .progress-anim { animation: none !important; transition: none !important; }
+        }
     </style>
+<script>
+(function(){
+  const root = document.getElementById('home-bg');
+  const orb1 = document.querySelector('.orb1');
+  const orb2 = document.querySelector('.orb2');
+  if (root && orb1 && orb2 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    root.addEventListener('mousemove', (e) => {
+      const rect = root.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      const tx1 = x * 14, ty1 = y * 10;
+      const tx2 = -x * 18, ty2 = -y * 12;
+      orb1.style.transform = `translate3d(${tx1}px, ${ty1}px, 0)`;
+      orb2.style.transform = `translate3d(${tx2}px, ${ty2}px, 0)`;
+    });
+  }
+
+  const reveals = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window && reveals.length) {
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach((en)=>{ if (en.isIntersecting) en.target.classList.add('is-visible'); });
+    }, { threshold: 0.1 });
+    reveals.forEach(el=> io.observe(el));
+  } else {
+    reveals.forEach(el=> el.classList.add('is-visible'));
+  }
+
+  const successAlert = document.getElementById('successAlert');
+  if (successAlert && !window.__confettiDone) {
+    window.__confettiDone = true;
+    const container = document.createElement('div');
+    container.style.position = 'fixed';
+    container.style.left = '0';
+    container.style.top = '0';
+    container.style.width = '100%';
+    container.style.height = '0';
+    container.style.pointerEvents = 'none';
+    document.body.appendChild(container);
+    const colors = ['#22d3ee','#60a5fa','#a78bfa','#f59e0b','#34d399'];
+    const pieces = 60;
+    for(let i=0;i<pieces;i++){
+      const p = document.createElement('div');
+      p.style.position='absolute';
+      p.style.left = Math.random()*100+'%';
+      p.style.top = '-10px';
+      p.style.width = '8px';
+      p.style.height = '12px';
+      p.style.background = colors[Math.floor(Math.random()*colors.length)];
+      p.style.opacity = '0.9';
+      p.style.transform = `rotate(${Math.random()*360}deg)`;
+      p.style.borderRadius = '2px';
+      container.appendChild(p);
+      const duration = 1200 + Math.random()*800;
+      const translateX = (Math.random()*2-1) * 120;
+      const keyframes = [
+        { transform: `translate(${translateX}px, 0) rotate(0deg)`, opacity: 1 },
+        { transform: `translate(${translateX}px, 120vh) rotate(360deg)`, opacity: 0 }
+      ];
+      p.animate(keyframes, { duration, easing:'cubic-bezier(.2,.7,.2,1)', fill:'forwards' });
+      setTimeout(()=> p.remove(), duration+100);
+    }
+    setTimeout(()=> container.remove(), 2500);
+  }
+
+  // Interactive tilt on league cards
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const cards = document.querySelectorAll('.league-card');
+    const max = 6; // degrees
+    cards.forEach((card)=>{
+      let raf = null;
+      const onMove = (e)=>{
+        const r = card.getBoundingClientRect();
+        const x = (e.clientX - r.left)/r.width - 0.5;
+        const y = (e.clientY - r.top)/r.height - 0.5;
+        const rx = (-y * max);
+        const ry = (x * max);
+        if (raf) cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(()=>{
+          card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-2px)`;
+          card.style.willChange = 'transform';
+        });
+      };
+      const reset = ()=>{
+        if (raf) cancelAnimationFrame(raf);
+        card.style.transform = '';
+        card.style.willChange = '';
+      };
+      card.addEventListener('mousemove', onMove);
+      card.addEventListener('mouseleave', reset);
+    });
+  }
+
+  document.addEventListener('click', (e)=>{
+    const btn = e.target.closest('.btn-shimmer');
+    if(!btn) return;
+    const rect = btn.getBoundingClientRect();
+    const spot = document.createElement('span');
+    spot.className = 'ripple-spot';
+    const size = Math.max(rect.width, rect.height) * 0.9;
+    spot.style.width = spot.style.height = size + 'px';
+    spot.style.left = (e.clientX - rect.left) + 'px';
+    spot.style.top = (e.clientY - rect.top) + 'px';
+    btn.style.position = getComputedStyle(btn).position === 'static' ? 'relative' : getComputedStyle(btn).position;
+    btn.appendChild(spot);
+    spot.animate([
+      { transform:'translate(-50%, -50%) scale(0)', opacity:.35 },
+      { transform:'translate(-50%, -50%) scale(1)', opacity:0 }
+    ], { duration: 500, easing:'ease-out', fill:'forwards' });
+    setTimeout(()=> spot.remove(), 520);
+  });
+})();
+</script>
+
 </x-app-layout>
