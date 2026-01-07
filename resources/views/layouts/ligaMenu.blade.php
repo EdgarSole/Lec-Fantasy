@@ -156,6 +156,9 @@
         </div>
     </div>
     
+    <!-- Script de notificaciones del mercado -->
+    @vite('resources/js/market-notifications.js')
+    
 </x-app-layout>
 
 <style>

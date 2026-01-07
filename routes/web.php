@@ -115,6 +115,7 @@ Route::prefix('liga/{liga}')->middleware(['auth'])->group(function() {
         Route::post('pujar', [MiLigaController::class, 'pujar'])->name('mercado.pujar');
         Route::post('procesar', [MiLigaController::class, 'procesarPujas'])->name('mercado.procesar');
         Route::delete('eliminar-puja', [MiLigaController::class, 'eliminarPuja'])->name('mercado.eliminar-puja');
+        Route::get('status', [MiLigaController::class, 'mercadoStatus'])->name('mercado.status');
     });
 
     // Rutas de chat

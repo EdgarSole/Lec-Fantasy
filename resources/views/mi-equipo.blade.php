@@ -7,7 +7,7 @@
         <div class="min-h-screen bg-white/80 dark:bg-gray-900/50 py-8 rounded-xl shadow-lg transition-colors duration-300">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 
-                <div id="flash-notification" class="fixed top-6 left-1/2 transform -translate-x-1/2 z-1000 w-full max-w-xl px-4 hidden">
+                <div id="flash-notification" class="fixed top-6 left-1/2 transform -translate-x-1/2 z-[9999999] w-full max-w-xl px-4 hidden">
                     <div class="relative bg-white dark:bg-gray-800 rounded-xl border-2 border-purple-500 p-5 shadow-2xl overflow-hidden gaming-notification">
                         <div class="absolute inset-0 rounded-lg border-2 border-purple-500 border-opacity-20 pointer-events-none flash-border"></div>
                         
@@ -643,7 +643,7 @@
             const border = notification.querySelector('.flash-border');
             
             // Resetear clases
-            notification.className = 'fixed top-6 left-1/2 transform -translate-x-1/2 z-1000 w-full max-w-xl px-4';
+            notification.className = 'fixed top-6 left-1/2 transform -translate-x-1/2 z-[9999999] w-full max-w-xl px-4';
             border.className = 'absolute inset-0 rounded-lg border-2 border-opacity-20 pointer-events-none flash-border';
             
             // Configurar según el tipo

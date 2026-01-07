@@ -174,8 +174,11 @@ class MiLigaController extends Controller
                     ->where('liga_id', $liga->id)
                     ->firstOrFail();
         
+        // Procesar mercados finalizados automáticamente antes de mostrar la vista
+        $this->procesarMercadosFinalizados($liga);
+        
         // Obtener mercado actual con pujas
-        $mercadoActual = Mercado::with(['jugador', 'pujas.equipo'])
+        $mercadoActual = Mercado::with(['jugador', 'pujas.equipo.usuario'])
                         ->where('liga_id', $liga->id)
                         ->where('fecha_fin', '>', now())
                         ->where('fecha_inicio', '<=', now())
@@ -192,6 +195,20 @@ class MiLigaController extends Controller
                         ->get()
                         ->keyBy('mercado_id');
         
+        // Logos de equipos
+        $logosEquipos = [
+            'Team Heretics' => 'https://res.cloudinary.com/dpsvxf3qg/image/upload/v1747036744/TeamHeretics.webp',
+            'Fnatic' => 'https://res.cloudinary.com/dpsvxf3qg/image/upload/v1747036743/Fnatic.webp',
+            'Karmine Corp' => 'https://res.cloudinary.com/dpsvxf3qg/image/upload/v1747036743/KarmineCorp.webp',
+            'G2' => 'https://res.cloudinary.com/dpsvxf3qg/image/upload/v1747037231/G2.png',
+            'Movistar KOI' => 'https://res.cloudinary.com/dpsvxf3qg/image/upload/v1747042004/MKOI_no9k5z.webp',
+            'Team Vitality' => 'https://res.cloudinary.com/dpsvxf3qg/image/upload/v1747042007/VIT_eevazm.webp',
+            'SK' => 'https://res.cloudinary.com/dpsvxf3qg/image/upload/v1747042071/SK_rty62c.png',
+            'GiantX' => 'https://res.cloudinary.com/dpsvxf3qg/image/upload/v1747042117/GiantX_dhbwww.png',
+            'Rogue' => 'https://res.cloudinary.com/dpsvxf3qg/image/upload/v1747042005/RGE_p1dwbo.webp',
+            'BDS' => 'https://res.cloudinary.com/dpsvxf3qg/image/upload/v1747042008/BDS_bbprhw.webp',
+        ];
+        
         // Calcular tiempo restante para la próxima actualización
         $tiempoRestante = $this->calcularTiempoRestante($mercadoActual->first()->fecha_fin);
         
@@ -200,8 +217,22 @@ class MiLigaController extends Controller
             'equipo',
             'mercadoActual',
             'pujasUsuario',
-            'tiempoRestante'
+            'tiempoRestante',
+            'logosEquipos'
         ));
+    }
+
+    private function procesarMercadosFinalizados(Liga $liga)
+    {
+        $mercadosFinalizados = Mercado::with(['pujas.equipo', 'jugador'])
+            ->where('liga_id', $liga->id)
+            ->where('fecha_fin', '<=', now())
+            ->where('procesado', false)
+            ->get();
+        
+        foreach ($mercadosFinalizados as $mercado) {
+            $this->procesarMercado($mercado);
+        }
     }
 
     private function crearNuevoMercado(Liga $liga)
@@ -258,7 +289,20 @@ class MiLigaController extends Controller
 
     private function calcularTiempoRestante($fechaFin)
     {
-        $segundos = now()->diffInSeconds($fechaFin);
+        $ahora = now();
+        $fechaFinCarbon = \Carbon\Carbon::parse($fechaFin);
+        
+        // Si la fecha ya pasó, retornar 0
+        if ($fechaFinCarbon <= $ahora) {
+            return [
+                'horas' => 0,
+                'minutos' => 0,
+                'segundos' => 0,
+                'total_segundos' => 0
+            ];
+        }
+        
+        $segundos = $ahora->diffInSeconds($fechaFinCarbon);
         
         return [
             'horas' => floor($segundos / 3600),
@@ -418,6 +462,71 @@ class MiLigaController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function mercadoStatus(Liga $liga)
+    {
+        try {
+            $user = auth()->user();
+            $equipo = Equipo::where('usuario_id', $user->id)
+                        ->where('liga_id', $liga->id)
+                        ->first();
+            
+            // Verificar jugadores ganados recientemente (últimos 5 minutos)
+            $jugadoresGanados = [];
+            if ($equipo) {
+                try {
+                    $jugadoresGanados = \DB::table('historial_transacciones')
+                        ->join('jugadores', 'historial_transacciones.jugador_id', '=', 'jugadores.id')
+                        ->where('historial_transacciones.equipo_id', $equipo->id)
+                        ->where('historial_transacciones.tipo', 'compra')
+                        ->where('historial_transacciones.created_at', '>=', now()->subMinutes(5))
+                        ->select('jugadores.nombre', 'historial_transacciones.precio as cantidad', 'historial_transacciones.created_at')
+                        ->orderBy('historial_transacciones.created_at', 'desc')
+                        ->get();
+                } catch (\Exception $e) {
+                    \Log::warning('Error verificando jugadores ganados: ' . $e->getMessage());
+                }
+            }
+            
+            // Procesar mercados finalizados antes de verificar estado
+            $this->procesarMercadosFinalizados($liga);
+            
+            // Obtener mercado actual
+            $mercadoActual = Mercado::where('liga_id', $liga->id)
+                ->where('fecha_fin', '>', now())
+                ->where('fecha_inicio', '<=', now())
+                ->first();
+            
+            if (!$mercadoActual) {
+                // No hay mercado activo, crear uno nuevo
+                $nuevoMercado = $this->crearNuevoMercado($liga);
+                $mercadoActual = $nuevoMercado->first();
+            }
+            
+            // Calcular tiempo restante
+            $tiempoRestante = $this->calcularTiempoRestante($mercadoActual->fecha_fin);
+            
+            return response()->json([
+                'success' => true,
+                'market_id' => $mercadoActual->id,
+                'time_remaining' => $tiempoRestante['total_segundos'],
+                'fecha_fin' => $mercadoActual->fecha_fin,
+                'jugadores_count' => Mercado::where('liga_id', $liga->id)
+                    ->where('fecha_fin', '>', now())
+                    ->count(),
+                'jugadores_ganados' => $jugadoresGanados
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Error en mercadoStatus: ' . $e->getMessage());
+            \Log::error('Stack trace: ' . $e->getTraceAsString());
+            
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+                'error_details' => $e->getTraceAsString()
             ], 500);
         }
     }

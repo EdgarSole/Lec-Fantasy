@@ -215,6 +215,7 @@ return [
     'pujar' => 'Pujar',
     'pujar_por' => 'Pujar por',
     'cantidad' => 'Cantidad',
+    'sin_pujas' => 'No hay pujas aún',
 
 
     //Vista Clasificacion

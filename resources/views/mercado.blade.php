@@ -1,43 +1,118 @@
 @extends('layouts.ligaMenu')
 
 @section('content')
-<div class="dark:bg-gray-900 min-h-screen">
-    <div class="container mx-auto px-4 py-6">
-        <!-- Header con presupuesto y contador - Modo oscuro -->
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-lg dark:shadow-gray-700/50 p-4 mb-6 gap-4">
-            <div class="flex items-center flex-wrap gap-2">
-                <span class="font-bold text-lg text-gray-800 dark:text-gray-200">@lang('messages.presupuesto'):</span>
-                <span class="text-green-600 dark:text-green-400 font-bold text-lg">{{ number_format($equipo->presupuesto, 0, ',', '.') }} €</span>
-                @if($pujasUsuario->sum('cantidad') > 0)
-                    <span class="text-red-500 dark:text-red-400 font-medium">-{{ number_format($pujasUsuario->sum('cantidad'), 0, ',', '.') }} €</span>
-                @endif
-            </div>
-            <div class="flex items-center gap-4">                
-                <div class="bg-white/60 dark:bg-gray-700/80 backdrop-blur-sm border border-blue-200 dark:border-blue-600 px-5 py-2 rounded-full font-bold text-blue-700 dark:text-blue-300 shadow-inner">
-                    ⏳ @lang('messages.proxima_actualizacion'): 
-                    <span id="contador" class="font-mono text-pink-600 dark:text-pink-400">
-                        {{ str_pad(intval($tiempoRestante['horas']), 2, '0', STR_PAD_LEFT) }}h
-                        {{ str_pad(intval($tiempoRestante['minutos']), 2, '0', STR_PAD_LEFT) }}m
-                        {{ str_pad(intval($tiempoRestante['segundos']), 2, '0', STR_PAD_LEFT) }}s
-                    </span>
+<div class="dark:bg-gray-900 min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 overflow-y-auto">
+    <!-- Simplified background particles -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
+        <div class="absolute top-1/4 left-1/4 w-1 h-1 bg-yellow-400 rounded-full"></div>
+        <div class="absolute top-1/3 right-1/4 w-1 h-1 bg-blue-400 rounded-full"></div>
+        <div class="absolute bottom-1/4 left-1/3 w-1 h-1 bg-purple-400 rounded-full"></div>
+    </div>
+    
+    <div class="container mx-auto px-4 py-6 relative z-10">
+        <!-- Gaming Header -->
+        <div class="relative mb-8 sticky top-0 z-10 bg-gradient-to-br from-purple-900/95 via-blue-900/95 to-indigo-900/95 backdrop-blur-lg pt-4 rounded-2xl">
+            <!-- Glow effect -->
+            <div class="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 rounded-2xl blur-xl"></div>
+            
+            <!-- Main header -->
+            <div class="relative bg-gradient-to-r from-gray-900/95 to-gray-800/95 backdrop-blur-lg border border-cyan-500/40 rounded-2xl p-6 shadow-2xl">
+                <!-- Title -->
+                <div class="text-center mb-6">
+                    <h1 class="text-4xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent mb-2 flex items-center justify-center gap-3">
+                        MERCADO DE TRANSFERENCIAS
+                    </h1>
+                    <p class="text-gray-300 text-lg">Compite por los mejores jugadores</p>
+                </div>
+                
+                <!-- Stats and Timer -->
+                <div class="flex flex-col lg:flex-row justify-between items-center gap-6">
+                    <!-- Budget Section -->
+                    <div class="flex items-center gap-6 bg-gray-800/50 rounded-xl p-4 border border-green-500/30">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center">
+                                <i class="fas fa-coins text-white text-xl"></i>
+                            </div>
+                            <div>
+                                <span class="text-gray-400 text-sm block">@lang('messages.presupuesto')</span>
+                                <span class="text-green-400 font-bold text-xl">{{ number_format($equipo->presupuesto, 0, ',', '.') }} €</span>
+                            </div>
+                        </div>
+                        @if($pujasUsuario->sum('cantidad') > 0)
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 bg-gradient-to-br from-red-400 to-pink-500 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-chart-line-down text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <span class="text-gray-400 text-sm block">En Pujas</span>
+                                    <span class="text-red-400 font-bold text-xl">-{{ number_format($pujasUsuario->sum('cantidad'), 0, ',', '.') }} €</span>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                    
+                    <!-- Timer Section -->
+                    <div class="relative">
+                        <div class="absolute inset-0 bg-gradient-to-r from-blue-500/30 to-purple-500/30 rounded-xl blur-lg"></div>
+                        <div class="relative bg-gray-800/90 backdrop-blur-sm border-2 border-blue-400/70 px-6 py-4 rounded-xl shadow-lg">
+                            <div class="text-center">
+                                <span class="text-blue-300 text-sm mb-1 flex items-center justify-center gap-2">
+                                    <i class="fas fa-clock"></i>
+                                    @lang('messages.proxima_actualizacion')
+                                </span>
+                                <div id="contador" class="font-mono text-2xl font-bold bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">
+                                    {{ str_pad(intval($tiempoRestante['horas']), 2, '0', STR_PAD_LEFT) }}h
+                                    {{ str_pad(intval($tiempoRestante['minutos']), 2, '0', STR_PAD_LEFT) }}m
+                                    {{ str_pad(intval($tiempoRestante['segundos']), 2, '0', STR_PAD_LEFT) }}s
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Grid de jugadores -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 px-4 pb-6">
-        @foreach($mercadoActual as $item)
-        <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-lg dark:hover:shadow-gray-700/50 transition-all duration-300 border-2 border-gray-200 dark:border-gray-700 flex flex-col h-full transform hover:-translate-y-1">
-            <!-- Imagen del jugador con overlay -->
-            <div class="h-48 overflow-hidden relative">
-                <img src="{{ $item->jugador->imagen_url }}" alt="{{ $item->jugador->nombre }}" class="w-full h-full object-cover">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
-                <div class="absolute bottom-0 left-0 right-0 p-3">
-                    <h3 class="font-bold text-xl text-white">{{ $item->jugador->nombre }}</h3>
-                    <p class="text-gray-200 text-sm">{{ $item->jugador->posicion }} • {{ $item->jugador->equipo_real }}</p>
+        <!-- Market Items Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 w-full pb-8 mt-8">
+            @foreach($mercadoActual as $item)
+            <div class="gamer-card glass-card relative rounded-2xl overflow-hidden shadow-2xl group flex flex-col h-full border-2 border-cyan-500/20 hover:border-cyan-500/50 transition-all duration-300">
+                <div class="absolute inset-0 bg-gradient-to-br from-gray-900/98 via-gray-800/98 to-gray-900/98 z-0"></div>
+                
+                <!-- Efecto de borde brillante animado -->
+                <div class="absolute inset-0 opacity-20 group-hover:opacity-40 transition-opacity duration-500 bg-[radial-gradient(circle_at_50%_50%,rgba(34,211,238,0.1),transparent_50%)]"></div>
+                
+                <div class="relative z-10 p-6 pb-0 flex items-start gap-4">
+                    <!-- Player Image Container -->
+                    <div class="relative group-hover:scale-105 transition-transform duration-500 flex-shrink-0">
+                        <div class="w-24 h-24 rounded-2xl overflow-hidden border-2 border-cyan-500/50 shadow-[0_0_20px_rgba(6,182,212,0.4)] group-hover:shadow-[0_0_30px_rgba(6,182,212,0.6)] transition-all duration-500 relative bg-gradient-to-br from-gray-900 to-gray-800 z-20">
+                            <img src="{{ $item->jugador->imagen_url }}" 
+                                 alt="{{ $item->jugador->nombre }}" 
+                                 class="w-full h-full object-cover relative z-30" 
+                                 style="object-position: center; background: transparent;">
+                        </div>
+                    </div>
+                    
+                    <div class="flex-grow pt-1 min-w-0">
+                        <div class="flex flex-col gap-2">
+                            <h3 class="text-2xl font-black text-white group-hover:text-cyan-300 transition-colors drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+                                {{ $item->jugador->nombre }}
+                            </h3>
+                            <div class="flex items-center gap-2 bg-gray-800/90 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-cyan-500/40 w-fit shadow-lg">
+                                @if(isset($logosEquipos[$item->jugador->equipo_real]))
+                                    <img src="{{ $logosEquipos[$item->jugador->equipo_real] }}" 
+                                         alt="{{ $item->jugador->equipo_real }}" 
+                                         class="w-5 h-5 object-contain rounded-full border border-white/20 bg-white dark:bg-gray-400 p-0.5">
+                                @else
+                                    <i class="fas fa-shield-alt text-cyan-400"></i>
+                                @endif
+                                <span class="text-xs font-bold text-cyan-200 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                                    {{ $item->jugador->equipo_real }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+                
             @php
                 $kills = $item->jugador->estadisticas->kills ?? 0;
                 $muertes = $item->jugador->estadisticas->muertes ?? 0;
@@ -45,116 +120,150 @@
                 $kda = number_format(($kills + $asistencias) / ($muertes ?: 1), 2);
                 
             @endphp
-            <!-- Información del jugador -->
-            <div class="p-4 flex-grow">
-                <!-- Estadísticas rápidas -->
-                <div class="flex justify-between mb-3">
-                    <div class="text-center">
-                        <span class="block text-xs text-gray-500 dark:text-gray-400">@lang('messages.puntos_min')</span>
-                        <span class="text-blue-500 dark:text-blue-400 font-bold">{{ $item->jugador->puntos }} pts</span>
+                <!-- Información del jugador -->
+                <div class="p-4 flex-grow">
+                    <!-- Estadísticas gaming style -->
+                    <div class="grid grid-cols-3 gap-2 mb-4">
+                        <div class="bg-gradient-to-br from-blue-950 to-black rounded-xl p-2 border-2 border-blue-500/60 text-center min-h-[70px] flex flex-col justify-center hover:border-blue-400 transition-colors group/stat shadow-lg shadow-blue-500/30">
+                            <div class="text-blue-300 text-xs font-black uppercase tracking-wider mb-1 flex items-center justify-center gap-1 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                                <i class="fas fa-bolt text-[10px]"></i> Pts
+                            </div>
+                            <div class="text-white font-black text-2xl group-hover/stat:text-blue-300 transition-colors drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">{{ $item->jugador->puntos }}</div>
+                        </div>
+                        <div class="bg-gradient-to-br from-green-950 to-black rounded-xl p-2 border-2 border-green-500/60 text-center min-h-[70px] flex flex-col justify-center hover:border-green-400 transition-colors group/stat shadow-lg shadow-green-500/30">
+                            <div class="text-green-300 text-xs font-black uppercase tracking-wider mb-1 flex items-center justify-center gap-1 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                                <i class="fas fa-gem text-[10px]"></i> Valor
+                            </div>
+                            <div class="text-white font-black text-sm group-hover/stat:text-green-300 transition-colors drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">{{ number_format($item->jugador->valor/1000, 0) }}K€</div>
+                        </div>
+                        <div class="bg-gradient-to-br from-purple-950 to-black rounded-xl p-2 border-2 border-purple-500/60 text-center min-h-[70px] flex flex-col justify-center hover:border-purple-400 transition-colors group/stat shadow-lg shadow-purple-500/30">
+                            <div class="text-purple-300 text-xs font-black uppercase tracking-wider mb-1 flex items-center justify-center gap-1 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                                <i class="fas fa-crosshairs text-[10px]"></i> KDA
+                            </div>
+                            <div class="text-white font-black text-2xl group-hover/stat:text-purple-300 transition-colors drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">{{ $kda }}</div>
+                        </div>
                     </div>
-                    <div class="text-center">
-                        <span class="block text-xs text-gray-500 dark:text-gray-400">@lang('messages.valor')</span>
-                        <span class="text-green-600 dark:text-green-400 font-bold">{{ number_format($item->jugador->valor, 0, ',', '.') }} €</span>
-                    </div>
-                    <div class="text-center">
-                        <span class="block text-xs text-gray-500 dark:text-gray-400">KDA</span>
-                        <span class="text-purple-500 dark:text-purple-400 font-bold">{{ $kda }}</span>
-                    </div>
-                </div>
                 
-                <!-- Tabla de pujas mejorada -->
-                <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
-                    <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">@lang('messages.historial_pujas')</h4>
-                    <div class="overflow-auto max-h-40 scrollbar-thin">
-                        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                            <thead class="bg-gray-50 dark:bg-gray-700">
-                                <tr>
-                                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">#</th>
-                                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">@lang('messages.equipo_min')</th>
-                                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">@lang('messages.puja_min')</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700" id="pujas-body-{{ $item->id }}">
-                                @foreach($item->pujas as $index => $puja)
-                                <tr class="{{ $index % 2 === 0 ? 'bg-gray-50 dark:bg-gray-700/50' : 'bg-white dark:bg-gray-800' }}">
-                                    <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-200">{{ $index + 1 }}</td>
-                                    <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $puja->equipo->usuario->nombre }}</td>
-                                    <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200 font-semibold">{{ number_format($puja->cantidad, 0, ',', '.') }} €</td>
-                                </tr>
+                    <!-- Tabla de pujas gaming style -->
+                    <div class="mt-4 pt-4 border-t border-cyan-500/30">
+                        <h4 class="text-xs font-black text-cyan-300 uppercase tracking-wider mb-3 flex items-center gap-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                            <i class="fas fa-trophy text-yellow-400 drop-shadow-[0_2px_8px_rgba(234,179,8,0.5)]"></i> @lang('messages.historial_pujas')
+                        </h4>
+                        <div class="overflow-auto max-h-32 scrollbar-thin bg-black/40 rounded-lg border border-cyan-500/30 p-1">
+                            @if($item->pujas->count() > 0)
+                                @foreach($item->pujas->sortByDesc('cantidad')->take(3) as $index => $puja)
+                                <div class="flex justify-between items-center p-2 rounded mb-1 {{ $index === 0 ? 'bg-gradient-to-r from-yellow-500/30 to-transparent border-l-4 border-yellow-400' : 'hover:bg-white/10' }} transition-colors">
+                                    <div class="flex items-center gap-2">
+                                        @if($index === 0)
+                                            <span class="w-5 h-5 bg-yellow-500 rounded flex items-center justify-center text-[10px] font-black text-black shadow-lg shadow-yellow-500/50">1</span>
+                                        @else
+                                            <span class="w-5 h-5 bg-gray-700 rounded flex items-center justify-center text-[10px] font-bold text-gray-300">{{ $index + 1 }}</span>
+                                        @endif
+                                        <span class="text-gray-200 text-xs font-bold truncate max-w-[100px] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">{{ $puja->equipo->usuario->nombre }}</span>
+                                    </div>
+                                    <span class="{{ $index === 0 ? 'text-yellow-300 font-black' : 'text-gray-300 font-bold' }} text-xs drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">{{ number_format($puja->cantidad, 0, ',', '.') }}€</span>
+                                </div>
                                 @endforeach
-                            </tbody>
-                        </table>
+                            @else
+                                <div class="text-gray-400 text-xs text-center py-4 italic font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                                    @lang('messages.sin_pujas')
+                                </div>
+                            @endif
+                        </div>
                     </div>
-                </div>
-            </div>
-            
-            <!-- Botón de puja  -->
-            <button class="mt-auto w-full py-3 bg-gradient-to-r from-blue-500 to-purple-600 dark:from-blue-600 dark:to-purple-700 text-white font-bold hover:from-blue-600 hover:to-purple-700 dark:hover:from-blue-700 dark:hover:to-purple-800 transition-all duration-300 flex items-center justify-center gap-2"
-                onclick="abrirModalPuja(
-                    '{{ $item->id }}',
-                    '{{ addslashes($item->jugador->nombre) }}',
-                    '{{ $item->jugador->valor }}',
-                    '{{ $equipo->presupuesto - $pujasUsuario->sum('cantidad') + ($pujasUsuario[$item->id]->cantidad ?? 0) }}',
-                    '{{ $pujasUsuario[$item->id]->cantidad ?? 0 }}'
-                )">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
-                </svg>
-                {{ isset($pujasUsuario[$item->id]) ? __('messages.modificar-puja') : __('messages.pujar') }}
-            </button>
-        </div>
-        @endforeach
-    </div>
 
-    <!-- Modal de Puja mejorado -->
-    <div class="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center z-50 hidden" id="pujaModal">
-        <div class="bg-white dark:bg-gray-800 rounded-lg w-full max-w-md mx-4 shadow-xl">
-            <div class="p-4 border-b border-gray-200 dark:border-gray-700">
-                <h3 class="text-xl font-bold text-gray-800 dark:text-white"> @lang('messages.pujar_por') <span id="jugadorNombreModal" class="text-blue-600 dark:text-blue-400"></span></h3>
+                    <!-- Botón de puja gaming style -->
+                    <div class="mt-4 pt-0">
+                        <button class="group w-full py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-black uppercase tracking-wider rounded-xl transition-all duration-300 flex items-center justify-center gap-3 shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 transform hover:translate-y-[-2px] border border-cyan-400/30 relative overflow-hidden"
+                    onclick="abrirModalPuja(
+                        '{{ $item->id }}',
+                        '{{ addslashes($item->jugador->nombre) }}',
+                        '{{ $item->jugador->valor }}',
+                        '{{ $equipo->presupuesto - $pujasUsuario->sum('cantidad') + ($pujasUsuario[$item->id]->cantidad ?? 0) }}',
+                        '{{ $pujasUsuario[$item->id]->cantidad ?? 0 }}'
+                    )">
+                            <div class="absolute inset-0 bg-white/20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                            <i class="fas fa-gavel text-lg group-hover:rotate-12 transition-transform duration-300"></i>
+                            <span class="text-sm">{{ isset($pujasUsuario[$item->id]) ? __('messages.modificar-puja') : __('messages.pujar') }}</span>
+                        </button>
+                    </div>
+                </div>
             </div>
-            
-            <form id="pujaForm" method="POST" action="{{ route('mercado.pujar', $liga) }}" class="p-4">
-                @csrf
-                <input type="hidden" name="mercado_id" id="mercadoIdModal">
-                
-                <div class="mb-4">
-                    <label for="cantidadModal" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"> @lang('messages.cantidad') (€)</label>
-                    <div class="relative rounded-md shadow-sm">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <span class="text-gray-500 dark:text-gray-400">€</span>
-                        </div>
-                        <input type="number" id="cantidadModal" name="cantidad"     
-                               class="focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-600 dark:focus:border-blue-600 block w-full pl-10 pr-12 py-2 border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white" 
-                               required min="0" step="1">
-                    </div>
-                    
-                    <div class="mt-4">
-                        <input type="range" id="cantidadRangeModal" min="0" step="1" 
-                               class="w-full h-2 bg-gray-200 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer accent-blue-600 dark:accent-blue-500">
-                        <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
-                            <span id="minValueModal">0 €</span>
-                            <span id="maxPresupuestoModal">0 €</span>
-                        </div>
-                    </div>
-                    
-                    <p id="errorPresupuestoModal" class="mt-2 text-sm text-red-600 dark:text-red-400 hidden">No puedes superar tu presupuesto disponible </p>
-                    <p id="errorMinimoModal" class="mt-2 text-sm text-red-600 dark:text-red-400 hidden">La puja mínima es <span id="valorMinimo"></span> €</p>
-                </div>
-                
-                <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
-                    <button type="button" onclick="cerrarModal()" class="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-white rounded-md hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors">
-                         @lang('messages.cancelar')
-                    </button>
-                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
-                        </svg>
-                        {{ isset($pujasUsuario[$item->id]) ? __('messages.modificar-puja') : __('messages.pujar') }}
-                    </button>
-                </div>
-            </form>
+            @endforeach
         </div>
+
+    <!-- Modal de Puja Gaming Style -->
+    <div class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[9999999] hidden" id="pujaModal">
+        <div class="relative">
+            <!-- Glow effect -->
+            <div class="absolute inset-0 bg-gradient-to-r from-cyan-500/30 to-purple-500/30 rounded-2xl blur-xl"></div>
+            
+            <!-- Modal content -->
+            <div class="relative bg-gradient-to-br from-gray-900/95 to-gray-800/95 backdrop-blur-lg rounded-2xl w-full max-w-md mx-4 shadow-2xl border border-cyan-500/30">
+                <!-- Header -->
+                <div class="p-6 border-b border-gray-600/50">
+                    <h3 class="text-2xl font-bold text-center">
+                        <span class="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent flex items-center justify-center gap-2">
+                            <i class="fas fa-gavel"></i> @lang('messages.pujar_por')
+                        </span>
+                        <br>
+                        <span id="jugadorNombreModal" class="text-white text-xl"></span>
+                    </h3>
+                </div>
+            
+                <!-- Form -->
+                <form id="pujaForm" method="POST" action="{{ route('mercado.pujar', $liga) }}" class="p-6">
+                    @csrf
+                    <input type="hidden" name="mercado_id" id="mercadoIdModal">
+                    
+                    <div class="mb-6">
+                        <label for="cantidadModal" class="flex items-center gap-2 text-sm font-bold text-cyan-300 mb-3">
+                            <i class="fas fa-coins"></i> @lang('messages.cantidad') (€)
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <span class="text-green-400 font-bold text-lg">€</span>
+                            </div>
+                            <input type="number" id="cantidadModal" name="cantidad"     
+                                   class="w-full pl-12 pr-4 py-4 bg-gray-800/50 border border-cyan-500/30 rounded-xl text-white text-lg font-bold focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-all" 
+                                   required min="0" step="1" placeholder="0">
+                        </div>
+                    
+                        <!-- Gaming Range Slider -->
+                        <div class="mt-6">
+                            <input type="range" id="cantidadRangeModal" min="0" step="1" 
+                                   class="w-full h-3 bg-gray-700 rounded-lg appearance-none cursor-pointer slider-thumb">
+                            <div class="flex justify-between text-sm text-gray-400 mt-2">
+                                <span id="minValueModal" class="text-green-400 font-bold">0 €</span>
+                                <span id="maxPresupuestoModal" class="text-cyan-400 font-bold">0 €</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Error Messages -->
+                        <div class="mt-4 space-y-2 relative z-50">
+                            <p id="errorPresupuestoModal" class="text-sm text-red-400 font-bold bg-red-500/10 border border-red-500/30 rounded-lg p-2 items-center gap-2" style="display: none;">
+                                <i class="fas fa-times-circle"></i> No puedes superar tu presupuesto disponible
+                            </p>
+                            <p id="errorMinimoModal" class="text-sm text-yellow-400 font-bold bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-2 items-center gap-2" style="display: none;">
+                                <i class="fas fa-exclamation-triangle"></i> La puja mínima es <span id="valorMinimo"></span> €
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="flex gap-4 pt-6 border-t border-gray-600/50">
+                        <button type="button" onclick="cerrarModal()" class="flex-1 py-3 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded-xl transition-all duration-300 border border-gray-600 flex items-center justify-center gap-2">
+                            <i class="fas fa-times"></i> @lang('messages.cancelar')
+                        </button>
+                        <button type="submit" class="flex-1 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white font-bold rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-cyan-500/25">
+                            <i class="fas fa-gavel"></i>
+                            <span>{{ isset($pujasUsuario[$item->id]) ? __('messages.modificar-puja') : __('messages.pujar') }}</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     </div>
 </div>
 
@@ -215,16 +324,16 @@
         
         // Validar mínimo
         if (value < min) {
-            errorMinimo.classList.remove('hidden');
+            errorMinimo.style.display = 'flex';
         } else {
-            errorMinimo.classList.add('hidden');
+            errorMinimo.style.display = 'none';
         }
         
         // Validar máximo
         if (value > max) {
-            errorPresupuesto.classList.remove('hidden');
+            errorPresupuesto.style.display = 'flex';
         } else {
-            errorPresupuesto.classList.add('hidden');
+            errorPresupuesto.style.display = 'none';
         }
     }
     
@@ -262,14 +371,17 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
+                // Mostrar notificación de éxito flotante
+                mostrarNotificacion('success', data.message || '¡Puja realizada con éxito! 🎉');
+                
                 // Actualizar la interfaz con los nuevos datos
                 actualizarInterfaz(data);
                 cerrarModal();
+                
+                // Recargar después de 2 segundos
                 setTimeout(() => {
                     window.location.reload();
-                }, 1500);
-                // Mostrar notificación de éxito
-                mostrarNotificacion('success', data.message || 'Puja realizada con éxito');
+                }, 2000);
             } else {
                 mostrarNotificacion('error', data.message || 'Error al realizar la puja');
             }
@@ -346,21 +458,30 @@
     // Función para mostrar notificaciones
     function mostrarNotificacion(tipo, mensaje) {
         const notificacion = document.createElement('div');
-        notificacion.className = `fixed top-4 right-4 px-4 py-2 rounded-md shadow-lg text-white ${
-            tipo === 'success' ? 'bg-green-500' : 'bg-red-500'
-        } z-50 flex items-center gap-2`;
+        notificacion.className = `fixed top-4 left-1/2 transform -translate-x-1/2 px-6 py-4 rounded-xl shadow-2xl text-white ${
+            tipo === 'success' ? 'bg-gradient-to-r from-green-500 to-emerald-600' : 'bg-gradient-to-r from-red-500 to-pink-600'
+        } z-[9999999] flex items-center gap-3 border-2 ${
+            tipo === 'success' ? 'border-green-400' : 'border-red-400'
+        } backdrop-blur-lg w-fit max-w-2xl`;
         notificacion.innerHTML = `
             ${tipo === 'success' ? 
-                '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>' : 
-                '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg>'}
-            <span>${mensaje}</span>
+                '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>' : 
+                '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg>'}
+            <span class="font-bold text-base">${mensaje}</span>
         `;
         document.body.appendChild(notificacion);
         
+        // Añadir animación de entrada
+        notificacion.style.opacity = '0';
         setTimeout(() => {
-            notificacion.classList.add('opacity-0', 'transition-opacity', 'duration-500');
-            setTimeout(() => notificacion.remove(), 500);
-        }, 3000);
+            notificacion.style.opacity = '1';
+            notificacion.style.transition = 'opacity 0.3s ease-out';
+        }, 100);
+        
+        setTimeout(() => {
+            notificacion.style.opacity = '0';
+            setTimeout(() => notificacion.remove(), 300);
+        }, 5000);
     }
     
     // Cerrar modal al hacer clic fuera
@@ -372,68 +493,73 @@
         }
     });
     
-    // Contador de actualización
+    // Contador de actualización progresivo
     function iniciarContador() {
         const contador = document.getElementById('contador');
         if (!contador) return;
 
-        let segundos = Math.floor({{ $tiempoRestante['total_segundos'] }});
+        // Obtener tiempo restante del servidor (en segundos)
+        let segundosRestantes = Math.floor({{ $tiempoRestante['total_segundos'] ?? 0 }});
+        let mercadoFinalizado = false;
+        
+        // Si ya no hay tiempo desde el inicio, no iniciar el contador
+        if (segundosRestantes <= 0) {
+            contador.textContent = "🎯 Creando nuevo mercado...";
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
+            return;
+        }
         
         function actualizar() {
-            const horas = Math.floor(segundos / 3600);
-            const minutos = Math.floor((segundos % 3600) / 60);
-            const segs = segundos % 60;
+            if (mercadoFinalizado) return;
+            
+            // Si no hay tiempo restante, mostrar que está procesando
+            if (segundosRestantes <= 0) {
+                if (!mercadoFinalizado) {
+                    mercadoFinalizado = true;
+                    contador.textContent = "🎯 Procesando...";
+                    mostrarNotificacion('success', '¡El mercado ha finalizado! Procesando pujas...');
+                    
+                    // Recargar después de 3 segundos
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 3000);
+                }
+                return;
+            }
+            
+            const horas = Math.floor(segundosRestantes / 3600);
+            const minutos = Math.floor((segundosRestantes % 3600) / 60);
+            const segs = Math.floor(segundosRestantes % 60);
             
             contador.textContent = 
                 `${String(horas).padStart(2, '0')}h ${String(minutos).padStart(2, '0')}m ${String(segs).padStart(2, '0')}s`;
             
-            if (segundos <= 0) {
-                contador.textContent = "Procesando pujas...";
-                
-                fetch('{{ route("mercado.procesar", $liga) }}', {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if(data.success) {
-                        mostrarNotificacion('success', data.message);
-                        if (data.shouldReload) {
-                           setTimeout(() => {
-                                window.location.reload();
-                            }, 1500);
-                        }
-                    } else {
-                        throw new Error(data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    contador.textContent = "Error procesando pujas";
-                    mostrarNotificacion('error', error.message);
-                });
-                
-                return;
-            }
+            segundosRestantes--;
             
-            segundos--;
+            // Continuar actualizando cada segundo
             setTimeout(actualizar, 1000);
         }
         
         actualizar();
     }
+
     
     
     
     // Iniciar contador cuando la página cargue
     document.addEventListener('DOMContentLoaded', function() {
-        iniciarContador();
+        // Solicitar permisos de notificación
+        if ('Notification' in window && Notification.permission === 'default') {
+            Notification.requestPermission().then(function(permission) {
+                if (permission === 'granted') {
+                    mostrarNotificacion('success', '🔔 Notificaciones activadas para el mercado');
+                }
+            });
+        }
         
-     
+        iniciarContador();
         
         // También puedes inicializar otros elementos aquí si es necesario
         if (document.getElementById('pujaForm')) {
@@ -446,28 +572,105 @@
 </script>
 
 <style>
+    /* Custom Scrollbar */
     .scrollbar-thin::-webkit-scrollbar {
-        width: 5px;
-        height: 5px;
+        width: 6px;
+        height: 6px;
     }
-    
     .scrollbar-thin::-webkit-scrollbar-track {
-        background: rgba(209, 213, 219, 0.3);
-        border-radius: 10px;
+        background: rgba(31, 41, 55, 0.5);
+        border-radius: 4px;
     }
-    
     .scrollbar-thin::-webkit-scrollbar-thumb {
-        background: rgba(156, 163, 175, 0.5);
-        border-radius: 10px;
+        background: rgba(34, 211, 238, 0.5);
+        border-radius: 4px;
     }
-    
     .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-        background: rgba(107, 114, 128, 0.6);
+        background: rgba(34, 211, 238, 0.8);
+    }
+
+    /* Custom Range Slider */
+    input[type=range] {
+        -webkit-appearance: none; 
+        background: transparent; 
     }
     
-    /* Transiciones suaves para el modo oscuro */
-    html {
-        transition: color 200ms, background-color 200ms;
+    input[type=range]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        height: 24px;
+        width: 24px;
+        border-radius: 50%;
+        background: #22d3ee;
+        cursor: pointer;
+        margin-top: -10px; 
+        box-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+        border: 2px solid #fff;
+    }
+    
+    input[type=range]::-webkit-slider-runnable-track {
+        width: 100%;
+        height: 4px;
+        cursor: pointer;
+        background: #374151;
+        border-radius: 2px;
+    }
+
+    /* Card Hover Effects */
+    .gamer-card {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .gamer-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px -5px rgba(34, 211, 238, 0.15);
+    }
+    .gamer-card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 1rem;
+        padding: 2px;
+        background: linear-gradient(45deg, transparent, rgba(34, 211, 238, 0.3), transparent);
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: 0.5;
+        transition: opacity 0.3s ease;
+    }
+    .gamer-card:hover::before {
+        opacity: 1;
+        background: linear-gradient(45deg, #22d3ee, #a855f7, #22d3ee);
+    }
+    /* Animations */
+    @keyframes glow {
+        0%, 100% { box-shadow: 0 0 5px rgba(6, 182, 212, 0.5); }
+        50% { box-shadow: 0 0 20px rgba(6, 182, 212, 0.8), 0 0 30px rgba(139, 92, 246, 0.5); }
+    }
+    
+    .animate-glow {
+        animation: glow 2s ease-in-out infinite;
+    }
+    
+    /* Neon text effect */
+    .text-neon {
+        text-shadow: 0 0 5px rgba(34, 211, 238, 0.5), 
+                     0 0 10px rgba(34, 211, 238, 0.3);
+    }
+    
+    /* Glass morphism enhancement */
+    .glass-card {
+        background: rgba(17, 24, 39, 0.7);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Smooth transitions - solo para elementos específicos */
+    .transition-smooth {
+        transition: all 0.3s ease;
+    }
+    
+    /* Reducir animaciones para mejor rendimiento */
+    .group:hover .group-hover\:scale-110 {
+        transform: scale(1.05);
     }
 </style>
 @endsection
