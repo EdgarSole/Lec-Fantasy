@@ -45,3 +45,110 @@ Clona el repositorio oficial y accede a la carpeta:
 ```bash
 git clone https://github.com/EdgarSole/Lec-Fantasy.git
 cd Lec-Fantasy
+2. Crear la base de datos
+
+Crea una base de datos en MySQL llamada lec_fantasy:
+
+CREATE DATABASE lec_fantasy CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+3. Configuración del archivo .env
+
+Copia el archivo de ejemplo:
+
+cp .env.example .env
+
+
+Edita el archivo .env y configura la conexión a la base de datos:
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=lec_fantasy
+DB_USERNAME=root
+DB_PASSWORD=
+
+
+Configura también la URL de la aplicación:
+
+APP_URL=http://localhost
+
+4. Instalación de dependencias
+
+Instala las dependencias de PHP:
+
+composer install
+
+
+Instala las dependencias de Node.js:
+
+npm install
+
+5. Inicializar el proyecto
+
+Genera la clave de la aplicación:
+
+php artisan key:generate
+
+
+Ejecuta las migraciones y seeders:
+
+php artisan migrate:fresh --seed
+
+6. Ejecutar el proyecto en local
+
+En una terminal:
+
+php artisan serve
+
+
+En otra terminal:
+
+npm run start
+
+
+Accede a la aplicación desde:
+
+http://127.0.0.1:8000
+
+Compilación para producción
+
+Para generar los assets optimizados:
+
+npm run build
+
+Despliegue en producción (Raspberry Pi 4)
+
+El proyecto ha sido desplegado en una Raspberry Pi 4 con Linux (Debian/Raspberry Pi OS) usando Apache, PHP y MySQL, siguiendo las buenas prácticas de Laravel.
+
+Pasos generales del despliegue
+
+Instalación y configuración de Apache y PHP
+
+Configuración de VirtualHost con mod_rewrite
+
+Descarga del proyecto desde GitHub
+
+Instalación de dependencias en modo producción
+
+Compilación de assets frontend
+
+Configuración de permisos
+
+Instalación de certificado SSL con Certbot
+
+Producción
+
+La aplicación se encuentra disponible públicamente en:
+
+🔗 https://lecfantasy.es
+
+El acceso se realiza mediante HTTPS, garantizando una conexión segura y estable.
+
+Licencia
+
+Este proyecto está licenciado bajo la Licencia MIT.
+
+Autor
+
+Edgar Solé
+Proyecto desarrollado como trabajo académico y proyecto personal.
